@@ -1,0 +1,57 @@
+
+<div class="container">
+
+  <div class="list">
+    <ul>
+      <li>
+        <div class="list-item">
+          <div class="settings-label">
+          Stimuli
+          </div>
+         <div class="settings-change">
+           <button class="button-secondary" (click)="changeStimuliPath()">
+          change
+          </button>
+          </div>
+
+          <div class="setting">
+          <span >
+            {{ settings.stimuliPath }}
+          </span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="list-item">
+          <div class="settings-label">
+          Responses
+          </div>
+         <div class="settings-change">
+           <button class="button-secondary" (click)="changeResponsesPath()">
+          change
+          </button>
+          </div>
+
+          <div class="setting">
+          <span>
+            {{ settings.responsesPath }}
+          </span>
+          </div>
+        </div>
+      </li>
+      <li>
+        <div class="list-footer">
+           <button (click)="cancelSettings()" class="button-primary">
+             Cancel
+          </button>
+            <button class="button-primary" (click)="saveSettings()" [disabled]="!edits">
+             Save
+          </button>
+        </div>
+      </li>
+
+    </ul>
+  </div>
+
+
+<div>

@@ -1,0 +1,19 @@
+
+@import './colors.scss';
+
+@function color($palette, $name) {
+    @return map-get($palette, $name)
+}
+
+$colors: (
+    primary: color($md-palette, md-light-blue),
+    secondary: color($md-palette, md-light-green)
+);
+
+
+$font-main: 'Crafty Girls';
+
+$button-background: color($colors, primary);
+$button-primary-background: color($colors, primary);
+$button-secondary-background: color($colors, secondary);
+$button-color: color($md-palette, md-white);

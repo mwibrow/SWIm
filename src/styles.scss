@@ -1,0 +1,43 @@
+
+@import './stylesheets/partials/_colors.scss';
+@import './stylesheets/partials/_fonts.scss';
+@import './stylesheets/partials/_variables.scss';
+
+@import '../src/assets/fonts/md-icon-font/material-icons.css';
+
+html, body {
+  margin: 0;
+  padding: 0;
+
+  height: 100%;
+}
+
+* {
+  font-family: $font-main;
+  font-weight: 900;
+  font-size: 1.125rem;
+}
+
+.button-primary {
+  background-color: color($colors, primary);
+  color: color($md-palette, md-white)
+}
+
+
+.button-secondary {
+  background-color: color($colors, secondary);
+  color: color($md-palette, md-white);
+}
+
+button:focus {
+  border: none;
+  outline: 0;
+}
+
+.button-primary[disabled]  {
+  background-color: lighten(color($colors, primary), 25);
+}
+
+.button-primary[disabled]  {
+  background-color: lighten(color($colors, secondary), 25);
+}
