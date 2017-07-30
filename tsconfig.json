@@ -15,6 +15,10 @@
         "./environments"
       ]
     },
+    "exclude": [
+      "node_modules",
+      "**/*.spec.ts"
+    ],
     "types": [
       "node",
       "jasmine"

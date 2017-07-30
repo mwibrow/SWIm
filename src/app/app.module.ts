@@ -16,6 +16,7 @@ import { AppRoutingModule } from './app-routing.module';
 
 import { ElectronService } from './providers/electron.service';
 
+import { AudioService } from './providers/audio.service';
 import {
   MdButtonModule,
   MdGridListModule,
@@ -25,12 +26,14 @@ import {
   MdToolbarModule,
   MdDialogModule
 } from '@angular/material';
+import { TaskComponent } from './components/task/task.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
-    SettingsComponent
+    SettingsComponent,
+    TaskComponent
   ],
   imports: [
     BrowserModule,
@@ -46,7 +49,7 @@ import {
     MdToolbarModule,
     MdDialogModule,
   ],
-  providers: [ElectronService],
+  providers: [ElectronService, AudioService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

@@ -5,6 +5,7 @@ import { Router } from '@angular/router'
 const {dialog} = require('electron').remote;
 const storage = require('electron-json-storage');
 const notSet: string = 'Not set!';
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',

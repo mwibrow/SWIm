@@ -128,7 +128,6 @@ export class AudioPlayer extends AudioEventHandler {
   loadBuffer(buffer: AudioBuffer) {
     this.stop();
     this.buffer = buffer;
-    this.play();
   }
 
   playing() {
@@ -159,6 +158,29 @@ export class AudioPlayer extends AudioEventHandler {
       this.emit('start');
       this.source.start(0);
     }
+  }
+
+  playTone(frequency: number, duration: number, amplitude=Math.SQRT1_2, numberOfChannels=1, sampleRate=44100, rampLength=0.050) {
+    let length: number, buffer: AudioBuffer, i: number, omega: number, samples: Array<number>;
+    length = Math.floor(duration * sampleRate);
+    buffer = this.context.createBuffer(numberOfChannels, length, sampleRate);
+
+    samples = new Array<number>(length);
+    omega = 2.0 * Math.PI * frequency / sampleRate;
+    for (i = 0; i < length; i ++) {
+      samples[i] = amplitude * Math.sin(i * omega);
+    }
+    rampLength = Math.floor(sampleRate * rampLength);
+    for (i = 0; i < rampLength; i ++) {
+      samples[i] *= i / rampLength;
+      samples[length - i] *= i / rampLength;
+    }
+
+    for (i = 0; i < numberOfChannels; i ++) {
+      buffer.copyToChannel(new Float32Array(samples), i, 0);
+    }
+    this.loadBuffer(buffer);
+    this.play();
   }
 
   stop() {
