@@ -33,7 +33,7 @@ export class SettingsComponent implements OnInit {
 
   changeStimuliPath() {
     let path: any = dialog.showOpenDialog({properties: ['openDirectory']});
-    if (path.length === 1) {
+    if (path && path.length === 1) {
       this.settings.stimuliPath = path[0];
       this.edits = true;
     }
@@ -41,7 +41,7 @@ export class SettingsComponent implements OnInit {
 
   changeResponsesPath() {
     let path: any = dialog.showOpenDialog({properties: ['openDirectory']});
-    if (path.length === 1) {
+    if (path && path.length === 1) {
       this.settings.responsesPath = path[0];
       this.edits = true;
     }

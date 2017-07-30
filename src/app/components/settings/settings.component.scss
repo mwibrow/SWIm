@@ -2,12 +2,13 @@
 @import '../../../stylesheets/partials/_colors.scss';
 @import '../../../stylesheets/partials/_variables.scss';
 
-md-grid-list {
-  height: 75%;
+.page {
+
+  background: url(../../../assets/images/background.svg) no-repeat center fixed;
+  height: 100%;
   width: 100%;
   margin: auto;
   text-align: center;
-  display: flex;
   align-items: center;
   justify-content: center;
 
@@ -15,14 +16,87 @@ md-grid-list {
 
 }
 
-md-list {
-  width: 500px !important;
+.container {
+  height: 100%;
+  width: 50%;
+  display: flex;
+  margin: auto;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
-md-input-container {
-  width: 90%;
+
+.content {
+  width: 100%;
+}
+
+.header {
+  width: 100%;
+  background-color: color($md-palette, md-light-blue);
+  color: color($md-palette, md-white);
+  text-align: left;
+  margin-bottom: 1ex;
+  .header-title {
+    font-size: $font-size-large;
+    padding-left: 1ex;
+    padding-top: 0.5ex;
+    padding-bottom: 0.5ex;
+  }
+}
+
+.footer {
+  display: flex;
+}
+
+.setting {
+  width: 100%;
+  margin-bottom: 1ex;
+}
+
+.setting-header {
+  width: 100%;
+  display: flex;
+}
+
+.setting-value {
+  width: 100%;
+  text-align: left;
+  border-bottom: 1px dotted color($md-palette, md-grey);
+  span {
+    color: color($md-palette, md-grey);
+    font-size: $font-size-small;
+  }
+}
+
+.buttons {
+  display: inline-block;
+}
+
+button {
+  border: none;
+  outline: 0px;
+  width: 15ex;
+  border-radius: 2.5px;
 }
 
 
-.pad-horizontal {
+
+.primary {
+  background-color: $button-primary-background;
+  color: $button-primary-color;
+}
+
+
+.primary[disabled] {
+  background-color: lighten($button-primary-background, 25);
+  color: $button-primary-color;
+}
+
+.secondary {
+  background-color: $button-secondary-background;
+  color: $button-secondary-color;
+}
+
+.horizontal-filler {
    flex: 1 1 auto;
 }

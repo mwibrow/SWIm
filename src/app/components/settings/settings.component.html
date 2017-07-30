@@ -1,4 +1,5 @@
 
+<!--
 
 <md-grid-list cols="1" rowHeight="100%">
 
@@ -31,4 +32,52 @@
 </button>
 </md-list>
 
-</md-grid-list>
+</md-grid-list> -->
+<div class="page">
+  <div class="container">
+    <div class="content">
+      <div class="header">
+        <span class="header-title">Settings</span>
+      </div>
+      <div class="setting">
+        <div class="setting-header">
+          <span class="setting-name">Stimuli</span>
+          <span class="horizontal-filler"></span>
+          <div class="buttons">
+            <button md-button class="secondary" (click)="changeStimuliPath()">
+              Change
+            </button>
+          </div>
+        </div>
+        <div class="setting-value">
+          <span>{{ settings.stimuliPath }}</span>
+        </div>
+      </div>
+      <div class="setting">
+        <div class="setting-header">
+          <span class="setting-name">Responses</span>
+          <span class="horizontal-filler"></span>
+          <div class="buttons">
+            <button md-button class="secondary"  (click)="changeResponsesPath()">
+              Change
+            </button>
+          </div>
+        </div>
+        <div class="setting-value">
+          <span>{{ settings.responsesPath }}</span>
+        </div>
+      </div>
+      <div class="footer">
+        <span class="horizontal-filler"></span>
+        <div class="buttons">
+          <button md-button class="secondary" (click)="cancelSettings()">
+            Cancel
+          </button>
+          <button md-button class="primary" (click)="saveSettings()">
+            Save
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
