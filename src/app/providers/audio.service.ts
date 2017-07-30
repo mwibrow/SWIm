@@ -109,17 +109,20 @@ export class AudioPlayer extends AudioEventHandler {
   }
 
   loadWav(wavFile: string) {
-    readWav(wavFile).then((fileBuffer) => {
-      return WavDecoder.decode(fileBuffer);
-    }).then((audioData) => {
-        this.buffer = this.context.createBuffer(
-          audioData.numberOfChannels,
-          audioData.length,
-          audioData.sampleRate);
-        for (let i: number = 0; i < audioData.numberOfChannels; i ++) {
-          this.buffer.copyToChannel(audioData.channelData[i], 0);
-        }
-        this.emit('load');
+    return new Promise((resolve, reject) => {
+      readWav(wavFile).then((fileBuffer) => {
+        return WavDecoder.decode(fileBuffer);
+      }).then((audioData) => {
+          this.buffer = this.context.createBuffer(
+            audioData.numberOfChannels,
+            audioData.length,
+            audioData.sampleRate);
+          for (let i: number = 0; i < audioData.numberOfChannels; i ++) {
+            this.buffer.copyToChannel(audioData.channelData[i], 0);
+          }
+          this.emit('load');
+          resolve();
+      });
     });
   }
 
@@ -137,29 +140,32 @@ export class AudioPlayer extends AudioEventHandler {
   }
 
   play() {
-    let i: number;
-    if (this.buffer) {
-      if (this.source) {
-        this.source.disconnect(this.context.destination);
-          for (i = 0; i < this.nodes.length; i ++) {
-            this.source.disconnect(this.nodes[i]);
-          }
-      }
-      this.source = this.context.createBufferSource();
-      this.source.buffer = this.buffer;
-      for (i = 0; i < this.nodes.length; i ++) {
-        this.source.connect(this.nodes[i]);
-      }
-      this.source.connect(this.context.destination);
+    return new Promise((resolve, reject) => {
+      let i: number;
+      if (this.buffer) {
+        if (this.source) {
+          this.source.disconnect(this.context.destination);
+            for (i = 0; i < this.nodes.length; i ++) {
+              this.source.disconnect(this.nodes[i]);
+            }
+        }
+        this.source = this.context.createBufferSource();
+        this.source.buffer = this.buffer;
+        for (i = 0; i < this.nodes.length; i ++) {
+          this.source.connect(this.nodes[i]);
+        }
+        this.source.connect(this.context.destination);
 
-      this.source.onended = () => {
-        this.running = false;
-        this.emit('ended')
+        this.source.onended = () => {
+          this.running = false;
+          this.emit('ended');
+          resolve();
+        }
+        this.running = true;
+        this.emit('start');
+        this.source.start(0);
       }
-      this.running = true;
-      this.emit('start');
-      this.source.start(0);
-    }
+    });
   }
 
   playTone(frequency: number, duration: number, amplitude=Math.SQRT1_2, numberOfChannels=1, sampleRate=44100, rampLength=0.050) {
@@ -182,7 +188,7 @@ export class AudioPlayer extends AudioEventHandler {
       buffer.copyToChannel(new Float32Array(samples), i, 0);
     }
     this.loadBuffer(buffer);
-    this.play();
+    return this.play();
   }
 
   stop() {

@@ -23,7 +23,7 @@ export class TaskComponent implements OnInit {
 
   private settings: any;
   private stimuli: Array<any>;
-  private stimulusIndex: number;
+  private trial: number;
   private now: Date;
 
   private player: AudioPlayer;
@@ -42,14 +42,16 @@ export class TaskComponent implements OnInit {
         let settings: any = data || {};
         this.settings = {
           stimuliPath: settings.stimuliPath,
-          responsesPath: settings.responsesPath
+          responsesPath: settings.responsesPath,
+          blockSize: 10,
+          repetitions: 0
         };
 
         this.loadStimuli();
 
      });
 
-    this.stimulusIndex = 0;
+    this.trial = 0;
   }
 
   private loadStimuli() {
@@ -62,17 +64,47 @@ export class TaskComponent implements OnInit {
 
   private afterLoadStimuli() {
     console.log(`Loaded ${this.stimuli.length} wav file(s).`);
-    this.trial();
+    this.runTrial();
   }
 
-  private trial() {
-    this.player.on('ended', () => {
-      this.player.playTone(440, 1);
-    }).on('load', () => {
-      this.player.play();
-    });
+  private runTrial() {
+    this.loadStimulus().then(this.playStimulus).then(this.playTone).then(this.nextTrial);
+  }
 
-    this.player.loadWav(this.stimuli[0]);
+  private loadStimulus(self?) {
+    let i: number;
+    self = self || this;
+    return new Promise((resolve, reject) => {
+      i = self.trial % self.stimuli.length;
+      self.player.loadWav(self.stimuli[i]).then(() => resolve(self))
+    });
+  }
+
+  private playStimulus(self) {
+    self = self || this;
+    return new Promise((resolve, reject) => {
+      return self.player.play().then(() => resolve(self));
+    });
+  }
+
+  private playTone(self) {
+    self = self || this;
+    return new Promise((resolve, reject) => {
+      self.player.playTone(440, 1).then(() => resolve(self));
+    });
+  }
+
+  private recordEnd(self) {
+    self = self || this;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(self), 500)
+    })
+  }
+
+  private nextTrial(self) {
+    self = self || this;
+    self.trial ++;
+
   }
 
   ngOnInit() {
