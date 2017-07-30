@@ -62,9 +62,18 @@ export class TaskComponent implements OnInit {
 
   private afterLoadStimuli() {
     console.log(`Loaded ${this.stimuli.length} wav file(s).`);
-    this.player.playTone(440, 1);
+    this.trial();
   }
 
+  private trial() {
+    this.player.on('ended', () => {
+      this.player.playTone(440, 1);
+    }).on('load', () => {
+      this.player.play();
+    });
+
+    this.player.loadWav(this.stimuli[0]);
+  }
 
   ngOnInit() {
   }

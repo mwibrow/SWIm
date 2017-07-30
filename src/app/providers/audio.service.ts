@@ -41,6 +41,7 @@ class AudioEventHandler {
       this.handlers[event] = {};
     }
     this.handlers[event][handle] = handler;
+    return this;
   }
 
   emit(event: string, ...args:any[]) {
@@ -51,6 +52,7 @@ class AudioEventHandler {
           this.handlers[event][handle](this, ...args);
         }
       }
+      delete this.handlers[event];
     }
   }
 }
