@@ -327,12 +327,9 @@ export class AudioRecorder extends AudioEventHandler {
   }
 
   private getAudioBuffers() {
-    console.log('getAudioBuffers');
     let self: any = this;
     return new Promise((resolve, reject) => {
-
       const setRecordBuffer = (buffer) => {
-        console.log('setRecordBuffer');
         self.recordBuffer = self.context.createBuffer(
           buffer.length,
           buffer[0].length,

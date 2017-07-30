@@ -48,7 +48,8 @@ export class TaskComponent implements OnInit {
           stimuliPath: settings.stimuliPath,
           responsesPath: settings.responsesPath,
           blockSize: 10,
-          repetitions: 0
+          repetitions: 0,
+          recordTime: 3.0
         };
 
         this.loadStimuli();
@@ -111,12 +112,11 @@ export class TaskComponent implements OnInit {
   private recordResponse(self?: TaskComponent)  {
     self = self || this;
     return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(self), 500);
+      setTimeout(() => resolve(self), self.settings.recordTime * 1000);
     })
   }
 
   private saveResponse(self?: TaskComponent) {
-    console.log('saveResponse');
     self = self || this;
     return new Promise((resolve, reject) => {
       self.recorder.stop().then(() => {
