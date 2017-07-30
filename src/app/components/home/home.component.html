@@ -1,6 +1,6 @@
 
-<div class="container">
-  <div>
+<md-grid-list cols=1 rowHeight="100%" layout-align="center">
+
   <h1 class="title">
     <span>S</span><span>W</span><span>Im</span><span>!</span>
   </h1>
@@ -8,15 +8,17 @@
     Spoken Word Imitation
   </h2>
 
-  <p>
-  <button (click)="go('/settings')">
-    Settings
-  </button>
-  </p><p>
-   <button>
-    Start
-  </button>
-  </p>
-  </div>
+  <md-list>
+    <md-list-item>
+      <button md-button (click)="go('/settings')">
+        Settings
+      </button>
+    </md-list-item>
+    <md-list-item>
+      <button md-button>
+        Start
+      </button>
+    </md-list-item>
+  </md-list>
 
-</div>
+</md-grid-list>

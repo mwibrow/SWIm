@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
 
+
 const {dialog} = require('electron').remote;
 const storage = require('electron-json-storage');
 const notSet: string = 'Not set!';

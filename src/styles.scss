@@ -1,9 +1,14 @@
 
 @import './stylesheets/partials/_colors.scss';
 @import './stylesheets/partials/_fonts.scss';
-@import './stylesheets/partials/_variables.scss';
+
 
 @import '../src/assets/fonts/md-icon-font/material-icons.css';
+
+@import './stylesheets/partials/_variables.scss';
+
+@import "~@angular/material/prebuilt-themes/indigo-pink.css";
+
 
 html, body {
   margin: 0;
