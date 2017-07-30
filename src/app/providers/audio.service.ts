@@ -311,7 +311,9 @@ export class AudioRecorder extends AudioEventHandler {
     this.timeout && clearTimeout(this.timeout);
     this.emit('stop');
     if (!this.monitor) {
-      this.getAudioBuffers();
+      return new Promise((resolve, reject) => {
+        this.getAudioBuffers().then(resolve);
+      });
     }
   }
 
@@ -325,10 +327,27 @@ export class AudioRecorder extends AudioEventHandler {
   }
 
   private getAudioBuffers() {
-    this.onMessage = (buffer) => this.setRecordBuffer(buffer);
-    this.worker.postMessage({
-      command: 'getBuffers'
-    })
+    console.log('getAudioBuffers');
+    let self: any = this;
+    return new Promise((resolve, reject) => {
+
+      const setRecordBuffer = (buffer) => {
+        console.log('setRecordBuffer');
+        self.recordBuffer = self.context.createBuffer(
+          buffer.length,
+          buffer[0].length,
+          self.context.sampleRate);
+        for (let i: number = 0; i < buffer.length; i ++) {
+          self.recordBuffer.copyToChannel(buffer[i], i, 0);
+        }
+        self.worker.terminate();
+        resolve();
+      };
+      self.onMessage = (buffer) => setRecordBuffer(buffer);
+      self.worker.postMessage({
+        command: 'getBuffers'
+      });
+    });
   }
 
   private setRecordBuffer(buffer: Array<Float32Array>) {
@@ -359,18 +378,21 @@ export class AudioRecorder extends AudioEventHandler {
   }
 
   saveWav(wavFile: string) {
-    let channelData: Array<Float32Array> = new Array<Float32Array>();
-    for (let i: number = 0; i < this.recordBuffer.numberOfChannels; i ++) {
-      channelData.push(new Float32Array(this.recordBuffer.length));
-      this.recordBuffer.copyFromChannel(channelData[i], i, 0);
-    }
-    let audioData: any = {
-      sampleRate: this.context.sampleRate,
-      channelData: channelData
-    }
+    return new Promise((resolve, reject) => {
+      let channelData: Array<Float32Array> = new Array<Float32Array>();
+      for (let i: number = 0; i < this.recordBuffer.numberOfChannels; i ++) {
+        channelData.push(new Float32Array(this.recordBuffer.length));
+        this.recordBuffer.copyFromChannel(channelData[i], i, 0);
+      }
+      let audioData: any = {
+        sampleRate: this.context.sampleRate,
+        channelData: channelData
+      }
 
-    WavEncoder.encode(audioData).then((fileBuffer) => {
-      fs.writeFileSync(wavFile, new Buffer(fileBuffer));
+      WavEncoder.encode(audioData).then((fileBuffer) => {
+        fs.writeFileSync(wavFile, new Buffer(fileBuffer));
+        resolve();
+      });
     });
   }
 }
