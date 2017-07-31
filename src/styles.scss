@@ -47,23 +47,16 @@ button:focus {
   background-color: lighten(color($colors, secondary), 25);
 }
 
-$size: 20px;
-$jump: $size;
-$time: 1s;
+$spinner-size: 50px;
+$spinner-time: 2s;
+$spinner-border: 10px;
 
-@keyframes jump {
-  40% {
-    transform: translateY($jump * -4);
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
   }
-  60% {
-    transform: translateY(0);
-    transform: scale(1);
-  }
-  70% {
-    transform: translateY($jump / 4) scale(1.5, 0.75);
-  }
-  80% {
-    transform: scale(1);
+  100% {
+    transform: rotate(360deg)
   }
 }
 .loader {
@@ -75,31 +68,17 @@ $time: 1s;
   justify-content: center;
   display: flex;
 
-  :nth-child(1) {
-    animation: jump $time infinite;
-     animation-delay: 0;
-  }
-  :nth-child(2) {
-    animation: jump $time infinite;
-    animation-delay: $time / 10;
-  }
-  :nth-child(3) {
-    animation: jump $time infinite;
-    animation-delay: $time / 10 * 2;
-  }
-  :nth-child(4) {
-    animation: jump $time infinite;
-    animation-delay: $time / 10 * 3;
-  }
 
-  .dot {
+  .spinner {
     border-radius: 50%;
-    background-color: color($md-palette, md-orange);
-    width: $size !important;
-    height: $size !important;
-    margin: $size / 4;
-
-
+    border-top: $spinner-border solid color($md-palette, md-red);
+    border-left: $spinner-border solid color($md-palette, md-orange);
+    border-right: $spinner-border solid color($md-palette, md-light-green);
+    border-bottom: $spinner-border solid color($md-palette, md-light-blue);
+    width: $spinner-size !important;
+    height: $spinner-size !important;
+    margin: $spinner-size / 4;
+    animation: spin $spinner-time linear infinite;
   }
 }
 
