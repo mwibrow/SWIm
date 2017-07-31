@@ -6,6 +6,14 @@ const {dialog} = require('electron').remote;
 const storage = require('electron-json-storage');
 const notSet: string = 'Not set!';
 
+const settingsDefaults: any = {
+  stimuliPath: notSet,
+  responsesPath: notSet,
+  blockSize: 10,
+  maskFrequency: 440,
+  maskDuration: 1000
+};
+
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
@@ -22,13 +30,11 @@ export class SettingsComponent implements OnInit {
       (error, data) => {
         let settings: any = data || {}, setting: any;
         this.settings = {};
-        this.settings = {
-          stimuliPath: notSet,
-          responsesPath: notSet,
-          blockSize: 10,
-          maskFrequency: 440,
-          maskDuration: 1000
-        };
+        for (setting in settingsDefaults) {
+          if (settingsDefaults.hasOwnProperty(setting)) {
+            this.settings[setting] = settingsDefaults[setting];
+          }
+        }
         for (setting in settings) {
           if (settings.hasOwnProperty(setting)) {
             this.settings[setting] = settings[setting];
@@ -75,19 +81,12 @@ export class SettingsComponent implements OnInit {
     });
   }
 
-  changeNumberSetting(setting: string, by: number, min: number, max: number) {
-    if (this.settings.hasOwnProperty(setting)) {
-      this.settings[setting] += by;
-      if (this.settings[setting] < min) this.settings[setting] = min;
-      if (this.settings[setting] > max) this.settings[setting] = max;
-    }
-  }
   changeBlockSize(by: number) {
     if (by) {
-      this.settings.changeBlockSize += by;
+      this.settings.blockSize += by;
     }
-    if (this.settings.changeBlockSize < 1) this.settings.changeBlockSize = 1;
-    if (this.settings.changeBlockSize > 100) this.settings.maskBLockSize = 100;
+    if (this.settings.blockSize < 1) this.settings.blockSize = 1;
+    if (this.settings.blockSize > 100) this.settings.blockSize = 100;
   }
 
   changeMaskFrequency(by: number) {

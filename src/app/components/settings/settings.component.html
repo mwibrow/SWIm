@@ -61,7 +61,7 @@
             <span class="title">Mask frequency</span>
             <span class="horizontal-filler"></span>
             <div class="number-input-with-buttons">
-              <input type="number" min="1" max="100" [(ngModel)]="settings.maskFrequency">
+              <input type="number" min="1" max="100" [(ngModel)]="settings.maskFrequency" (change)="changeMaskFrequency()">
               <button class="plus" (click)="changeMaskFrequency(5)">+</button>
               <button class="minus" (click)="changeMaskFrequency(-5)">-</button>
             </div>
@@ -75,7 +75,7 @@
             <span class="title">Mask duration</span>
             <span class="horizontal-filler"></span>
             <div class="number-input-with-buttons">
-              <input type="number" min="10" max="2000" [(ngModel)]="settings.maskDuration">
+              <input type="number" min="10" max="2000" [(ngModel)]="settings.maskDuration" (change)="changeMaskDuration()">
               <button class="plus" (click)="changeMaskDuration(10)">+</button>
               <button class="minus" (click)="changeMaskDuration(-10)">-</button>
             </div>
