@@ -37,6 +37,9 @@ import { ErrorComponent } from './components/error/error.component';
     TaskComponent,
     ErrorComponent
   ],
+  entryComponents: [
+    ErrorComponent
+  ],
   imports: [
     BrowserModule,
     BrowserAnimationsModule,
@@ -51,7 +54,10 @@ import { ErrorComponent } from './components/error/error.component';
     MdToolbarModule,
     MdDialogModule,
   ],
-  providers: [ElectronService, AudioService],
+  providers: [
+    ElectronService,
+    AudioService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

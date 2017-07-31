@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MdDialog } from '@angular/material';
 import { Router } from '@angular/router';
 
-import {SettingsComponent} from '../settings/settings.component';
+import { ErrorComponent } from '../error/error.component';
+import { SettingsComponent } from '../settings/settings.component';
+
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
@@ -10,13 +13,13 @@ import {SettingsComponent} from '../settings/settings.component';
 export class HomeComponent implements OnInit {
   title = `App works !`;
 
-  constructor(private router: Router) { }
+  constructor(private router: Router, public dialog: MdDialog) { }
   ngOnInit() {
   }
 
   go(url: string) {
     this.router.navigateByUrl(url);
-
+    //this.dialog.open(ErrorComponent, {data: {content: 'You Suck!'}});
   }
 
 }

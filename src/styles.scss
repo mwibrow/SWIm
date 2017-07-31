@@ -82,3 +82,15 @@ $spinner-border: 10px;
   }
 }
 
+
+.mat-dialog-container, .md-dialog-container {
+    background: none !important;
+    box-shadow: none !important;
+    max-width: 100% !important;
+    width: 100vw !important;
+}
+
+.cdk-overlay-dark-backdrop {
+  background: none !important;
+}
+

@@ -12,9 +12,11 @@ export class ErrorComponent implements OnInit {
   content: string = 'An error occured.';
   constructor(@Inject(MD_DIALOG_DATA) data: any,
     public dialogRef: MdDialogRef<ErrorComponent>) {
-      this.title = data.title || this.title;
-      this.content = data.content || this.content;
-    }
+      if (data) {
+        this.title = data.title || this.title;
+        this.content = data.content || this.content;
+      }
+  }
 
   ngOnInit() {
   }
