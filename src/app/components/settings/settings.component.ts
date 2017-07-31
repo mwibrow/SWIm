@@ -20,12 +20,20 @@ export class SettingsComponent implements OnInit {
     this.edits = false;
     storage.get('settings',
       (error, data) => {
-        let settings: any = data || {};
+        let settings: any = data || {}, setting: any;
+        this.settings = {};
         this.settings = {
-          stimuliPath: settings.stimuliPath || notSet,
-          responsesPath: settings.responsesPath || notSet,
-          blockSize: 10
+          stimuliPath: notSet,
+          responsesPath: notSet,
+          blockSize: 10,
+          maskFrequency: 440,
+          maskDuration: 1000
         };
+        for (setting in settings) {
+          if (settings.hasOwnProperty(setting)) {
+            this.settings[setting] = settings[setting];
+          }
+        }
      });
 
   }
@@ -54,35 +62,47 @@ export class SettingsComponent implements OnInit {
   }
 
   saveSettings() {
-    let settings: any = {
-      stimuliPath: this.settings.stimuliPath === notSet ? null : this.settings.stimuliPath,
-      responsesPath: this.settings.responsesPath === notSet ? null : this.settings.responsesPath
-    };
-     storage.set('settings', settings, (error) => {
+    let settings: any, setting: any;
+    settings = {};
+    for (setting in this.settings) {
+      if (this.settings.hasOwnProperty(setting)) {
+        settings[setting] = this.settings[setting];
+      }
+    }
+    storage.set('settings', settings, (error) => {
        console.log(error);
         this.router.navigateByUrl('');
-     });
+    });
   }
 
-  increaseBlockSize() {
-    if (this.settings.blockSize < 100) {
-      this.settings.blockSize ++;
+  changeNumberSetting(setting: string, by: number, min: number, max: number) {
+    if (this.settings.hasOwnProperty(setting)) {
+      this.settings[setting] += by;
+      if (this.settings[setting] < min) this.settings[setting] = min;
+      if (this.settings[setting] > max) this.settings[setting] = max;
     }
   }
-
-  decreaseBlockSize() {
-    if (this.settings.blockSize > 1) {
-      this.settings.blockSize --;
+  changeBlockSize(by: number) {
+    if (by) {
+      this.settings.changeBlockSize += by;
     }
+    if (this.settings.changeBlockSize < 1) this.settings.changeBlockSize = 1;
+    if (this.settings.changeBlockSize > 100) this.settings.maskBLockSize = 100;
   }
 
-  validateBlockSize() {
-    if (this.settings.blockSize > 100) {
-      this.settings.blockSize = 100;
-    } else {
-      if (this.settings.blockSize < 1) {
-      this.settings.blockSize = 1;
+  changeMaskFrequency(by: number) {
+    if (by) {
+      this.settings.maskFrequency += by;
     }
+    if (this.settings.maskFrequency < 250) this.settings.maskFrequency = 250;
+    if (this.settings.maskFrequency > 1000) this.settings.maskFrequency = 1000;
+  }
+
+  changeMaskDuration(by: number) {
+    if (by) {
+      this.settings.maskDuration += by;
     }
+    if (this.settings.maskDuration < 10) this.settings.maskDuration = 10;
+    if (this.settings.maskDuration > 2000) this.settings.maskDuration = 2000;
   }
 }

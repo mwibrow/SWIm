@@ -47,13 +47,41 @@
             <span class="title">Block Size</span>
             <span class="horizontal-filler"></span>
             <div class="number-input-with-buttons">
-              <input type="number" min="1" max="100" [(ngModel)]="settings.blockSize" (change)="validateBlockSize()">
-              <button class="plus" (click)="increaseBlockSize()">+</button>
-              <button class="minus" (click)="decreaseBlockSize()">-</button>
+              <input type="number" min="1" max="100" [(ngModel)]="settings.blockSize" (change)="changeBlockSize()">
+              <button class="plus" (click)="changeBlockSize(1)">+</button>
+              <button class="minus" (click)="changeBlockSize(-1)">-</button>
             </div>
           </div>
           <div class="setting-description">
             <span class="description">Number of trials in a block</span>
+          </div>
+        </div>
+        <div class="setting number">
+          <div class="setting-header">
+            <span class="title">Mask frequency</span>
+            <span class="horizontal-filler"></span>
+            <div class="number-input-with-buttons">
+              <input type="number" min="1" max="100" [(ngModel)]="settings.maskFrequency">
+              <button class="plus" (click)="changeMaskFrequency(5)">+</button>
+              <button class="minus" (click)="changeMaskFrequency(-5)">-</button>
+            </div>
+          </div>
+          <div class="setting-description">
+            <span class="description">Frequency of auditory mask in Hz</span>
+          </div>
+        </div>
+        <div class="setting number">
+          <div class="setting-header">
+            <span class="title">Mask duration</span>
+            <span class="horizontal-filler"></span>
+            <div class="number-input-with-buttons">
+              <input type="number" min="10" max="2000" [(ngModel)]="settings.maskDuration">
+              <button class="plus" (click)="changeMaskDuration(10)">+</button>
+              <button class="minus" (click)="changeMaskDuration(-10)">-</button>
+            </div>
+          </div>
+          <div class="setting-description">
+            <span class="description">Duration of auditory mask in ms</span>
           </div>
         </div>
       </div>
