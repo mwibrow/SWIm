@@ -27,13 +27,15 @@ import {
   MdDialogModule
 } from '@angular/material';
 import { TaskComponent } from './components/task/task.component';
+import { ErrorComponent } from './components/error/error.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
     SettingsComponent,
-    TaskComponent
+    TaskComponent,
+    ErrorComponent
   ],
   imports: [
     BrowserModule,
