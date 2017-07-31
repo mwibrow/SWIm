@@ -46,3 +46,60 @@ button:focus {
 .button-primary[disabled]  {
   background-color: lighten(color($colors, secondary), 25);
 }
+
+$size: 20px;
+$jump: $size;
+$time: 1s;
+
+@keyframes jump {
+  40% {
+    transform: translateY($jump * -4);
+  }
+  60% {
+    transform: translateY(0);
+    transform: scale(1);
+  }
+  70% {
+    transform: translateY($jump / 4) scale(1.5, 0.75);
+  }
+  80% {
+    transform: scale(1);
+  }
+}
+.loader {
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+
+  :nth-child(1) {
+    animation: jump $time infinite;
+     animation-delay: 0;
+  }
+  :nth-child(2) {
+    animation: jump $time infinite;
+    animation-delay: $time / 10;
+  }
+  :nth-child(3) {
+    animation: jump $time infinite;
+    animation-delay: $time / 10 * 2;
+  }
+  :nth-child(4) {
+    animation: jump $time infinite;
+    animation-delay: $time / 10 * 3;
+  }
+
+  .dot {
+    border-radius: 50%;
+    background-color: color($md-palette, md-orange);
+    width: $size !important;
+    height: $size !important;
+    margin: $size / 4;
+
+
+  }
+}
+
