@@ -11,34 +11,44 @@
   text-align: center;
   align-items: center;
   justify-content: center;
-
-
-
 }
 
 .container {
   height: 100%;
-  width: 50%;
   display: flex;
+  position: relative;
   margin: auto;
   text-align: center;
   align-items: center;
   justify-content: center;
+
 }
 
 .content {
-  width: 100%;
+  height: 75% !important;
+  width: 50%;
+  background-color: rgba(0, 0, 0, 0.75);
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+}
+
+.main {
+  height: 100%;
+  margin: 1ex;
+  flex: 1 1;
+  overflow-y: scroll;
 }
 
 .header {
   width: 100%;
-  background-color: color($md-palette, md-light-blue);
+  //background-color: color($md-palette, md-light-blue);
   color: color($md-palette, md-white);
   text-align: left;
   margin-bottom: 1ex;
   .header-title {
     font-size: $font-size-large;
-    padding-left: 1ex;
+    padding-left: 0.5ex;
     padding-top: 0.5ex;
     padding-bottom: 0.5ex;
   }
@@ -46,27 +56,117 @@
 
 .footer {
   display: flex;
+  padding: 1ex;
 }
 
 .setting {
+  position: relative;
   width: 100%;
   margin-bottom: 1ex;
+  .title {
+    color: color($md-palette, md-white);
+  }
+
+  .setting-description {
+    text-align: left;
+  }
+
+  .description {
+    color: color($md-palette, md-grey) !important;
+    font-size: $font-size-tiny;
+  }
+
+  button {
+    span {
+    font-size: $font-size-tiny !important;
+    }
+  }
+
+  .number {
+    .setting-value {
+      width: 0%;
+    }
+    input {
+      background: green;
+    }
+  }
+
+
+
+}
+
+.folder {
+  .setting-value {
+    width: 100%;
+    text-align: left;
+    border-bottom: 1px dotted color($md-palette, md-grey);
+    span {
+      color: color($md-palette, md-grey);
+      font-size: $font-size-small;
+    }
+    input {
+      background: transparent;
+      border: none;
+      outline: none;
+      width: 100%;
+      color: color($md-palette, md-grey);
+    }
+  }
+}
+
+
+.number-input-with-buttons {
+  display: inline-block;
+  position: relative;
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+      margin: 0;
+  }
+  input {
+    background: transparent;
+    border: none;
+    border-bottom: 1px dotted color($md-palette, md-grey);
+    outline: none;
+    margin-right: 1em;
+    width: 3em;
+    color: color($md-palette, md-white);
+  }
+
+  button {
+    position: absolute;
+    margin: 0px !important;
+    padding: 0px !important;
+    font-size: $font-size-normal;
+    width: 0.875em !important;
+    height: 0.875em !important;
+    line-height: 0.25em;
+    background-color: color($md-palette, md-orange);
+  }
+  button:hover {
+    background-color: darken(color($md-palette, md-orange), 10);
+  }
+  .plus {
+    top: 0;
+    right: 0;
+  }
+  .minus {
+    bottom: 0;
+    right: 0;
+  }
 }
 
 .setting-header {
   width: 100%;
   display: flex;
-}
 
-.setting-value {
-  width: 100%;
-  text-align: left;
-  border-bottom: 1px dotted color($md-palette, md-grey);
-  span {
-    color: color($md-palette, md-grey);
-    font-size: $font-size-small;
+  .buttons {
+    position: absolute;
+    right: 0;
   }
 }
+
+
 
 .buttons {
   display: inline-block;
@@ -100,3 +200,11 @@ button {
 .horizontal-filler {
    flex: 1 1 auto;
 }
+
+// .setting-value input {
+//   background: transparent;
+//   border: none;
+//   outline: none;
+//   width: 100%;
+//   color: color($md-palette, md-grey);
+// }

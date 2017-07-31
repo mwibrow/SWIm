@@ -8,7 +8,7 @@ serve = args.some(val => val === '--serve');
 
 if (serve) {
   require('electron-reload')(__dirname, {
-  });
+  electron: path.join(__dirname, 'node_modules', '.bin', 'electron')});
 }
 
 function createWindow() {

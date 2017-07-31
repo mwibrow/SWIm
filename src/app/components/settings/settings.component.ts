@@ -23,7 +23,8 @@ export class SettingsComponent implements OnInit {
         let settings: any = data || {};
         this.settings = {
           stimuliPath: settings.stimuliPath || notSet,
-          responsesPath: settings.responsesPath || notSet
+          responsesPath: settings.responsesPath || notSet,
+          blockSize: 10
         };
      });
 
@@ -61,5 +62,27 @@ export class SettingsComponent implements OnInit {
        console.log(error);
         this.router.navigateByUrl('');
      });
+  }
+
+  increaseBlockSize() {
+    if (this.settings.blockSize < 100) {
+      this.settings.blockSize ++;
+    }
+  }
+
+  decreaseBlockSize() {
+    if (this.settings.blockSize > 1) {
+      this.settings.blockSize --;
+    }
+  }
+
+  validateBlockSize() {
+    if (this.settings.blockSize > 100) {
+      this.settings.blockSize = 100;
+    } else {
+      if (this.settings.blockSize < 1) {
+      this.settings.blockSize = 1;
+    }
+    }
   }
 }

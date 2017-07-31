@@ -1,72 +1,63 @@
 
-<!--
 
-<md-grid-list cols="1" rowHeight="100%">
-
-  <md-toolbar>
-  <span>Settings</span>
-  <span class="pad-horizontal"></span>
-  <span>
-    <button (click)="cancelSettings()" md-icon-button>
-      <md-icon>cancel</md-icon>
-    </button>
-    <button (click)="saveSettings()" md-icon-button>
-      <md-icon>save</md-icon>
-    </button>
-  </span>
-</md-toolbar>
-<br>
-<md-list>
-<md-input-container>
-  <input mdInput placeholder="Stimuli folder" disabled value="{{ settings.stimuliPath }}">
-</md-input-container>
-<button md-icon-button  (click)="changeStimuliPath()">
-  <md-icon>edit</md-icon>
-  </button>
-<br>
-<md-input-container>
-  <input mdInput placeholder="Responses folder" disabled value="{{ settings.responsesPath }}">
-</md-input-container>
-<button md-icon-button  (click)="changeResponsesPath()">
-  <md-icon>edit</md-icon>
-</button>
-</md-list>
-
-</md-grid-list> -->
-<div class="page">
+<div class="page" ng-app="">
   <div class="container">
     <div class="content">
       <div class="header">
         <span class="header-title">Settings</span>
       </div>
-      <div class="setting">
-        <div class="setting-header">
-          <span class="setting-name">Stimuli</span>
-          <span class="horizontal-filler"></span>
-          <div class="buttons">
-            <button md-button class="secondary" (click)="changeStimuliPath()">
-              Change
-            </button>
+      <div class="main">
+        <div class="setting folder">
+          <div class="setting-header">
+            <span class="title">Stimuli</span>
+            <span class="horizontal-filler"></span>
+            <div class="buttons">
+              <button md-button class="secondary" (click)="changeStimuliPath()">
+                Change
+              </button>
+            </div>
+          </div>
+          <div class="setting-description">
+            <span class="description">All .wav files in this folder will be used for stimuli</span>
+          </div>
+          <div class="setting-value">
+            <span>{{ settings.stimuliPath }}</span>
           </div>
         </div>
-        <div class="setting-value">
-          <span>{{ settings.stimuliPath }}</span>
-        </div>
-      </div>
-      <div class="setting">
-        <div class="setting-header">
-          <span class="setting-name">Responses</span>
-          <span class="horizontal-filler"></span>
-          <div class="buttons">
-            <button md-button class="secondary"  (click)="changeResponsesPath()">
-              Change
-            </button>
+        <div class="setting folder">
+          <div class="setting-header">
+            <span class="title">Responses
+            </span>
+            <span class="horizontal-filler"></span>
+            <div class="buttons">
+              <button md-button class="secondary"  (click)="changeResponsesPath()">
+                Change
+              </button>
+            </div>
+          </div>
+          <div class="setting-description">
+            <span class="description">Responses will be saved inside this folder</span>
+          </div>
+          <div class="setting-value">
+            <span>{{ settings.responsesPath }}</span>
           </div>
         </div>
-        <div class="setting-value">
-          <span>{{ settings.responsesPath }}</span>
+        <div class="setting number">
+          <div class="setting-header">
+            <span class="title">Block Size</span>
+            <span class="horizontal-filler"></span>
+            <div class="number-input-with-buttons">
+              <input type="number" min="1" max="100" [(ngModel)]="settings.blockSize" (change)="validateBlockSize()">
+              <button class="plus" (click)="increaseBlockSize()">+</button>
+              <button class="minus" (click)="decreaseBlockSize()">-</button>
+            </div>
+          </div>
+          <div class="setting-description">
+            <span class="description">Number of trials in a block</span>
+          </div>
         </div>
       </div>
+
       <div class="footer">
         <span class="horizontal-filler"></span>
         <div class="buttons">
