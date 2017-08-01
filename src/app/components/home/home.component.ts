@@ -32,4 +32,6 @@ export class HomeComponent implements OnInit {
     //this.dialog.open(ErrorComponent, {data: {content: 'You Suck!'}});
   }
 
+
+
 }

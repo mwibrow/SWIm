@@ -1,9 +1,16 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router'
-
+import { MdDialog, MdDialogRef } from '@angular/material';
+import { ErrorComponent } from '../error/error.component';
 
 const {dialog} = require('electron').remote;
+const fs = require('fs-extra');
 const storage = require('electron-json-storage');
+const klawSync = require('klaw-sync')
+const path = require('path');
+
+const filterWav = item => path.extname(item.path) === '.wav';
+
 const notSet: string = 'Not set!';
 
 const settingsDefaults: any = {
@@ -25,7 +32,7 @@ export class SettingsComponent implements OnInit {
   private edits: boolean;
   private enter: boolean;
   private exit: boolean;
-  constructor(private router: Router) {
+  constructor(private router: Router, public dialog: MdDialog) {
     this.settings = {};
     this.edits = false;
     this.enter = true;
@@ -80,19 +87,28 @@ export class SettingsComponent implements OnInit {
   }
   saveSettings() {
     let settings: any, setting: any;
-    settings = {};
-    for (setting in this.settings) {
-      if (this.settings.hasOwnProperty(setting)) {
-        if (this.settings[setting]) {
-          settings[setting] = this.settings[setting];
-        } else {
-          settings[setting] = null;
+    validateSettings(this.settings).then(() => {
+      settings = {};
+      for (setting in this.settings) {
+        if (this.settings.hasOwnProperty(setting)) {
+          if (this.settings[setting]) {
+            settings[setting] = this.settings[setting];
+          } else {
+            settings[setting] = null;
+          }
         }
       }
-    }
-    storage.set('settings', settings, (error) => {
-       console.log(error);
-       this.leaveComponent();
+      storage.set('settings', settings, (error) => {
+        console.log(error);
+        this.leaveComponent();
+      });
+    }).catch((message) => {
+      this.dialog.open(ErrorComponent, {
+        data: {
+          title: 'Ooops!',
+          content: message
+        }
+      });
     });
   }
 
@@ -119,4 +135,33 @@ export class SettingsComponent implements OnInit {
     if (this.settings.maskDuration < 10) this.settings.maskDuration = 10;
     if (this.settings.maskDuration > 2000) this.settings.maskDuration = 2000;
   }
+
+
+
+}
+
+
+const validateSettings = (settings: any)  => {
+
+  return new Promise((resolve, reject) => {
+    if (!settings.stimuliPath || settings.responsePath == notSet) {
+      reject('Stimuli folder not set');
+    }
+    if (!fs.pathExistsSync(settings.stimuliPath)) {
+      reject('Stimuli folder does not exist')
+    }
+    let stimuli = klawSync(settings.stimuliPath, { filter: filterWav });
+    if (stimuli.length === 0) {
+      reject('No WAV files in stimuli folder');
+    }
+    if (!settings.responsesPath || settings.responsePath === notSet) {
+      reject('Responses folder not set');
+    }
+    try {
+      fs.accessSync(settings.responsesPath, fs.W_OK);
+    } catch (err) {
+      reject('Cannot write to Responses folder');
+    }
+    resolve();
+  });
 }
