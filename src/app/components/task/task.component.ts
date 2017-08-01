@@ -1,14 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { AudioService, AudioPlayer, AudioRecorder } from '../../providers/audio.service';
+import { Router } from '@angular/router';
+import { MdDialog, MdDialogRef } from '@angular/material';
 
 import { sprintf } from 'sprintf-js';
-
 
 const storage = require('electron-json-storage');
 const fs = require('fs-extra');
 const klaw = require('klaw');
+const klawSync = require('klaw-sync')
 const path = require('path');
 const through2 = require('through2');
+
+import { ErrorComponent } from '../error/error.component';
 
 const wavFilter = through2.obj(function (item, enc, next) {
   if (!item.stats.isDirectory() && path.extname(item.path) === '.wav') {
@@ -17,10 +21,16 @@ const wavFilter = through2.obj(function (item, enc, next) {
   next()
 })
 
+const filterWav = item => path.extname(item.path) === '.wav';
+
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
-  styleUrls: ['./task.component.scss']
+  styleUrls: ['./task.component.scss'],
+  host: {
+    '(document:keydown)': 'handleKeyboardEvents($event)',
+    '(document:keyup)': 'handleKeyboardEvents($event)'
+  }
 })
 export class TaskComponent implements OnInit {
 
@@ -32,13 +42,20 @@ export class TaskComponent implements OnInit {
 
   private player: AudioPlayer;
   private recorder: AudioRecorder;
-  constructor(private audio: AudioService) {
+
+  private keyboardBuffer: Array<string>;
+  private dialogRef: MdDialogRef<ErrorComponent>;
+
+  constructor(private router: Router, private audio: AudioService,
+    public dialog: MdDialog) {
 
     this.audio.initialise();
     this.player = audio.player;
     this.player.initialise();
     this.recorder = audio.recorder;
     this.recorder.initialise();
+
+    this.keyboardBuffer = [];
 
     this.stimuli = new Array<any>();
     storage.get('settings',
@@ -61,15 +78,18 @@ export class TaskComponent implements OnInit {
 
   private loadStimuli() {
     console.log(`Loading wav files from ${this.settings.stimuliPath}`);
-    klaw(this.settings.stimuliPath)
-      .pipe(wavFilter)
-      .on('data', item => this.stimuli.push(item.path))
-      .on('end', () => this.afterLoadStimuli())
-  }
-
-  private afterLoadStimuli() {
-    console.log(`Loaded ${this.stimuli.length} wav file(s).`);
-
+    this.stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
+    if (this.stimuli.length === 0) {
+      this.dialogRef = this.dialog.open(ErrorComponent, {
+        data: {
+          title: 'Ooops!',
+          content: 'There were no audio files in the stimuli folder'
+        }
+      });
+      this.dialogRef.afterClosed().subscribe(() => {
+        this.router.navigateByUrl('');
+      });
+    }
   }
 
   private runTask() {
@@ -151,8 +171,22 @@ export class TaskComponent implements OnInit {
 
   }
 
+  handleKeyboardEvents(event: KeyboardEvent) {
+      let key = event.which || event.keyCode;
+      switch (event.type) {
+        case 'keydown':
+            if (event.key === 'Escape') {
+              this.router.navigateByUrl('');
+            }
+            break;
+        case 'keyup':
+            this.keyboardBuffer = [];
+        default:
+      }
+  }
 
   ngOnInit() {
+
   }
 
 }

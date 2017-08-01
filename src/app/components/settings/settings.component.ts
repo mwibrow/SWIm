@@ -23,9 +23,13 @@ export class SettingsComponent implements OnInit {
 
   private settings: any;
   private edits: boolean;
+  private enter: boolean;
+  private exit: boolean;
   constructor(private router: Router) {
     this.settings = {};
     this.edits = false;
+    this.enter = true;
+    this.exit = false;
     storage.get('settings',
       (error, data) => {
         let settings: any = data || {}, setting: any;
@@ -64,20 +68,31 @@ export class SettingsComponent implements OnInit {
   }
 
   cancelSettings() {
-     this.router.navigateByUrl('');
+    this.leaveComponent();
   }
 
+  private leaveComponent() {
+    setTimeout(() => {
+     this.router.navigateByUrl('');
+    }, 1000);
+    this.enter = false;
+    this.exit = true;
+  }
   saveSettings() {
     let settings: any, setting: any;
     settings = {};
     for (setting in this.settings) {
       if (this.settings.hasOwnProperty(setting)) {
-        settings[setting] = this.settings[setting];
+        if (this.settings[setting]) {
+          settings[setting] = this.settings[setting];
+        } else {
+          settings[setting] = null;
+        }
       }
     }
     storage.set('settings', settings, (error) => {
        console.log(error);
-        this.router.navigateByUrl('');
+       this.leaveComponent();
     });
   }
 

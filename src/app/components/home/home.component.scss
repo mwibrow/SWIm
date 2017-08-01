@@ -2,15 +2,63 @@
 @import '../../../stylesheets/partials/_colors.scss';
 @import '../../../stylesheets/partials/_variables.scss';
 
-md-grid-list {
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeOut {
+  0% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.fade-in {
+  animation: fadeIn 1s;
+}
+
+.fade-out {
+  animation: fadeOut 1s;
+}
+
+.page {
 
   background: url(../../../assets/images/background.svg) no-repeat center fixed;
   height: 100%;
+  width: 100%;
   margin: auto;
   text-align: center;
-  display: flex;
   align-items: center;
   justify-content: center;
+
+}
+
+.container {
+  height: 100%;
+  display: flex;
+  position: relative;
+  margin: auto;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+
+.content {
+  width: 50%;
+  background-color: $dialog-background-color;
+  color: $dialog-color;
+  border-radius: 5px;
+  display: flex;
+  flex-direction: column;
+  padding: 1ex;
 
   h1 {
     margin: auto;
@@ -55,6 +103,5 @@ md-grid-list {
      align-items: center;
      justify-content: center;
   }
-
-
 }
+

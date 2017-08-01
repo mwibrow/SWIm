@@ -52,6 +52,7 @@
     "fs-extra": "^4.0.0",
     "inline-worker": "^1.1.0",
     "klaw": "^2.0.0",
+    "klaw-sync": "^2.1.0",
     "rxjs": "^5.4.2",
     "sprintf-js": "^1.1.1",
     "through2": "^2.0.3",
