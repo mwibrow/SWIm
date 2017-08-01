@@ -35,7 +35,33 @@ export class HomeComponent implements OnInit {
   }
 
   exitApplication() {
-    remote.getCurrentWindow().close();
+    this.dialog.open(ExitAppComponent).afterClosed().subscribe((result) => {
+      if (result) {
+        remote.getCurrentWindow().close();
+      }
+    });
   }
 
+}
+
+
+@Component({
+  selector: 'app-exit-dialog',
+  template: `
+    <h2 md-dialog-title>
+      Quit?
+    </h2>
+    <div md-dialog-content>
+      Are you sure you want to Quit SWIm?
+    </div>
+    <div md-dialog-actions>
+      <div class="hfill"></div>
+      <button md-button md-dialog-close class="cancel">Cancel</button>
+      <button md-button [md-dialog-close]="true" class="ok">Yes</button>
+    </div>`,
+  styleUrls: ['./home.component.scss']
+})
+export class ExitAppComponent implements OnInit {
+
+  ngOnInit() { }
 }

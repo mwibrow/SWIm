@@ -103,6 +103,12 @@ $spinner-border: 10px;
       button {
         background-color: color($colors, primary);
       }
+      .ok {
+        background-color: color($colors, danger);
+      }
+      .cancel {
+        background-color: color($colors, secondary);
+      }
     }
 }
 

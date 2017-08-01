@@ -28,6 +28,7 @@ import {
 } from '@angular/material';
 import { TaskComponent } from './components/task/task.component';
 import { ErrorComponent } from './components/error/error.component';
+import { InputNumberComponent } from './components/input-number/input-number.component';
 
 @NgModule({
   declarations: [
@@ -35,7 +36,8 @@ import { ErrorComponent } from './components/error/error.component';
     HomeComponent,
     SettingsComponent,
     TaskComponent,
-    ErrorComponent
+    ErrorComponent,
+    InputNumberComponent
   ],
   entryComponents: [
     ErrorComponent
