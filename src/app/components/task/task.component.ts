@@ -7,19 +7,11 @@ import { sprintf } from 'sprintf-js';
 
 const storage = require('electron-json-storage');
 const fs = require('fs-extra');
-const klaw = require('klaw');
 const klawSync = require('klaw-sync')
 const path = require('path');
-const through2 = require('through2');
 
 import { ErrorComponent } from '../error/error.component';
 
-const wavFilter = through2.obj(function (item, enc, next) {
-  if (!item.stats.isDirectory() && path.extname(item.path) === '.wav') {
-    this.push(item);
-  }
-  next()
-})
 
 const filterWav = item => path.extname(item.path) === '.wav';
 

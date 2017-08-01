@@ -98,10 +98,18 @@
     width: 10rem;
   }
 
+
+.danger  {
+  background-color: $button-danger-background;
+  color: $button-danger-color;
+}
+
   md-list-item {
      display: flex;
      align-items: center;
      justify-content: center;
   }
 }
+
+
 

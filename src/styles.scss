@@ -47,6 +47,11 @@ button:focus {
   background-color: lighten(color($colors, secondary), 25);
 }
 
+.danger  {
+  background-color: $button-danger-background;
+  color: $button-danger-color;
+}
+
 $spinner-size: 50px;
 $spinner-time: 2s;
 $spinner-border: 10px;

@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialog } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { ErrorComponent } from '../error/error.component';
 import { SettingsComponent } from '../settings/settings.component';
+
+const remote = require('electron').remote;
 
 @Component({
   selector: 'app-home',
@@ -32,6 +34,8 @@ export class HomeComponent implements OnInit {
     //this.dialog.open(ErrorComponent, {data: {content: 'You Suck!'}});
   }
 
-
+  exitApplication() {
+    remote.getCurrentWindow().close();
+  }
 
 }
