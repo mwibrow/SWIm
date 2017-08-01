@@ -30,13 +30,10 @@ export class SettingsComponent implements OnInit {
 
   private settings: any;
   private edits: boolean;
-  private enter: boolean;
-  private exit: boolean;
   constructor(private router: Router, public dialog: MdDialog) {
     this.settings = {};
     this.edits = false;
-    this.enter = true;
-    this.exit = false;
+
     storage.get('settings',
       (error, data) => {
         let settings: any = data || {}, setting: any;
@@ -59,7 +56,10 @@ export class SettingsComponent implements OnInit {
   }
 
   changeStimuliPath() {
-    let path: any = dialog.showOpenDialog({properties: ['openDirectory']});
+    let path: any = dialog.showOpenDialog({
+      properties: ['openDirectory'],
+      defaultPath: this.settings.stimuliPath
+    });
     if (path && path.length === 1) {
       this.settings.stimuliPath = path[0];
       this.edits = true;
@@ -79,11 +79,7 @@ export class SettingsComponent implements OnInit {
   }
 
   private leaveComponent() {
-    setTimeout(() => {
-     this.router.navigateByUrl('');
-    }, 1000);
-    this.enter = false;
-    this.exit = true;
+    this.router.navigateByUrl('');
   }
   saveSettings() {
     let settings: any, setting: any;

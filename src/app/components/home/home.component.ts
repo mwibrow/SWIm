@@ -16,22 +16,13 @@ const remote = require('electron').remote;
 export class HomeComponent implements OnInit {
   title = `App works !`;
 
-  private enter: boolean;
-  private exit: boolean;
-  constructor(private router: Router, public dialog: MdDialog) {
-    this.enter = true;
-    this.exit = false;
-  }
+  constructor(private router: Router, public dialog: MdDialog) { }
   ngOnInit() {
   }
 
   go(url: string) {
-    setTimeout(() => {
-      this.router.navigateByUrl(url);
-    }, 1000)
-    this.enter = false;
-    this.exit = true;
-    //this.dialog.open(ErrorComponent, {data: {content: 'You Suck!'}});
+   this.router.navigateByUrl(url);
+
   }
 
   exitApplication() {
@@ -52,12 +43,14 @@ export class HomeComponent implements OnInit {
       Quit?
     </h2>
     <div md-dialog-content>
-      Are you sure you want to Quit SWIm?
+      Are you sure you want to quit
+      <span class="logo"><span>S</span><span>W</span><span>Im</span><span>!</span>
+    </span>?
     </div>
     <div md-dialog-actions>
       <div class="hfill"></div>
-      <button md-button md-dialog-close class="cancel">Cancel</button>
-      <button md-button [md-dialog-close]="true" class="ok">Yes</button>
+      <button md-button md-dialog-close class="button-secondary">Cancel</button>
+      <button md-button [md-dialog-close]="true" class="button-primary">Ok</button>
     </div>`,
   styleUrls: ['./home.component.scss']
 })

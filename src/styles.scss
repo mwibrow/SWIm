@@ -89,12 +89,13 @@ $spinner-border: 10px;
 
 
 .mat-dialog-container, .md-dialog-container {
-    background: $dialog-background-color;
-    color: $dialog-color;
-    box-shadow: none !important;
+//     background: $dialog-background-color;
+//     color: $dialog-color;
+//     box-shadow: none !important;
     h2 {
       font-family: $font-main;
       font-size: $font-size-large;
+      font-weight: bold;
     }
     div[md-dialog-actions] {
       .hfill {
@@ -102,6 +103,7 @@ $spinner-border: 10px;
       }
       button {
         background-color: color($colors, primary);
+        color: $dialog-color;
       }
       .ok {
         background-color: color($colors, danger);
@@ -112,7 +114,7 @@ $spinner-border: 10px;
     }
 }
 
-.cdk-overlay-dark-backdrop {
-  // background: none !important;
-}
+// .cdk-overlay-dark-backdrop {
+//   // background: none !important;
+// }
 

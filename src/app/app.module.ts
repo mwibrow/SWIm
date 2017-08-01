@@ -9,7 +9,7 @@ import { FormsModule } from '@angular/forms';
 import { HttpModule } from '@angular/http';
 
 import { AppComponent } from './app.component';
-import { HomeComponent } from './components/home/home.component';
+import { HomeComponent, ExitAppComponent } from './components/home/home.component';
 import { SettingsComponent } from './components/settings/settings.component';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -28,19 +28,19 @@ import {
 } from '@angular/material';
 import { TaskComponent } from './components/task/task.component';
 import { ErrorComponent } from './components/error/error.component';
-import { InputNumberComponent } from './components/input-number/input-number.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     HomeComponent,
+    ExitAppComponent,
     SettingsComponent,
     TaskComponent,
-    ErrorComponent,
-    InputNumberComponent
+    ErrorComponent
   ],
   entryComponents: [
-    ErrorComponent
+    ErrorComponent,
+    ExitAppComponent
   ],
   imports: [
     BrowserModule,
