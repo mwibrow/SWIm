@@ -1,4 +1,4 @@
-<div class="page">
+<!-- <div class="page">
   <div class="container">
     <div class="dialog">
       <div class="header">
@@ -17,4 +17,15 @@
       </div>
     </div>
   </div>
+</div> -->
+
+<h2 md-dialog-title>
+{{ title}}
+</h2>
+<div md-dialog-content>
+{{ content }}
+</div>
+<div md-dialog-actions>
+  <div class="hfill"></div>
+  <button md-button [md-dialog-close]="true">Ok</button>
 </div>

@@ -89,13 +89,24 @@ $spinner-border: 10px;
 
 
 .mat-dialog-container, .md-dialog-container {
-    background: none !important;
+    background: $dialog-background-color;
+    color: $dialog-color;
     box-shadow: none !important;
-    max-width: 100% !important;
-    width: 100vw !important;
+    h2 {
+      font-family: $font-main;
+      font-size: $font-size-large;
+    }
+    div[md-dialog-actions] {
+      .hfill {
+          flex: 1 1;
+      }
+      button {
+        background-color: color($colors, primary);
+      }
+    }
 }
 
 .cdk-overlay-dark-backdrop {
-  background: none !important;
+  // background: none !important;
 }
 
