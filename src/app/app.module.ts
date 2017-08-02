@@ -39,7 +39,6 @@ import { BreakComponent } from './components/break/break.component';
     SettingsComponent,
     TaskComponent,
     ErrorComponent,
-    ComponentsBreakComponent,
     BreakComponent
   ],
   entryComponents: [

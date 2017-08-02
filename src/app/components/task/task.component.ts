@@ -38,6 +38,9 @@ export class TaskComponent implements OnInit {
   private keyboardBuffer: Array<string>;
   private dialogRef: MdDialogRef<ErrorComponent>;
 
+  private background: string;
+  private finish: boolean;
+
   constructor(private router: Router, private audio: AudioService,
     public dialog: MdDialog) {
 
@@ -49,6 +52,7 @@ export class TaskComponent implements OnInit {
 
     this.keyboardBuffer = [];
 
+    this.background = 'color-1';
     this.stimuli = new Array<any>();
     storage.get('settings',
       (error, data) => {
@@ -85,6 +89,7 @@ export class TaskComponent implements OnInit {
   }
 
   private runTask() {
+    this.finish = false;
     this.runTrial();
   }
 
@@ -103,7 +108,8 @@ export class TaskComponent implements OnInit {
     self = self || this;
     return new Promise((resolve, reject) => {
       i = self.trial % self.stimuli.length;
-      self.player.loadWav(self.stimuli[i]).then(() => resolve(self))
+      console.log(`Loading stimuli ${self.stimuli[i].path}`);
+      self.player.loadWav(self.stimuli[i].path).then(() => resolve(self))
     });
   }
 
@@ -145,17 +151,20 @@ export class TaskComponent implements OnInit {
     i = self.trial % self.stimuli.length;
     return path.normalize(path.join(
       self.settings.responsesPath,
-      `${sprintf('%03d', self.trial + 1)}-${path.posix.basename(self.stimuli[i])}`
+      `${sprintf.sprintf('%03d', self.trial + 1)}-${path.posix.basename(self.stimuli[i].path)}`
     ));
   }
 
   private endTrial(self?: TaskComponent) {
     self = self || this;
     self.trial ++;
+    self.background = `color-${(self.trial % 5 ) + 1}`;
     if (self.trial % self.settings.blockSize === 0) {
       self.break();
     } else {
-      self.runTrial();
+      if (!self.finish) {
+        self.runTrial();
+      }
     }
   }
 
@@ -168,6 +177,7 @@ export class TaskComponent implements OnInit {
       switch (event.type) {
         case 'keydown':
             if (event.key === 'Escape') {
+              this.finish = true;
               this.router.navigateByUrl('');
             }
             break;

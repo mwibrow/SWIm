@@ -1,0 +1,32 @@
+
+
+@import '../../../stylesheets/partials/_colors.scss';
+@import '../../../stylesheets/partials/_variables.scss';
+
+.background {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    background: red;
+}
+.color-1 {
+    background-color: color($md-palette, md-red);
+}
+
+.color-2 {
+    background-color: color($md-palette, md-yellow);
+}
+
+.color-3 {
+    background-color: color($md-palette, md-pink);
+}
+
+
+.color-4 {
+    background-color: color($md-palette, md-light-green);
+}
+
+.color-5 {
+    background-color: color($md-palette, md-light-blue);
+}
