@@ -10,9 +10,11 @@
   <div *ngFor="let item of [].constructor(10); let i = index;"
     class="wave wave{{i}}"></div>
 
+    <div class="sun"></div>
+
   <div class="g">
     <div *ngFor="let item of [].constructor(3); let i = index;"
-       class="cloud-container cloud-container{{i}}">
+       class="cloud-container cloud-container{{2-i}}">
       <div *ngFor="let item of [].constructor(4)"
         class="cloud"></div>
     </div>

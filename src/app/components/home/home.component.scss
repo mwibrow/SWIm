@@ -233,6 +233,17 @@
         }
       }
     }
+
+    .sun {
+      position: absolute;
+      background-color: color($md-palette, md-yellow);
+      width: 15vh;
+      height: 15vh;
+      left: 10vh;
+      top: 10vh;
+      border-radius: 50%;
+    }
+
     .sky {
       position: absolute;
       width: 100%;
