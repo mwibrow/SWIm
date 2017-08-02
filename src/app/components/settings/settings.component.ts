@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router'
-import { MdDialog, MdDialogRef } from '@angular/material';
 import { ErrorComponent } from '../error/error.component';
 
 const {dialog} = require('electron').remote;
@@ -29,11 +29,11 @@ const settingsDefaults: any = {
 export class SettingsComponent implements OnInit {
 
   private settings: any;
-  private edits: boolean;
-  constructor(private router: Router, public dialog: MdDialog) {
-    this.settings = {};
-    this.edits = false;
+  private stimuliPathValidationMessage: string ='';
+  private responsesPathValidationMessage: string ='';
 
+  constructor(private router: Router, private dialogRef: MdDialogRef<SettingsComponent>) {
+    this.settings = {};
     storage.get('settings',
       (error, data) => {
         let settings: any = data || {}, setting: any;
@@ -62,28 +62,32 @@ export class SettingsComponent implements OnInit {
     });
     if (path && path.length === 1) {
       this.settings.stimuliPath = path[0];
-      this.edits = true;
+      this.validateStimuliPath();
+
     }
   }
 
   changeResponsesPath() {
-    let path: any = dialog.showOpenDialog({properties: ['openDirectory']});
+    let path: any = dialog.showOpenDialog({
+      properties: ['openDirectory'],
+      defaultPath: this.settings.responsesPath
+    });
     if (path && path.length === 1) {
       this.settings.responsesPath = path[0];
-      this.edits = true;
+      this.validateResponsesPath();
     }
   }
 
   cancelSettings() {
-    this.leaveComponent();
+    this.dialogRef.close();
   }
 
-  private leaveComponent() {
-    this.router.navigateByUrl('');
-  }
+
   saveSettings() {
     let settings: any, setting: any;
-    validateSettings(this.settings).then(() => {
+
+
+    if (this.validateSettings()) {
       settings = {};
       for (setting in this.settings) {
         if (this.settings.hasOwnProperty(setting)) {
@@ -96,16 +100,16 @@ export class SettingsComponent implements OnInit {
       }
       storage.set('settings', settings, (error) => {
         console.log(error);
-        this.leaveComponent();
+        this.dialogRef.close();
       });
-    }).catch((message) => {
-      this.dialog.open(ErrorComponent, {
-        data: {
-          title: 'Ooops!',
-          content: message
-        }
-      });
-    });
+    }
+
+  }
+
+  validateSettings() {
+    this.validateStimuliPath();
+    this.validateResponsesPath();
+    return this.responsesPathValidationMessage === '' && this.stimuliPathValidationMessage === '';
   }
 
   changeBlockSize(by: number) {
@@ -132,7 +136,36 @@ export class SettingsComponent implements OnInit {
     if (this.settings.maskDuration > 2000) this.settings.maskDuration = 2000;
   }
 
+  validateStimuliPath() {
+    if (!this.settings.stimuliPath || this.settings.stimuliPath == notSet) {
+      this.stimuliPathValidationMessage = 'Stimuli folder not set';
+      return;
+    }
+    if (!fs.pathExistsSync(this.settings.stimuliPath)) {
+      this.stimuliPathValidationMessage = 'Stimuli folder does not exist';
+      return;
+    }
+    let stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
+    if (stimuli.length === 0) {
+      this.stimuliPathValidationMessage = 'No WAV files in stimuli folder';
+      return;
+    }
+    this.stimuliPathValidationMessage = '';
+  }
 
+  validateResponsesPath() {
+    if (!this.settings.responsesPath || this.settings.responsePath === notSet) {
+      this.responsesPathValidationMessage = 'Responses folder not set';
+      return;
+    }
+    try {
+      fs.accessSync(this.settings.responsesPath, fs.W_OK);
+    } catch (err) {
+      this.responsesPathValidationMessage = 'Cannot write to Responses folder';
+      return;
+    }
+    this.responsesPathValidationMessage = '';
+  }
 
 }
 

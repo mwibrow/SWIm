@@ -1,5 +1,27 @@
 
+
+
 <div class="page">
+
+<div class="background">
+  <div class="sky"></div>
+  <div class="sea"></div>
+
+  <div *ngFor="let item of [].constructor(10); let i = index;"
+    class="wave wave{{i}}"></div>
+
+  <div class="g">
+    <div *ngFor="let item of [].constructor(3); let i = index;"
+       class="cloud-container cloud-container{{i}}">
+      <div *ngFor="let item of [].constructor(4)"
+        class="cloud"></div>
+    </div>
+  </div>
+</div>
+
+
+
+
   <div class="container">
     <div class="content">
 
@@ -15,7 +37,7 @@
 
   <md-list>
     <md-list-item>
-      <button md-button (click)="go('/settings')">
+      <button md-button (click)="openSettings()">
         Settings
       </button>
     </md-list-item>

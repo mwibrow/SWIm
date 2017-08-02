@@ -89,9 +89,9 @@ $spinner-border: 10px;
 
 
 .mat-dialog-container, .md-dialog-container {
-//     background: $dialog-background-color;
-//     color: $dialog-color;
-//     box-shadow: none !important;
+    background: $dialog-background-color;
+    color: $dialog-color;
+    box-shadow: none !important;
     h2 {
       font-family: $font-main;
       font-size: $font-size-large;

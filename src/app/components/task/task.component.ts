@@ -3,7 +3,7 @@ import { AudioService, AudioPlayer, AudioRecorder } from '../../providers/audio.
 import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
 
-import { sprintf } from 'sprintf-js';
+const sprintf = require ('sprintf-js');
 
 const storage = require('electron-json-storage');
 const fs = require('fs-extra');

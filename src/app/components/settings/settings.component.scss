@@ -29,41 +29,12 @@
   animation: fadeOut 1s;
 }
 
-.page {
-
-  background: url(../../../assets/images/background.svg) no-repeat center fixed;
-  height: 100%;
-  width: 100%;
-  margin: auto;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-
-}
-
-.container {
-  height: 100%;
-  display: flex;
-  position: relative;
-  margin: auto;
-  text-align: center;
-  align-items: center;
-  justify-content: center;
-}
-
-.content {
-  height: 75% !important;
-  width: 50%;
-  background-color: rgba(0, 0, 0, 0.75);
-  border-radius: 5px;
-  display: flex;
-  flex-direction: column;
-}
 
 .main {
   height: 100%;
-  margin: 1ex;
-  flex: 1 1;
+  width: 75vh !important;
+  margin: 0ex;
+  // flex: 1 1;
    overflow-y: scroll;
 }
 
@@ -75,9 +46,9 @@
   margin-bottom: 1ex;
   .header-title {
     font-size: $font-size-large;
-    padding-left: 0.5ex;
+    padding-left: 0ex;
     padding-top: 0.5ex;
-    padding-bottom: 0.5ex;
+    padding-bottom: 1ex;
   }
 }
 
@@ -239,4 +210,16 @@ button {
 .main::-webkit-scrollbar {
     width: 6px;
     background-color: none;
+}
+
+.setting-validation {
+  text-align: left;
+  color: color($colors, danger);
+  span {
+    font-size: $font-size-tiny !important;
+  }
+}
+
+.mat-dialog-container, .md-dialog-container {
+  width: 50% !important;
 }

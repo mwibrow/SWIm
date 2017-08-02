@@ -25,6 +25,9 @@ export class HomeComponent implements OnInit {
 
   }
 
+  openSettings() {
+    this.dialog.open(SettingsComponent);
+  }
   exitApplication() {
     this.dialog.open(ExitAppComponent).afterClosed().subscribe((result) => {
       if (result) {
