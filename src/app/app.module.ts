@@ -28,6 +28,8 @@ import {
 } from '@angular/material';
 import { TaskComponent } from './components/task/task.component';
 import { ErrorComponent } from './components/error/error.component';
+import { BreakComponent } from './components/break/break.component';
+
 
 @NgModule({
   declarations: [
@@ -36,7 +38,9 @@ import { ErrorComponent } from './components/error/error.component';
     ExitAppComponent,
     SettingsComponent,
     TaskComponent,
-    ErrorComponent
+    ErrorComponent,
+    ComponentsBreakComponent,
+    BreakComponent
   ],
   entryComponents: [
     ErrorComponent,
