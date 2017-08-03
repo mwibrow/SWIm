@@ -55,27 +55,40 @@ export class BackgroundAnimationComponent implements OnInit {
       this.rotate(shape, Math.floor(Math.random() * 5) * 1000 + 6000);
     }
 
+    let g: any, matrix: any, bbox: any;
+
     for (i = 0; i < 3; i ++) {
       color = style.global.$colorClouds.value[i].value
       let g = svgCanvas.group().group().group();
       g.attr({
         fill: `rgb(${color.r},${color.g},${color.b})`
       });
-      let unit = viewBox.height / 8;
 
+      // Draw cloud.
       g.ellipse(48, 112, 48, 48);
       g.ellipse(200, 104, 56, 56);
       g.rect(48, 96, 152, 64);
       g.ellipse(128, 64, 64, 64);
-      let m = new Snap.Matrix();
-      m.translate(0, unit * i);
-      g.transform(m);
-      let bbox = g.getBBox();
-      m = new Snap.Matrix();
-      m.scale(0.75 + i / 4, 0.75 + i / 4, bbox.cx, bbox.cy );
-      g.parent().transform(m);
-      //g.transform('s' + (1 + i / 2));
-      this.float(g.parent().parent(), 40000 + i * 20000);
+
+      // Translate to the required height.
+      matrix= new Snap.Matrix();
+      matrix.translate(0, viewBox.height / 8 * i);
+      g.transform(matrix);
+
+      // Scale.
+      bbox = g.getBBox();
+      matrix = new Snap.Matrix();
+      matrix.scale(0.75 + i / 3, 0.75 + i / 3, bbox.cx, bbox.cy );
+      g.parent().transform(matrix);
+
+      // Animate.
+      bbox = g.parent().parent().getBBox();
+      this.floatCloud(
+        g.parent().parent(),
+        viewBox.width  /  5 * (4 - i),
+        -bbox.width,
+        viewBox.width,
+        40000 + i * 20000);
     }
   }
 
@@ -90,12 +103,32 @@ export class BackgroundAnimationComponent implements OnInit {
       () => {this.rotate(shape, duration)});
   }
 
-  float(g, speed) {
-      var matrix = Snap.matrix(1, 0, 0, 1, -200, 0);
-      g.transform(matrix);
-      var matrix = Snap.matrix(1, 0, 0, 1, 1900, 0);
-      var that = this;
-      g.animate({transform: matrix}, speed, function() { that.float(g, speed) });
+  f
+
+
+  floatCloud(shape, start, min, max, duration) {
+    // Well, this is ugly.
+    let matrix = new Snap.Matrix();
+    matrix.translate(start, 0)
+    shape.transform(matrix);
+    matrix = new Snap.Matrix();
+    matrix.translate(max, 0);
+    shape.animate(
+      { transform: matrix },
+      duration * (max - start) / (max - min),
+      () => {
+        matrix = new Snap.Matrix();
+        matrix.translate(min, 0);
+        shape.transform(matrix);
+         matrix = new Snap.Matrix();
+        matrix.translate(start, 0);
+        shape.animate(
+          { transform: matrix },
+          duration * (start - min) / (max - min),
+          () => {
+            this.floatCloud(shape, start, min, max, duration);
+        });
+    });
   }
 }
 
