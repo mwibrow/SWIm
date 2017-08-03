@@ -4,6 +4,7 @@
 
 $colorSky: lighten(color($md-palette, md-light-blue), 25);
 $colorSea: darken(color($md-palette, md-light-blue), 25);
+$colorClouds: (lighten($colorSky, 30), lighten($colorSky, 20), lighten($colorSky, 10));
 
 .full-screen {
     position: absolute;
