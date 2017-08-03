@@ -26,6 +26,8 @@ export class BackgroundAnimationComponent implements OnInit {
 
     let svgCanvas;
     svgCanvas = Snap("#svg");
+
+    svgCanvas.node.setAttribute("viewBox", `0 0 ${window.innerWidth} ${window.innerHeight}`);
     let viewBox: any = svgCanvas.attr('viewBox');
 
 
@@ -130,7 +132,11 @@ export class BackgroundAnimationComponent implements OnInit {
         });
     });
   }
+
+
 }
+
+
 
 
 
