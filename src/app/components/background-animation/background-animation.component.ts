@@ -56,12 +56,11 @@ export class BackgroundAnimationComponent implements OnInit {
     }
 
     for (i = 0; i < 3; i ++) {
-      color = style.global.$colorClouds.value[2 - i].value
-      let g0 = svgCanvas.group().attr({
+      color = style.global.$colorClouds.value[i].value
+      let g = svgCanvas.group().group().group();
+      g.attr({
         fill: `rgb(${color.r},${color.g},${color.b})`
       });
-      let g1 = g0.group()
-      let g = g1.group()
       let unit = viewBox.height / 8;
 
       g.ellipse(48, 112, 48, 48);
@@ -69,16 +68,20 @@ export class BackgroundAnimationComponent implements OnInit {
       g.rect(48, 96, 152, 64);
       g.ellipse(128, 64, 64, 64);
       let m = new Snap.Matrix();
-      m.translate(0, viewBox.height / 4 - unit * i);
+      m.translate(0, unit * i);
       g.transform(m);
       let bbox = g.getBBox();
       m = new Snap.Matrix();
-      m.scale(1.5 - i / 4, 1.5 - i / 4, bbox.cx, bbox.cy );
-      g1.transform(m);
+      m.scale(0.75 + i / 4, 0.75 + i / 4, bbox.cx, bbox.cy );
+      g.parent().transform(m);
       //g.transform('s' + (1 + i / 2));
-      this.float(g0, 60000 - i * 20000);
+      this.float(g.parent().parent(), 40000 + i * 20000);
     }
   }
+
+
+
+
 
   rotate(shape, duration) {
     let bbox = shape.getBBox();
