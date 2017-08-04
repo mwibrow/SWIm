@@ -4,7 +4,7 @@
 
 $colorSky: lighten(color($md-palette, md-light-blue), 25);
 $colorSea: darken(color($md-palette, md-light-blue), 25);
-$colorClouds: (lighten($colorSky, 50), lighten($colorSky, 25), lighten($colorSky, 10));
+$colorClouds: (lighten($colorSky, 50), lighten($colorSky, 15), lighten($colorSky, 5));
 
 
 .full-screen {
