@@ -30,6 +30,7 @@ import { TaskComponent } from './components/task/task.component';
 import { ErrorComponent } from './components/error/error.component';
 import { BreakComponent } from './components/break/break.component';
 
+import { BackgroundAnimationComponent } from './components/background-animation/background-animation.component';
 
 @NgModule({
   declarations: [
@@ -39,7 +40,8 @@ import { BreakComponent } from './components/break/break.component';
     SettingsComponent,
     TaskComponent,
     ErrorComponent,
-    BreakComponent
+    BreakComponent,
+    BackgroundAnimationComponent
   ],
   entryComponents: [
     ErrorComponent,

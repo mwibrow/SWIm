@@ -1,0 +1,25 @@
+
+@import '../../../stylesheets/partials/_colors.scss';
+@import '../../../stylesheets/partials/_variables.scss';
+
+$colorSky: lighten(color($md-palette, md-light-blue), 25);
+$colorSea: darken(color($md-palette, md-light-blue), 25);
+$colorClouds: (lighten($colorSky, 50), lighten($colorSky, 15), lighten($colorSky, 5));
+
+
+.full-screen {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+
+    text-align: center;
+
+    svg {
+        height: 100%;
+        width: auto;
+
+    }
+}
