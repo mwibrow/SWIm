@@ -11,7 +11,7 @@ const klawSync = require('klaw-sync')
 const path = require('path');
 
 import { ErrorComponent } from '../error/error.component';
-
+import { BreakComponent } from '../break/break.component';
 
 const filterWav = item => path.extname(item.path) === '.wav';
 
@@ -36,11 +36,18 @@ export class TaskComponent implements OnInit {
   private recorder: AudioRecorder;
 
   private keyboardBuffer: Array<string>;
+
   private dialogRef: MdDialogRef<ErrorComponent>;
+  private breakDialogRef: MdDialogRef<BreakComponent>;
+  private startDialogRef: MdDialogRef<BreakComponent>;
+
+  private dialogRefs: any;
 
   private background: string;
   private finish: boolean;
 
+  private taskRunning: boolean;
+  private exit: boolean;
   constructor(private router: Router, private audio: AudioService,
     public dialog: MdDialog) {
 
@@ -60,9 +67,9 @@ export class TaskComponent implements OnInit {
         this.settings = {
           stimuliPath: settings.stimuliPath,
           responsesPath: settings.responsesPath,
-          blockSize: 10,
+          blockSize: settings.blockSize,
           repetitions: 0,
-          recordTime: 3.0
+          responseLength: settings.responseLength
         };
 
         this.loadStimuli();
@@ -70,27 +77,31 @@ export class TaskComponent implements OnInit {
      });
 
     this.trial = 0;
+    this.taskRunning = false;
+    this.dialogRefs = {};
+    this.exit = false;
   }
+
 
   private loadStimuli() {
     console.log(`Loading wav files from ${this.settings.stimuliPath}`);
     this.stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
-    console.log(this.stimuli);
     if (this.stimuli.length === 0) {
-      this.dialogRef = this.dialog.open(ErrorComponent, {
+      this.openDialog('error', ErrorComponent, {
         data: {
           title: 'Ooops!',
           content: 'There were no audio files in the stimuli folder'
         }
-      });
-      this.dialogRef.afterClosed().subscribe(() => {
-        this.router.navigateByUrl('');
-      });
+      },
+      () => {
+          this.router.navigateByUrl('');
+        });
     }
   }
 
   private runTask() {
     this.finish = false;
+    this.taskRunning = true;
     this.runTrial();
   }
 
@@ -130,7 +141,7 @@ export class TaskComponent implements OnInit {
   private recordResponse(self?: TaskComponent)  {
     self = self || this;
     return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(self), self.settings.recordTime * 1000);
+      setTimeout(() => resolve(self), self.settings.responseLength * 1000);
     })
   }
 
@@ -169,18 +180,24 @@ export class TaskComponent implements OnInit {
   }
 
   private break() {
-
+    this.openDialog('break', BreakComponent, {}, () => {
+      this.router.navigateByUrl('');
+    });
   }
 
   handleKeyboardEvents(event: KeyboardEvent) {
       let key = event.which || event.keyCode;
       switch (event.type) {
         case 'keydown':
-            if (event.key === 'Escape') {
+          this.keyboardBuffer.push(event.key);
+
+          if (this.keyboardBuffer.join('|') === 'Control|Shift|Escape') {
               this.finish = true;
+              this.exit = true;
+              this.closeDialog();
               this.router.navigateByUrl('');
-            }
-            break;
+          }
+          break;
         case 'keyup':
             this.keyboardBuffer = [];
         default:
@@ -188,7 +205,49 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit() {
+    setTimeout(() => {
+      this.openDialog('start', ErrorComponent,  {
+        disableClose: true,
+        data: {
+          title: 'Ready?',
+          content: 'Click Ok to start.'
+        }
+      },
+      () => {
+         this.runTask();
+      });
+    }, 1000);
+  }
 
+  openDialog(id: string, target: any, options: any, afterClose: any) {
+    if (this.dialogRefs.hasOwnProperty(id)) {
+      this.dialogRefs[id].close();
+    }
+    this.dialogRefs[id] = this.dialog.open(target, options);
+    this.dialogRefs[id].afterClosed().subscribe(() => {
+      if (this.dialogRefs.hasOwnProperty(id)) {
+        delete this.dialogRefs[id];
+      }
+      if (!this.exit) {
+        afterClose();
+      }
+    });
+  }
+
+  closeDialog(id?: string) {
+    if (id) {
+      if (this.dialogRefs.hasOwnProperty(id)) {
+        this.dialogRefs[id].close();
+        delete this.dialogRefs[id];
+      }
+    } else {
+      for (let id in this.dialogRefs) {
+          if (this.dialogRefs.hasOwnProperty(id)) {
+          this.dialogRefs[id].close();
+          delete this.dialogRefs[id];
+        }
+      }
+    }
   }
 
 }

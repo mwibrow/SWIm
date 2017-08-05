@@ -90,6 +90,21 @@
               <span class="description">Duration of auditory mask in ms</span>
             </div>
           </div>
+
+          <div class="setting number">
+            <div class="setting-header">
+              <span class="title">Response length</span>
+              <span class="horizontal-filler"></span>
+              <div class="number-input-with-buttons">
+                <input type="number" min="1" max="10" [(ngModel)]="settings.responseLength" (change)="changeResponseLength()">
+                <button class="plus" (click)="changeResponseLength(1)">+</button>
+                <button class="minus" (click)="changeResponseLength(-1)">-</button>
+              </div>
+            </div>
+            <div class="setting-description">
+              <span class="description">Time allowed for response in seconds</span>
+            </div>
+          </div>
         </div>
       </div>
 

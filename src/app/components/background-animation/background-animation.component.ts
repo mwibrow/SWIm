@@ -3,6 +3,30 @@ import { Router, NavigationStart } from '@angular/router';
 import "snapsvg-cjs";
 declare var Snap: any;
 
+Snap.plugin(function (Snap, Element, Paper, global, Fragment) {
+    // Plugin to stop all animations.
+
+    Element.prototype.stopAnim = function (){
+      let anims = this.anims;
+      for (let property in anims) {
+        if (anims.hasOwnProperty(property)) {
+          let anim = anims[property];
+          delete anims[property];
+          anim.stop();
+        }
+      }
+    }
+
+    Element.prototype.stopAll = function() {
+      this.stopAnim();
+      let children = this.children();
+      for (let i: number = 0; i < children.length; i ++) {
+        children[i].stopAll();
+      }
+    }
+
+});
+
 const style = require('sass-extract-loader!./background-animation.component.scss');
 
 
@@ -18,7 +42,7 @@ export class BackgroundAnimationComponent implements OnInit {
 
     router.events.subscribe((val: any) => {
       if (val instanceof NavigationStart && val.url !== '/task') {
-        this.stopAnimations(this.svg);
+        this.stopAnimations();
       }
     });
   }
@@ -28,26 +52,11 @@ export class BackgroundAnimationComponent implements OnInit {
     this.createSvg();
   }
 
-  stopAnimation(element: any) {
-    let anims = element.anims;
-    for (let property in anims) {
-      if (anims.hasOwnProperty(property)) {
-        let anim = anims[property];
-        delete anims[property];
-        anim.stop()
-      }
-    }
+
+  stopAnimations() {
+    this.svg.stopAll();
   }
 
-  stopAnimations(element?: any) {
-    element = element || this.svg;
-    this.stopAnimation(element);
-
-    let children = element.children();
-    for (let i: number = 0; i < children.length; i ++) {
-      this.stopAnimations(children[i]);
-    }
-  }
   createSvg() {
 
     let svgCanvas;
@@ -297,3 +306,4 @@ class Fish extends TransformGroup {
       });
   }
 }
+

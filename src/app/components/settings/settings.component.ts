@@ -18,7 +18,8 @@ const settingsDefaults: any = {
   responsesPath: notSet,
   blockSize: 10,
   maskFrequency: 440,
-  maskDuration: 1000
+  maskDuration: 1000,
+  responseLength: 5
 };
 
 @Component({
@@ -118,6 +119,14 @@ export class SettingsComponent implements OnInit {
     }
     if (this.settings.blockSize < 1) this.settings.blockSize = 1;
     if (this.settings.blockSize > 100) this.settings.blockSize = 100;
+  }
+
+  changeResponseLength(by: number) {
+    if (by) {
+      this.settings.responseLength += by;
+    }
+    if (this.settings.responseLength < 1) this.settings.responseLength = 1;
+    if (this.settings.responseLength > 10) this.settings.responseLength = 10;
   }
 
   changeMaskFrequency(by: number) {

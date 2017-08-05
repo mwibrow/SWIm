@@ -3,6 +3,18 @@
 @import '../../../stylesheets/partials/_colors.scss';
 @import '../../../stylesheets/partials/_variables.scss';
 
+
+.page {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+
+}
+
 .background {
     display: flex;
     width: 100%;
