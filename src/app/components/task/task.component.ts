@@ -71,6 +71,7 @@ export class TaskComponent implements OnInit {
   private loadStimuli() {
     console.log(`Loading wav files from ${this.settings.stimuliPath}`);
     this.stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
+    console.log(this.stimuli);
     if (this.stimuli.length === 0) {
       this.dialogRef = this.dialog.open(ErrorComponent, {
         data: {
@@ -103,7 +104,7 @@ export class TaskComponent implements OnInit {
     self = self || this;
     return new Promise((resolve, reject) => {
       i = self.trial % self.stimuli.length;
-      self.player.loadWav(self.stimuli[i]).then(() => resolve(self))
+      self.player.loadWav(self.stimuli[i].path).then(() => resolve(self))
     });
   }
 
@@ -145,7 +146,7 @@ export class TaskComponent implements OnInit {
     i = self.trial % self.stimuli.length;
     return path.normalize(path.join(
       self.settings.responsesPath,
-      `${sprintf('%03d', self.trial + 1)}-${path.posix.basename(self.stimuli[i])}`
+      `${sprintf.sprintf('%03d', self.trial + 1)}-${path.posix.basename(self.stimuli[i].path)}`
     ));
   }
 

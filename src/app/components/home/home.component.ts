@@ -1,27 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { ErrorComponent } from '../error/error.component';
 import { SettingsComponent } from '../settings/settings.component';
-
+import { BackgroundAnimationComponent } from '../background-animation/background-animation.component';
 const remote = require('electron').remote;
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
-  styleUrls: ['./home.component.scss'],
-
+  styleUrls: ['./home.component.scss']
 })
 export class HomeComponent implements OnInit {
   title = `App works !`;
-
+  @ViewChild('background') backgroundAnimation: BackgroundAnimationComponent;
   constructor(private router: Router, public dialog: MdDialog) { }
   ngOnInit() {
   }
 
   go(url: string) {
+  this.backgroundAnimation.stopAnimations();
    this.router.navigateByUrl(url);
+
 
   }
 

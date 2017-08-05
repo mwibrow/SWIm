@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-
+import { Router, NavigationStart } from '@angular/router';
 import "snapsvg-cjs";
 declare var Snap: any;
 
@@ -13,19 +13,46 @@ const style = require('sass-extract-loader!./background-animation.component.scss
 })
 export class BackgroundAnimationComponent implements OnInit {
 
-  constructor() { }
+  svg : any;
+  constructor(private router: Router) {
 
-  ngOnInit() {
-    console.log(style)
-    this.createSvg();
-
-
+    router.events.subscribe((val: any) => {
+      if (val instanceof NavigationStart && val.url !== '/task') {
+        this.stopAnimations(this.svg);
+      }
+    });
   }
 
+
+  ngOnInit() {
+    this.createSvg();
+  }
+
+  stopAnimation(element: any) {
+    let anims = element.anims;
+    for (let property in anims) {
+      if (anims.hasOwnProperty(property)) {
+        let anim = anims[property];
+        delete anims[property];
+        anim.stop()
+      }
+    }
+  }
+
+  stopAnimations(element?: any) {
+    element = element || this.svg;
+    this.stopAnimation(element);
+
+    let children = element.children();
+    for (let i: number = 0; i < children.length; i ++) {
+      this.stopAnimations(children[i]);
+    }
+  }
   createSvg() {
 
     let svgCanvas;
     svgCanvas = Snap("#svg");
+    this.svg = svgCanvas;
 
     svgCanvas.node.setAttribute("viewBox", `0 0 ${window.innerWidth} ${window.innerHeight}`);
     let viewBox: any = svgCanvas.attr('viewBox');
