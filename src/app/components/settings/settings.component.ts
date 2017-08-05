@@ -1,26 +1,17 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MdDialog, MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router'
 import { ErrorComponent } from '../error/error.component';
 
+import { SettingsService, Settings, notSet } from '../../providers/settings.service';
+
 const {dialog} = require('electron').remote;
 const fs = require('fs-extra');
-const storage = require('electron-json-storage');
 const klawSync = require('klaw-sync')
 const path = require('path');
 
 const filterWav = item => path.extname(item.path) === '.wav';
 
-const notSet: string = 'Not set!';
-
-const settingsDefaults: any = {
-  stimuliPath: notSet,
-  responsesPath: notSet,
-  blockSize: 10,
-  maskFrequency: 440,
-  maskDuration: 1000,
-  responseLength: 5
-};
 
 @Component({
   selector: 'app-settings',
@@ -29,28 +20,17 @@ const settingsDefaults: any = {
 })
 export class SettingsComponent implements OnInit {
 
-  private settings: any;
+  private settings: Settings;
   private stimuliPathValidationMessage: string ='';
   private responsesPathValidationMessage: string ='';
 
-  constructor(private router: Router, private dialogRef: MdDialogRef<SettingsComponent>) {
-    this.settings = {};
-    storage.get('settings',
-      (error, data) => {
-        let settings: any = data || {}, setting: any;
-        this.settings = {};
-        for (setting in settingsDefaults) {
-          if (settingsDefaults.hasOwnProperty(setting)) {
-            this.settings[setting] = settingsDefaults[setting];
-          }
-        }
-        for (setting in settings) {
-          if (settings.hasOwnProperty(setting)) {
-            this.settings[setting] = settings[setting];
-          }
-        }
-     });
+  constructor(
+      private router: Router,
+      private dialog: MdDialog,
+      private dialogRef: MdDialogRef<SettingsComponent>,
+      private settingsService: SettingsService) {
 
+      this.settings = settingsService.settings;
   }
 
   ngOnInit() {
@@ -85,26 +65,17 @@ export class SettingsComponent implements OnInit {
 
 
   saveSettings() {
-    let settings: any, setting: any;
-
-
-    if (this.validateSettings()) {
-      settings = {};
-      for (setting in this.settings) {
-        if (this.settings.hasOwnProperty(setting)) {
-          if (this.settings[setting]) {
-            settings[setting] = this.settings[setting];
-          } else {
-            settings[setting] = null;
+    this.settingsService.saveSettings()
+      .then(() => { this.dialogRef.close(); })
+      .catch((error) => {
+        console.error(error)
+        this.dialog.open(ErrorComponent, {
+          data: {
+            title: 'Ooops!',
+            content: 'Settings could not be saved.'
           }
-        }
-      }
-      storage.set('settings', settings, (error) => {
-        console.log(error);
-        this.dialogRef.close();
+        })
       });
-    }
-
   }
 
   validateSettings() {
@@ -163,7 +134,7 @@ export class SettingsComponent implements OnInit {
   }
 
   validateResponsesPath() {
-    if (!this.settings.responsesPath || this.settings.responsePath === notSet) {
+    if (!this.settings.responsesPath || this.settings.responsesPath === notSet) {
       this.responsesPathValidationMessage = 'Responses folder not set';
       return;
     }

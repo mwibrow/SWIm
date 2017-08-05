@@ -17,6 +17,9 @@ import { AppRoutingModule } from './app-routing.module';
 import { ElectronService } from './providers/electron.service';
 
 import { AudioService } from './providers/audio.service';
+
+import { SettingsService } from './providers/settings.service';
+
 import {
   MdButtonModule,
   MdGridListModule,
@@ -48,6 +51,7 @@ import { ParticipantIdDialogComponent } from './components/participant-id-dialog
   entryComponents: [
     ErrorComponent,
     BreakComponent,
+    ParticipantIdDialogComponent,
     ExitAppComponent
   ],
   imports: [
@@ -66,7 +70,8 @@ import { ParticipantIdDialogComponent } from './components/participant-id-dialog
   ],
   providers: [
     ElectronService,
-    AudioService
+    AudioService,
+    SettingsService
   ],
   bootstrap: [AppComponent]
 })

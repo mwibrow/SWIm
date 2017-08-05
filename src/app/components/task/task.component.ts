@@ -12,6 +12,7 @@ const path = require('path');
 
 import { ErrorComponent } from '../error/error.component';
 import { BreakComponent } from '../break/break.component';
+import { SettingsService, Settings } from '../../providers/settings.service';
 
 const filterWav = item => path.extname(item.path) === '.wav';
 
@@ -26,7 +27,7 @@ const filterWav = item => path.extname(item.path) === '.wav';
 })
 export class TaskComponent implements OnInit {
 
-  private settings: any;
+  private settings: Settings;
   private stimuli: Array<any>;
   private trial: number;
   private participantFolder: string;
@@ -48,8 +49,11 @@ export class TaskComponent implements OnInit {
 
   private taskRunning: boolean;
   private exit: boolean;
-  constructor(private router: Router, private audio: AudioService,
-    public dialog: MdDialog) {
+  constructor(
+      private router: Router,
+      private audio: AudioService,
+      public dialog: MdDialog,
+      public settingsService: SettingsService) {
 
     this.audio.initialise();
     this.player = audio.player;
@@ -61,20 +65,7 @@ export class TaskComponent implements OnInit {
 
     this.background = 'color-1';
     this.stimuli = new Array<any>();
-    storage.get('settings',
-      (error, data) => {
-        let settings: any = data || {};
-        this.settings = {
-          stimuliPath: settings.stimuliPath,
-          responsesPath: settings.responsesPath,
-          blockSize: settings.blockSize,
-          repetitions: 0,
-          responseLength: settings.responseLength
-        };
-
-        this.loadStimuli();
-
-     });
+    this.settings = settingsService.settings;
 
     this.trial = 0;
     this.taskRunning = false;
@@ -84,19 +75,22 @@ export class TaskComponent implements OnInit {
 
 
   private loadStimuli() {
-    console.log(`Loading wav files from ${this.settings.stimuliPath}`);
-    this.stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
-    if (this.stimuli.length === 0) {
-      this.openDialog('error', ErrorComponent, {
-        data: {
-          title: 'Ooops!',
-          content: 'There were no audio files in the stimuli folder'
-        }
-      },
-      () => {
-          this.router.navigateByUrl('');
-        });
-    }
+    return new Promise((resolve, reject) => {
+      console.log(`Loading wav files from ${this.settings.stimuliPath}`);
+      this.stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
+      if (this.stimuli.length === 0) {
+        this.openDialog('error', ErrorComponent, {
+          data: {
+            title: 'Ooops!',
+            content: 'There were no audio files in the stimuli folder'
+          }
+        },
+        () => {
+            this.router.navigateByUrl('');
+          });
+      }
+      resolve();
+    });
   }
 
   private runTask() {
@@ -205,18 +199,23 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit() {
-    setTimeout(() => {
-      this.openDialog('start', ErrorComponent,  {
-        disableClose: true,
-        data: {
-          title: 'Ready?',
-          content: 'Click Ok to start.'
-        }
-      },
-      () => {
-         this.runTask();
-      });
-    }, 1000);
+    this.settingsService.loadSettings().then(() => {
+      this.settings = this.settingsService.settings;
+      this.loadStimuli().then(() => {
+        setTimeout(() => {
+          this.openDialog('start', ErrorComponent,  {
+            disableClose: true,
+            data: {
+              title: 'Ready?',
+              content: 'Click Ok to start.'
+            }
+          },
+          () => {
+            this.runTask();
+          });
+        }, 1000);
+      })
+    });
   }
 
   openDialog(id: string, target: any, options: any, afterClose: any) {
