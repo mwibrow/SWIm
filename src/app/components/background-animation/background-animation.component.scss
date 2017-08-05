@@ -8,6 +8,9 @@ $colorClouds: (lighten($colorSky, 50), lighten($colorSky, 15), lighten($colorSky
 
 
 .full-screen {
+    background: url(../../../assets/images/underwater.svg) fixed no-repeat;
+    background-size: auto 100%;
+
     position: absolute;
     left: 0;
     top: 0;

@@ -66,20 +66,20 @@ export class BackgroundAnimationComponent implements OnInit {
     svgCanvas.node.setAttribute("viewBox", `0 0 ${window.innerWidth} ${window.innerHeight}`);
     let viewBox: any = svgCanvas.attr('viewBox');
 
-
-    let shape = svgCanvas.rect(viewBox.x, viewBox.y, viewBox.width, viewBox.height);
-    let color = style.global.$colorSky.value
-    shape.attr({
-      fill: `rgb(${color.r},${color.g},${color.b})`
-    });
+    let shape: any, color: any;
+    // shape = svgCanvas.rect(viewBox.x, viewBox.y, viewBox.width, viewBox.height);
+    // color = style.global.$colorSky.value
+    // shape.attr({
+    //   fill: `rgb(${color.r},${color.g},${color.b})`
+    // });
 
     let i: number;
 
-    shape = svgCanvas.rect(viewBox.x, viewBox.height / 3, viewBox.width, viewBox.height * 2 / 3);
-    color = style.global.$colorSea.value
-    shape.attr({
-      fill: `rgb(${color.r},${color.g},${color.b})`
-    });
+    // shape = svgCanvas.rect(viewBox.x, viewBox.height / 3, viewBox.width, viewBox.height * 2 / 3);
+    // color = style.global.$colorSea.value
+    // shape.attr({
+    //   fill: `rgb(${color.r},${color.g},${color.b})`
+    // });
 
     let size = viewBox.height / 6;
     let waveCount: number = 10;
