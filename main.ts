@@ -40,6 +40,10 @@ function createWindow() {
     // when you should delete the corresponding element.
     win = null;
   });
+
+  win.on('resize', () => {
+    win.webContents.reloadIgnoringCache();
+  });
 }
 
 try {

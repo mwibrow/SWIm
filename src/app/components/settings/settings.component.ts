@@ -153,7 +153,7 @@ export class SettingsComponent implements OnInit {
 const validateSettings = (settings: any)  => {
 
   return new Promise((resolve, reject) => {
-    if (!settings.stimuliPath || settings.responsePath == notSet) {
+    if (!settings.stimuliPath || settings.responsePath === notSet) {
       reject('Stimuli folder not set');
     }
     if (!fs.pathExistsSync(settings.stimuliPath)) {

@@ -34,7 +34,6 @@ import { ErrorComponent } from './components/error/error.component';
 import { BreakComponent } from './components/break/break.component';
 
 import { BackgroundAnimationComponent } from './components/background-animation/background-animation.component';
-import { ParticipantIdDialogComponent } from './components/participant-id-dialog/participant-id-dialog.component';
 
 @NgModule({
   declarations: [
@@ -45,13 +44,11 @@ import { ParticipantIdDialogComponent } from './components/participant-id-dialog
     TaskComponent,
     ErrorComponent,
     BreakComponent,
-    BackgroundAnimationComponent,
-    ParticipantIdDialogComponent
+    BackgroundAnimationComponent
   ],
   entryComponents: [
     ErrorComponent,
     BreakComponent,
-    ParticipantIdDialogComponent,
     ExitAppComponent
   ],
   imports: [

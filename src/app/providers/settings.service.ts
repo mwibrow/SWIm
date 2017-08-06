@@ -9,6 +9,7 @@ export const notSet: string = 'Not set!';
 
 export class Settings {
 
+    participantId: string = notSet;
     stimuliPath: string = notSet;
     responsesPath: string = notSet;
 
@@ -63,4 +64,84 @@ export class SettingsService {
   }
 
 
+}
+
+
+interface Setting<T> {
+  value: T;
+  defaultValue: T;
+
+  validate(): Promise<void>;
+  validateRegex(): boolean;
+
+  setValue(value: T);
+  getValue(): T;
+
+}
+
+class FolderSetting implements Setting<string> {
+
+  value: string;
+  defaultValue: string;
+  permissions: any = fs.W_OK | fs.R_OK;
+
+  validate(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      try {
+        fs.accessSync(this.value, this.permissions);
+        resolve();
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  validateRegex() {
+    return true;
+  }
+
+  setValue(value: string) {
+    this.value = value;
+  }
+
+  getValue() {
+    return this.value;
+  }
+}
+
+class NumberSetting implements Setting<number> {
+
+  value: number;
+  defaultValue: number;
+  min: number;
+  max: number;
+
+  permissions: any = fs.W_OK | fs.R_OK;
+
+  constructor(defaultValue: number, min: number, max:number) {
+    this.value = this.defaultValue = defaultValue;
+    this.min = min;
+    this.max = max;
+  }
+
+  validate(): Promise<void> {
+    return new Promise((resolve, reject) => {
+      if (this.value >= this.min && this.value <= this.max) {
+        resolve();
+      }
+      reject();
+    });
+  }
+
+  validateRegex(): boolean {
+    return this.value.toString().match(/\d+/).length > 0;
+  }
+
+  setValue(value: number) {
+    this.value = value;
+  }
+
+  getValue() {
+    return this.value;
+  }
 }

@@ -31,11 +31,19 @@
 
 
 .main {
-  height: 100%;
-  width: 75vh !important;
-  margin: 0ex;
-  // flex: 1 1;
-   overflow-y: scroll;
+  width: 50vw !important;
+  min-width: 20em;
+  max-width: 30em;
+  // height: 100%;
+  // width: 75vh !important;
+  // margin: 0ex;
+  // // flex: 1 1;
+  //  overflow-y: scroll;
+  //  overflow-x: hidden;
+
+  // div {
+  //   overflow: hidden
+  // }
 }
 
 .header {
@@ -55,12 +63,20 @@
 .footer {
   display: flex;
   padding: 1ex;
+  button {
+  border: none;
+  outline: 0px;
+  min-width: 15ex;
+  border-radius: 2.5px;
+}
+
 }
 
 .setting {
   position: relative;
   width: 100%;
   margin-bottom: 1ex;
+
   .title {
     color: color($md-palette, md-white);
   }
@@ -74,26 +90,18 @@
     font-size: $font-size-tiny;
   }
 
-  button {
-    span {
-    font-size: $font-size-tiny !important;
-    }
-  }
-
-  .number {
-    .setting-value {
-      width: 0%;
-    }
-    input {
-      background: green;
-    }
-  }
-
-
-
 }
 
 .folder {
+
+  .md-button, .mat-button {
+    min-width: 1% !important;
+
+  }
+  .tiny {
+    font-size: $font-size-tiny !important;
+  }
+
   .setting-value {
     width: 100%;
     text-align: left;
@@ -113,46 +121,70 @@
 }
 
 
-.number-input-with-buttons {
-  display: inline-block;
-  position: relative;
-  input[type="number"]::-webkit-outer-spin-button,
-  input[type="number"]::-webkit-inner-spin-button {
-      -webkit-appearance: none;
-      margin: 0;
+.number {
+  .number-input-with-buttons {
+    display: inline-block;
+    position: relative;
+    input[type="number"]::-webkit-outer-spin-button,
+    input[type="number"]::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+    }
+    input {
+      background: transparent;
+      border: none;
+      border-bottom: 1px dotted color($md-palette, md-grey);
+      outline: none;
+      margin-right: 1em;
+      width: 3em;
+      color: color($md-palette, md-white);
+    }
+
+    button {
+      position: absolute;
+      margin: 0px !important;
+      padding: 0px !important;
+      font-size: $font-size-normal;
+      width: 0.875em !important;
+      height: 0.85em !important;
+      line-height: 0.25em;
+      background-color: color($md-palette, md-orange);
+    }
+    button:hover {
+      background-color: darken(color($md-palette, md-orange), 10);
+    }
+    .plus {
+      top: 0;
+      right: 0;
+    }
+    .minus {
+      bottom: 0;
+      right: 0;
+    }
   }
-  input {
+
+}
+
+button {
+  border: none;
+  outline: 0px;
+  border-radius: 2.5px;
+}
+
+
+.text {
+
+  input[type="text"] {
+    width: 100%;
     background: transparent;
     border: none;
     border-bottom: 1px dotted color($md-palette, md-grey);
     outline: none;
     margin-right: 1em;
-    width: 3em;
     color: color($md-palette, md-white);
   }
-
-  button {
-    position: absolute;
-    margin: 0px !important;
-    padding: 0px !important;
-    font-size: $font-size-normal;
-    width: 0.875em !important;
-    height: 0.85em !important;
-    line-height: 0.25em;
-    background-color: color($md-palette, md-orange);
-  }
-  button:hover {
-    background-color: darken(color($md-palette, md-orange), 10);
-  }
-  .plus {
-    top: 0;
-    right: 0;
-  }
-  .minus {
-    bottom: 0;
-    right: 0;
-  }
 }
+
 
 .setting-header {
   width: 100%;
@@ -170,12 +202,7 @@
   display: inline-block;
 }
 
-button {
-  border: none;
-  outline: 0px;
-  width: 15ex;
-  border-radius: 2.5px;
-}
+
 
 
 
@@ -199,17 +226,21 @@ button {
    flex: 1 1 auto;
 }
 
-// .setting-value input {
-//   background: transparent;
-//   border: none;
-//   outline: none;
-//   width: 100%;
-//   color: color($md-palette, md-grey);
-// }
+::-webkit-scrollbar
+{
+  width: 12px;  /* for vertical scrollbars */
+  height: 12px; /* for horizontal scrollbars */
+}
 
-.main::-webkit-scrollbar {
-    width: 6px;
-    background-color: none;
+::-webkit-scrollbar-track
+{
+  background: rgba(0, 0, 0, 0);
+}
+
+::-webkit-scrollbar-thumb
+{
+  background: rgba(127,127,127, 1);
+  border-radius: 6px;
 }
 
 .setting-validation {
@@ -220,6 +251,15 @@ button {
   }
 }
 
-.mat-dialog-container, .md-dialog-container {
-  width: 50% !important;
+// .mat-dialog-container
+// .md-dialog-container
+
+.md-dialog-content {
+  max-width:75%;
 }
+
+.md-button.md-small {
+    width: 1px !important;
+    min-width: 1% !important;
+    font-size: 1px !important;
+  }
