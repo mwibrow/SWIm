@@ -49,6 +49,7 @@
     "core-js": "2.4.1",
     "electron-json-storage": "^3.0.7",
     "enhanced-resolve": "3.3.0",
+    "eve": "^0.5.4",
     "fs-extra": "^4.0.0",
     "inline-worker": "^1.1.0",
     "klaw-sync": "^2.1.0",
