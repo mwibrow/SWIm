@@ -90,88 +90,86 @@ export class BackgroundAnimationComponent implements OnInit {
       fill: `rgb(${color.r},${color.g},${color.b})`
     });
 
-    let size = viewBox.height / 6;
-    let waveCount: number = 10;
-    for (i = 0;  i < waveCount ; i ++) {
-      shape = svgCanvas.ellipse(i * viewBox.width / (waveCount - 1) + 1, viewBox.height / 3, size, size * 1.0625);
-      color = style.global.$colorSky.value;
-      shape.attr({
-         fill: `rgb(${color.r},${color.g},${color.b})`
-      });
-      let bbox = shape.getBBox();
-      Animations.rotate(shape, Math.floor(Math.random() * 5) * 1000 + 6000);
-    }
+    // let size = viewBox.height / 6;
+    // let waveCount: number = 10;
+    // for (i = 0;  i < waveCount ; i ++) {
+    //   shape = svgCanvas.ellipse(i * viewBox.width / (waveCount - 1) + 1, viewBox.height / 3, size, size * 1.0625);
+    //   color = style.global.$colorSky.value;
+    //   shape.attr({
+    //      fill: `rgb(${color.r},${color.g},${color.b})`
+    //   });
+    //   let bbox = shape.getBBox();
+    //   Animations.rotate(shape, Math.floor(Math.random() * 5) * 1000 + 6000);
+    // }
 
     // Draw some clouds.
-    for (i = 0; i < 3; i ++) {
+    // for (i = 0; i < 3; i ++) {
 
-      let cloud = shapeFactory.cloud(this.svg)
-      let bbox = cloud.getBBox();
+    //   let cloud = shapeFactory.cloud(this.svg)
+    //   let bbox = cloud.getBBox();
 
-      let scale = viewBox.height / 12 * (i + 1) / bbox.height;
-      let x = viewBox.width  /  5 * (4 - i);
-      let y = viewBox.height / 10 * i;
+    //   let scale = viewBox.height / 12 * (i + 1) / bbox.height;
+    //   let x = viewBox.width  /  5 * (4 - i);
+    //   let y = viewBox.height / 10 * i;
 
-      cloud.transform(`s${scale},${scale}`);
-      color = style.global.$colorClouds.value[i].value;
+    //   cloud.transform(`s${scale},${scale}`);
+    //   color = style.global.$colorClouds.value[i].value;
 
-      cloud.attr({fill: `rgb(${color.r},${color.g},${color.b})`});
+    //   cloud.attr({fill: `rgb(${color.r},${color.g},${color.b})`});
 
-      let duration = 40000 + i * 20000;
-      Animations.float(shapeFactory.g(cloud), x, y, -bbox.width, viewBox.width + bbox.width, duration);
-    }
-
-
-    let fish = shapeFactory.fish(this.svg, 'fish1-');
-    fish.attr({fill:
-      style.global['$md-palette'].value['md-orange'].value.hex});
-    fish.select('#fish1-eye').attr({fill:
-      style.global['$md-palette'].value['md-white'].value.hex});
-    fish.select('#fish1-pupil').attr({fill:
-      style.global['$md-palette'].value['md-grey'].value.hex});
-    fish.transform('s0.5,0.5');
+    //   let duration = 40000 + i * 20000;
+    //   Animations.float(shapeFactory.g(cloud), x, y, -bbox.width, viewBox.width + bbox.width, duration);
+    // }
 
 
+    // let fish = shapeFactory.fish(this.svg, 'fish1-');
+    // fish.attr({fill:
+    //   style.global['$md-palette'].value['md-orange'].value.hex});
+    // fish.select('#fish1-eye').attr({fill:
+    //   style.global['$md-palette'].value['md-white'].value.hex});
+    // fish.select('#fish1-pupil').attr({fill:
+    //   style.global['$md-palette'].value['md-grey'].value.hex});
+    // fish.transform('s0.5,0.5');
 
-    Animations.float(shapeFactory.g(fish),
-      viewBox.width / 3, viewBox.height / 10 * 5,  viewBox.width, viewBox.x - 2 * fish.getBBox().width, 20000);
-     Animations.waggle(fish.select('#fish1-tail'), 1000);
+    // Animations.float(shapeFactory.g(fish),
+    //   viewBox.width / 3, viewBox.height / 10 * 5,  viewBox.width, viewBox.x - 2 * fish.getBBox().width, 20000);
+    //  Animations.waggle(fish.select('#fish1-tail'), 1000);
 
-    fish = shapeFactory.fish(this.svg, 'fish2-');
-    fish.attr({fill:
-      style.global['$md-palette'].value['md-light-green'].value.hex});
-    fish.select('#fish2-eye').attr({fill:
-      style.global['$md-palette'].value['md-white'].value.hex});
-    fish.select('#fish2-pupil').attr({fill:
-      style.global['$md-palette'].value['md-grey'].value.hex});
-    fish.transform('s0.5,0.5');
+    // fish = shapeFactory.fish(this.svg, 'fish2-');
+    // fish.attr({fill:
+    //   style.global['$md-palette'].value['md-light-green'].value.hex});
+    // fish.select('#fish2-eye').attr({fill:
+    //   style.global['$md-palette'].value['md-white'].value.hex});
+    // fish.select('#fish2-pupil').attr({fill:
+    //   style.global['$md-palette'].value['md-grey'].value.hex});
+    // fish.transform('s0.5,0.5');
 
-    Animations.waggle(fish.select('#fish2-tail'), 1000);
-    Animations.float(shapeFactory.g(fish),
-      2 * viewBox.width / 3, viewBox.height / 10 * 6,  viewBox.width, viewBox.x - 2 * fish.getBBox().width, 25000);
+    // Animations.waggle(fish.select('#fish2-tail'), 1000);
+    // Animations.float(shapeFactory.g(fish),
+    //   2 * viewBox.width / 3, viewBox.height / 10 * 6,  viewBox.width, viewBox.x - 2 * fish.getBBox().width, 25000);
 
-    fish = shapeFactory.fish(this.svg, 'fish3-');
-    fish.attr({fill:
-      style.global['$md-palette'].value['md-purple'].value.hex});
-    fish.select('#fish3-eye').attr({fill:
-      style.global['$md-palette'].value['md-white'].value.hex});
-    fish.select('#fish3-pupil').attr({fill:
-      style.global['$md-palette'].value['md-grey'].value.hex});
-    fish.transform('s0.5,0.5');
+    // fish = shapeFactory.fish(this.svg, 'fish3-');
+    // fish.attr({fill:
+    //   style.global['$md-palette'].value['md-purple'].value.hex});
+    // fish.select('#fish3-eye').attr({fill:
+    //   style.global['$md-palette'].value['md-white'].value.hex});
+    // fish.select('#fish3-pupil').attr({fill:
+    //   style.global['$md-palette'].value['md-grey'].value.hex});
+    // fish.transform('s0.5,0.5');
 
-    Animations.waggle(fish.select('#fish3-tail'), 1000);
-    Animations.float(shapeFactory.g(fish),
-      3 * viewBox.width / 3, viewBox.height / 10 * 7,  viewBox.width, viewBox.x - 2 * fish.getBBox().width, 30000);
+    // Animations.waggle(fish.select('#fish3-tail'), 1000);
+    // Animations.float(shapeFactory.g(fish),
+    //   3 * viewBox.width / 3, viewBox.height / 10 * 7,  viewBox.width, viewBox.x - 2 * fish.getBBox().width, 30000);
 
 
     let svgBBox = viewBox;
     svgBBox.cx = svgBBox.width / 2;
     svgBBox.cy = svgBBox.height / 2;
 
-    setTimeout(() => { stars(this.svg, 50, "pink", 3000, svgBBox) }, 5000);
+    setTimeout(() => { stars(this.svg, 50, "pink", 3000, svgBBox) }, 1000);
 
 
-
+ 
 
   }
 
@@ -202,28 +200,41 @@ namespace Animations {
 
   export const explode = (el: any, x: number, y: number, dx: number, dy: number,
       duration: number, remove: boolean=true) => {
-    el.transform(`t${x},${y}`);
+
+    
+    let time = (Math.random() + 2) / 3 * duration;
+    el.transform('s0.001,0.001r0');
     el.animate({
-        transform: `t${x + dx},${y + dy}s0.001,0.001r360`,
+        transform: 's1,1',
       },
-      (Math.random() + 2) / 3 * duration,
-      function(t) { return Math.sin(t * Math.PI / 2); },
+      time,
+      function(t) { return Math.sin(t * Math.PI); }
+    );
+    let g = shapeFactory.g(el);
+    g.transform(`t${x},${y}r${dx < 0 ? 360 : -360}`);
+    g.animate({
+        transform: `t${x + dx},${y + dy}`,
+      },
+      time + 50,
+      function(t) { return t; },
       () => {
         if (remove) {
-          el.remove();
+          g.remove();
         }
       });
   }
 
   export const waggle = (el: any, duration: number) => {
     let bbox = el.getBBox();
-    el.animate({ transform: `s0.75, 0.875,${bbox.cx - bbox.width / 2}, ${bbox.cy}` }, duration / 4,
+    let cx = bbox.cx - bbox.width / 2;
+    let cy = bbox.cy;
+    el.animate({ transform: `s0.75, 0.875,${cx}, ${cy}` }, duration / 4,
       () => {
-        el.animate({ transform: `s1,1,${bbox.cx - bbox.width / 2},${bbox.cy}` }, duration / 4,
+        el.animate({ transform: `s1,1,${cx},${cy}` }, duration / 4,
           () => {
-            el.animate({ transform: `s0.75, 1.125,${bbox.cx - bbox.width / 2}, ${bbox.cy}` }, duration / 4,
+            el.animate({ transform: `s0.75, 1.125,${cx}, ${cy}` }, duration / 4,
           () => {
-            el.animate({ transform: `s1,1,${bbox.cx - bbox.width / 2}, ${bbox.cy}` }, duration / 4,
+            el.animate({ transform: `s1,1,${cx}, ${cy}` }, duration / 4,
               () => {
                 Animations.waggle(el, duration);
               });
@@ -277,7 +288,7 @@ namespace shapeFactory {
 
 
 const stars = (svg: any, count: number, color: string, duration: number, bbox: any) => {
-  for (let i: number = 0 ; i < 50; i ++) {
+  for (let i: number = 0 ; i < count; i ++) {
       setTimeout(() => {
         let star = shapeFactory.star(svg);
         let length = Math.max(bbox.width, bbox.height);
@@ -286,7 +297,7 @@ const stars = (svg: any, count: number, color: string, duration: number, bbox: a
         star.attr('fill', color);
         Animations.explode(star, bbox.cx, bbox.cy, dx, dy, duration, true);
       },
-        Math.random()* 500);
+        Math.random() * 500);
   }
 
 }
