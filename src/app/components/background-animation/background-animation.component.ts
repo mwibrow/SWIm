@@ -166,11 +166,14 @@ export class BackgroundAnimationComponent implements OnInit {
     svgBBox.cx = svgBBox.width / 2;
     svgBBox.cy = svgBBox.height / 2;
 
-    setTimeout(() => { stars(this.svg, 50, "pink", 3000, svgBBox) }, 1000);
+    //setTimeout(() => { stars(this.svg, 50, "pink", 3000, svgBBox) }, 1000);
 
-
- 
-
+    let bubble = shapeFactory.bubble(this.svg, 'bubble1-');
+    bubble.select('#bubble1-bubble').attr({'fill': 'blue'});
+    bubble.select('#bubble1-highlight').attr({'fill': 'white'});
+    //bubble.transform(`t${svgBBox.cx},${svgBBox.height}`);
+    Animations.wobble(bubble.select('#bubble1-bubble'), 2000);
+    Animations.rise(bubble,  svgBBox.cx, svgBBox.height, svgBBox.cx, 0, 25, 20000);
   }
 
 }
@@ -201,7 +204,7 @@ namespace Animations {
   export const explode = (el: any, x: number, y: number, dx: number, dy: number,
       duration: number, remove: boolean=true) => {
 
-    
+
     let time = (Math.random() + 2) / 3 * duration;
     el.transform('s0.001,0.001r0');
     el.animate({
@@ -241,6 +244,28 @@ namespace Animations {
           });
         });
       });
+  }
+
+  export const wobble = (el: any, duration: number) => {
+    let bbox = el.getBBox();
+    let cx = bbox.cx;
+    let cy = bbox.cy;
+    el.animate({ transform: `s0.95,1.05,${cx},${cy}` }, duration / 2, () => {
+      el.animate({ transform: `s1.05,0.95,${cx},${cy}` }, duration / 2, () => {
+        Animations.wobble(el, duration);
+       });
+    });
+  }
+
+  export const rise = (el: any, x1: number, y1: number, x2: number, y2: number, amplitude: number,  duration: number) => {
+    let g = shapeFactory.g(el);
+    g.transform(`t${x1},${y1}`);
+    g.animate({ transform: `t${x2},${y2}` }, duration, () => {
+
+    });
+    el.animate({ transform: `t${amplitude},0`}, duration,
+      function(t) { return Math.sin(t * Math.PI * 10); },
+     () => {});
   }
 }
 
@@ -282,6 +307,16 @@ namespace shapeFactory {
     body.circle(72, 112, 16).attr('id', `${prefix}eye`);
     body.circle(72, 112, 12).attr('id', `${prefix}pupil`);
     return fish;
+  }
+
+  export const bubble = (svg: any, prefix?:string) => {
+    let bubble = svg.g();
+    let container = bubble.g().attr({'id':`${prefix}bubble`});
+    container.circle(0, 0, 120).attr({'id': `${prefix}background`});
+    container.path('M -24.31088,-71.474826 C -36.444657,-55.045188 -50.804344,-38.011484 -58.851265,-40.830358 C -66.898186,-43.649232 -65.585137,-65.253234 -53.45136,-81.682872 C -41.317584,-98.11251 -22.957894,-103.14621 -14.910973,-100.32734 C -6.8640524,-97.508466 -12.177104,-87.904464 -24.31088,-71.474826 Z M -61.166075,-19.156628 C -61.089656,-11.788345 -65.757088,-2.9307427 -71.591079,-1.8397425 C -77.42507,-0.74874231 -82.216405,-7.8374839 -82.292825,-15.205767 C -82.369246,-22.574048 -77.701813,-27.431652 -71.867822,-28.522652 C -66.033831,-29.613653 -61.242496,-26.52491 -61.166075,-19.156628 Z')
+      .attr({'id': `${prefix}highlight`});
+    return bubble;
+
   }
 
 }
