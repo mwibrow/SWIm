@@ -169,8 +169,8 @@ export class BackgroundAnimationComponent implements OnInit {
     //setTimeout(() => { stars(this.svg, 50, "pink", 3000, svgBBox) }, 1000);
 
     let bubble = shapeFactory.bubble(this.svg, 'bubble1-');
-    bubble.select('#bubble1-bubble').attr({'fill': 'blue'});
-    bubble.select('#bubble1-highlight').attr({'fill': 'white'});
+    bubble.select('#bubble1-bubble').attr({'fill': 'blue', opacity: 0.75});
+    bubble.select('#bubble1-highlight').attr({'fill': 'white', opacity: 0.75});
     //bubble.transform(`t${svgBBox.cx},${svgBBox.height}`);
     Animations.wobble(bubble.select('#bubble1-bubble'), 2000);
     Animations.rise(bubble,  svgBBox.cx, svgBBox.height, svgBBox.cx, 0, 25, 20000);
