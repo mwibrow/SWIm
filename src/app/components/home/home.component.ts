@@ -5,6 +5,8 @@ import { Router } from '@angular/router';
 import { ErrorComponent } from '../error/error.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { BackgroundAnimationComponent } from '../background-animation/background-animation.component';
+import { SettingsService, Settings } from '../../providers/settings.service';
+
 const remote = require('electron').remote;
 
 @Component({
@@ -15,20 +17,25 @@ const remote = require('electron').remote;
 export class HomeComponent implements OnInit {
   title = `App works !`;
   @ViewChild('background') backgroundAnimation: BackgroundAnimationComponent;
-  constructor(private router: Router, public dialog: MdDialog) { }
-  ngOnInit() {
-  }
+  constructor(private router: Router, 
+    public dialog: MdDialog,
+    public settingsService: SettingsService) { }
+  
+  ngOnInit() { }
 
   go(url: string) {
-  this.backgroundAnimation.stopAnimations();
-   this.router.navigateByUrl(url);
-
-
+    this.backgroundAnimation.stopAnimations();
+    this.router.navigateByUrl(url);
   }
 
+  startTask() {
+    console.log(this.settingsService.validateSettings())
+    // go('/task')
+  }
   openSettings() {
     this.dialog.open(SettingsComponent);
   }
+
   exitApplication() {
     this.dialog.open(ExitAppComponent).afterClosed().subscribe((result) => {
       if (result) {

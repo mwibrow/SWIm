@@ -63,6 +63,16 @@ export class SettingsService {
     });
   }
 
+  validateSettings() {
+    if (this.settings.stimuliPath === notSet) {
+      return {valid: false, reason: 'Stimuli folder not set'};
+    }
+    if (this.settings.responsesPath === notSet) {
+      return {valid: false, reason: 'Response folder not set'};
+    }
+    return {valid: true, reason: ''};
+  }
+
 
 }
 

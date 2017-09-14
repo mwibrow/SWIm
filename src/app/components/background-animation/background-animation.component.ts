@@ -48,16 +48,16 @@ export class BackgroundAnimationComponent implements OnInit {
 
   constructor(private router: Router) {
 
-    router.events.subscribe((val: any) => {
-      if (val instanceof NavigationStart && val.url !== '/task') {
-        this.stopAnimations();
-      }
-    });
+    // router.events.subscribe((val: any) => {
+    //   if (val instanceof NavigationStart && val.url !== '/task') {
+    //     // this.stopAnimations();
+    //   }
+    // });
   }
 
 
   ngOnInit() {
-    this.createSvg();
+    //this.createSvg();
   }
 
 
