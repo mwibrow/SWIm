@@ -62,7 +62,7 @@ export class BackgroundAnimationComponent implements OnInit {
 
 
   stopAnimations() {
-    this.svg.stopAll();
+    this.svg && this.svg.stopAll();
   }
 
   createSvg() {

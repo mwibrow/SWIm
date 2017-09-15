@@ -5,6 +5,8 @@ const storage = require('electron-json-storage');
 const klawSync = require('klaw-sync')
 const path = require('path');
 
+const filterWav = item => path.extname(item.path) === '.wav';
+
 export const notSet: string = 'Not set!';
 
 export class Settings {
@@ -63,16 +65,31 @@ export class SettingsService {
     });
   }
 
-  validateSettings() {
-    if (this.settings.stimuliPath === notSet) {
-      return {valid: false, reason: 'Stimuli folder not set'};
-    }
-    if (this.settings.responsesPath === notSet) {
-      return {valid: false, reason: 'Response folder not set'};
-    }
-    return {valid: true, reason: ''};
-  }
 
+  validateSettings() {
+    
+      return new Promise((resolve, reject) => {
+        if (!this.settings.stimuliPath || this.settings.responsesPath === notSet) {
+          reject('Stimuli folder not set');
+        }
+        if (!fs.pathExistsSync(this.settings.stimuliPath)) {
+          reject('Stimuli folder does not exist')
+        }
+        let stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
+        if (stimuli.length === 0) {
+          reject('No WAV files in stimuli folder');
+        }
+        if (!this.settings.responsesPath || this.settings.responsesPath === notSet) {
+          reject('Responses folder not set');
+        }
+        try {
+          fs.accessSync(this.settings.responsesPath, fs.W_OK);
+        } catch (err) {
+          reject('Cannot write to Responses folder');
+        }
+        resolve();
+      });
+    }
 
 }
 

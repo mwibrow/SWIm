@@ -112,7 +112,7 @@ export class SettingsComponent implements OnInit {
     if (by) {
       this.settings.maskDuration += by;
     }
-    if (this.settings.maskDuration < 10) this.settings.maskDuration = 10;
+    if (this.settings.maskDuration < 0) this.settings.maskDuration = 0;
     if (this.settings.maskDuration > 2000) this.settings.maskDuration = 2000;
   }
 
@@ -153,7 +153,7 @@ export class SettingsComponent implements OnInit {
 const validateSettings = (settings: any)  => {
 
   return new Promise((resolve, reject) => {
-    if (!settings.stimuliPath || settings.responsePath === notSet) {
+    if (!settings.stimuliPath || settings.responsesPath === notSet) {
       reject('Stimuli folder not set');
     }
     if (!fs.pathExistsSync(settings.stimuliPath)) {
@@ -163,7 +163,7 @@ const validateSettings = (settings: any)  => {
     if (stimuli.length === 0) {
       reject('No WAV files in stimuli folder');
     }
-    if (!settings.responsesPath || settings.responsePath === notSet) {
+    if (!settings.responsesPath || settings.responsesPath === notSet) {
       reject('Responses folder not set');
     }
     try {

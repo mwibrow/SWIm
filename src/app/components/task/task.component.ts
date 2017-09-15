@@ -199,23 +199,23 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.settingsService.loadSettings().then(() => {
-      this.settings = this.settingsService.settings;
-      this.loadStimuli().then(() => {
-        setTimeout(() => {
-          this.openDialog('start', ErrorComponent,  {
-            disableClose: true,
-            data: {
-              title: 'Ready?',
-              content: 'Click Ok to start.'
-            }
-          },
-          () => {
-            this.runTask();
-          });
-        }, 1000);
-      })
-    });
+    // this.settingsService.loadSettings().then(() => {
+    //   this.settings = this.settingsService.settings;
+    //   this.loadStimuli().then(() => {
+    //     setTimeout(() => {
+    //       this.openDialog('start', ErrorComponent,  {
+    //         disableClose: true,
+    //         data: {
+    //           title: 'Ready?',
+    //           content: 'Click Ok to start.'
+    //         }
+    //       },
+    //       () => {
+    //         this.runTask();
+    //       });
+    //     }, 1000);
+    //   })
+    // });
   }
 
   openDialog(id: string, target: any, options: any, afterClose: any) {

@@ -17,6 +17,7 @@ const remote = require('electron').remote;
 export class HomeComponent implements OnInit {
   title = `App works !`;
   @ViewChild('background') backgroundAnimation: BackgroundAnimationComponent;
+  settingsRejectionMessage: string = '';
   constructor(private router: Router, 
     public dialog: MdDialog,
     public settingsService: SettingsService) { }
@@ -29,8 +30,19 @@ export class HomeComponent implements OnInit {
   }
 
   startTask() {
-    console.log(this.settingsService.validateSettings())
-    // go('/task')
+    this.settingsService.validateSettings()
+      .then( () => {
+        this.go('/task')
+      })
+      .catch(message => {
+        this.dialog.open(ErrorComponent,  {
+          disableClose: true,
+          data: {
+            title: 'Opps!',
+            content: message
+          }
+        })
+      })
   }
   openSettings() {
     this.dialog.open(SettingsComponent);
