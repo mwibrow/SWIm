@@ -12,7 +12,7 @@
   text-align: center;
   align-items: center;
   justify-content: center;
-
+  overflow: hidden;
 }
 
 .background {
@@ -21,6 +21,10 @@
     height: 100%;
     overflow: hidden;
     background: black;
+}
+
+.color-0 {
+    background-color: color($md-palette, md-black);
 }
 .color-1 {
     background-color: color($md-palette, md-red);
@@ -68,26 +72,50 @@
 
 @keyframes slide-in-from-left {
     0% { transform: translateX(-100%); }
-    100% { transform: translateX(0%); }
+   10% { transform: translateX(0%); }
+   90% { transform: translateX(0%); }
+  100% { transform: translateX(100%); }
 }
 @keyframes slide-in-from-right {
     0% { transform: translateX(100%); }
-    100% { transform: translateX(0%); }
+    10% { transform: translateX(0%); }
+    90% { transform: translateX(0%); }
+   100% { transform: translateX(-100%); }
 }
 
 @keyframes slide-in-from-top {
     0% { transform: translateY(-100%); }
-    100% { transform: translateY(0%); }
+    10% { transform: translateY(0%); }
+    90% { transform: translateY(0%); }
+    100% { transform: translateY(100%); }
 }
-@keyframes slide-in-from-rbottom {
+@keyframes slide-in-from-bottom {
     0% { transform: translateY(100%); }
-    100% { transform: translateY(0%); }
+    10% { transform: translateY(0%); }
+    90% { transform: translateY(0%); }
+    100% { transform: translateY(-100%); }
 }
 
 
 @each $side in left right top bottom {
     .slide-in-from-#{$side} {
-        animation: slide-in-from-#{$side} 1s forwards;
+        animation: slide-in-from-#{$side} 8s forwards;
+        animation-delay: 2s;
     }
 }
 
+.slide-in-from-left {
+    transform: translateX(-100%);
+}
+
+.slide-in-from-right {
+    transform: translateX(100%);
+}
+
+.slide-in-from-top {
+    transform: translateY(-100%);
+}
+
+.slide-in-from-bottom {
+    transform: translateY(100%);
+}

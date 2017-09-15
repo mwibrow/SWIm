@@ -49,6 +49,9 @@ export class TaskComponent implements OnInit {
 
   private taskRunning: boolean;
   private exit: boolean;
+  private barColor: number = 1;
+  private barOrientation: string = 'vertical';
+  private barDirection: Array<string> = ['top', 'bottom']
   constructor(
       private router: Router,
       private audio: AudioService,
@@ -71,6 +74,7 @@ export class TaskComponent implements OnInit {
     this.taskRunning = false;
     this.dialogRefs = {};
     this.exit = false;
+
   }
 
 
