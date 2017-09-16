@@ -11,6 +11,7 @@ const klawSync = require('klaw-sync')
 const path = require('path');
 
 import { ErrorComponent } from '../error/error.component';
+import { FinishComponent } from '../finish/finish.component';
 import { BreakComponent } from '../break/break.component';
 import { SettingsService, Settings } from '../../providers/settings.service';
 
@@ -103,6 +104,14 @@ export class TaskComponent implements OnInit {
   }
 
   private runTask() {
+    let now = new Date();
+    this.participantFolder = sprintf.sprintf('%04d%02d%02d-%02d%02d',
+      now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes());
+    let participantPath = path.normalize(path.join(this.settings.responsesPath, this.participantFolder));
+    fs.mkdirpSync(participantPath,
+      (err) => {
+        console.error(`Could not create folder '${participantPath}'`)
+      });
     this.finish = false;
     this.taskRunning = true;
     this.runTrial();
@@ -176,7 +185,7 @@ export class TaskComponent implements OnInit {
     self = self || this;
     i = self.trial % self.stimuli.length;
     return path.normalize(path.join(
-      self.settings.responsesPath,
+      self.settings.responsesPath, self.participantFolder,
       `${sprintf.sprintf('%03d', self.trial + 1)}-${path.posix.basename(self.stimuli[i].path)}`
     ));
   }
@@ -184,19 +193,32 @@ export class TaskComponent implements OnInit {
   private endTrial(self?: TaskComponent) {
     self = self || this;
     self.trial ++;
-    self.background = `color-${(self.trial % 5 ) + 1}`;
-    if (self.trial % self.settings.blockSize === 0) {
-      self.break();
+    if (self.trial >= self.stimuli.length) {
+      self.endTask()
     } else {
-      if (!self.finish) {
+      if (self.trial % self.settings.blockSize === 0) {
+        self.break();
+      } else {
         self.runTrial();
       }
     }
   }
 
+  private endTask() {
+    this.openDialog('finish', FinishComponent,  {
+      disableClose: true
+    },
+    () => {
+      this.runTrial();
+    });
+  }
+
   private break() {
-    this.openDialog('break', BreakComponent, {}, () => {
-      this.router.navigateByUrl('');
+    this.openDialog('break', BreakComponent,  {
+      disableClose: true
+    },
+    () => {
+      this.runTrial();
     });
   }
 
@@ -217,6 +239,7 @@ export class TaskComponent implements OnInit {
             this.keyboardBuffer = [];
         default:
       }
+    return false;
   }
 
   ngOnInit() {
@@ -240,6 +263,7 @@ export class TaskComponent implements OnInit {
   }
 
   openDialog(id: string, target: any, options: any, afterClose: any) {
+    if (this.exit || this.finish) return;
     if (this.dialogRefs.hasOwnProperty(id)) {
       this.dialogRefs[id].close();
     }

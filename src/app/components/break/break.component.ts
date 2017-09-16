@@ -4,7 +4,11 @@ import { MdDialogRef } from '@angular/material';
 @Component({
   selector: 'app-break',
   templateUrl: './break.component.html',
-  styleUrls: ['./break.component.scss']
+  styleUrls: ['./break.component.scss'],
+  host: {
+    '(document:keydown)': 'handleKeyboardEvents($event)',
+    '(document:keyup)': 'handleKeyboardEvents($event)'
+  }
 })
 export class BreakComponent implements OnInit {
 
@@ -15,10 +19,12 @@ export class BreakComponent implements OnInit {
 
 
   handleKeyboardEvents(event: KeyboardEvent) {
-      switch (event.type) {
-        case 'keydown':
+    switch (event.type) {
+      case 'keydown':
+          if (event.keyCode === 32) {
             this.dialogRef.close();
-        default:
-      }
+          }
+      default:
+    }
   }
 }
