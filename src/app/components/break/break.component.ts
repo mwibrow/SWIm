@@ -17,7 +17,6 @@ export class BreakComponent implements OnInit {
   ngOnInit() {
   }
 
-
   handleKeyboardEvents(event: KeyboardEvent) {
     switch (event.type) {
       case 'keydown':

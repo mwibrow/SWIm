@@ -41,20 +41,16 @@ export class TaskComponent implements OnInit {
 
   private keyboardBuffer: Array<string>;
 
-  private dialogRef: MdDialogRef<ErrorComponent>;
-  private breakDialogRef: MdDialogRef<BreakComponent>;
-  private startDialogRef: MdDialogRef<BreakComponent>;
-
   private dialogRefs: any;
 
-  private background: string;
   private finish: boolean;
+  private abort: boolean;
 
   private taskRunning: boolean;
   private trialRunning: boolean;
-  private exit: boolean;
-  private barColor: number = 1;
-  private backgroundColor: number = 3;
+
+  private barColor: number;
+  private backgroundColor: number;
   private barOrientation: string = 'vertical';
   private barDirection: Array<string> = ['top', 'bottom']
   constructor(
@@ -71,7 +67,7 @@ export class TaskComponent implements OnInit {
 
     this.keyboardBuffer = [];
 
-    this.background = 'color-1';
+
     this.stimuli = new Array<any>();
     this.settings = settingsService.settings;
 
@@ -79,7 +75,9 @@ export class TaskComponent implements OnInit {
     this.taskRunning = false;
     this.trialRunning = false;
     this.dialogRefs = {};
-    this.exit = false;
+    this.abort = false;
+
+    this.barColor = this.backgroundColor = 1;
 
   }
 
@@ -113,6 +111,7 @@ export class TaskComponent implements OnInit {
         console.error(`Could not create folder '${participantPath}'`)
       });
     this.finish = false;
+    this.abort = false;
     this.taskRunning = true;
     this.runTrial();
   }
@@ -193,6 +192,10 @@ export class TaskComponent implements OnInit {
   private endTrial(self?: TaskComponent) {
     self = self || this;
     self.trial ++;
+    self.trial = 100000
+    if (self.abort) {
+      return;
+    }
     if (self.trial >= self.stimuli.length) {
       self.endTask()
     } else {
@@ -209,7 +212,7 @@ export class TaskComponent implements OnInit {
       disableClose: true
     },
     () => {
-      this.runTrial();
+      this.router.navigateByUrl('');
     });
   }
 
@@ -229,8 +232,7 @@ export class TaskComponent implements OnInit {
           this.keyboardBuffer.push(event.key);
 
           if (this.keyboardBuffer.join('|') === 'Control|Shift|Escape') {
-              this.finish = true;
-              this.exit = true;
+              this.abort = true;
               this.closeDialog();
               this.router.navigateByUrl('');
           }
@@ -263,7 +265,7 @@ export class TaskComponent implements OnInit {
   }
 
   openDialog(id: string, target: any, options: any, afterClose: any) {
-    if (this.exit || this.finish) return;
+    if (this.abort || this.finish) return;
     if (this.dialogRefs.hasOwnProperty(id)) {
       this.dialogRefs[id].close();
     }
@@ -272,7 +274,7 @@ export class TaskComponent implements OnInit {
       if (this.dialogRefs.hasOwnProperty(id)) {
         delete this.dialogRefs[id];
       }
-      if (!this.exit) {
+      if (!this.abort) {
         afterClose();
       }
     });

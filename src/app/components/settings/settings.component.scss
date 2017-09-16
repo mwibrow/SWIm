@@ -49,7 +49,7 @@
 .header {
   width: 100%;
   //background-color: color($md-palette, md-light-blue);
-  color: color($md-palette, md-white);
+  //color: color($md-palette, md-white);
   text-align: left;
   margin-bottom: 1ex;
   .header-title {
@@ -78,7 +78,7 @@
   margin-bottom: 1ex;
 
   .title {
-    color: color($md-palette, md-white);
+
   }
 
   .setting-description {
@@ -86,7 +86,7 @@
   }
 
   .description {
-    color: color($md-palette, md-grey) !important;
+    opacity: 0.8;
     font-size: $font-size-tiny;
   }
 
@@ -105,9 +105,9 @@
   .setting-value {
     width: 100%;
     text-align: left;
-    border-bottom: 1px dotted color($md-palette, md-grey);
+    border-bottom: 1px dotted rgba($dialog-color, 0.5);
     span {
-      color: color($md-palette, md-grey);
+      color: rgba($dialog-color, 0.5);
       font-size: $font-size-small;
     }
     input {
@@ -115,7 +115,7 @@
       border: none;
       outline: none;
       width: 100%;
-      color: color($md-palette, md-grey);
+      color: rgba($dialog-color, 0.5);
     }
   }
 }
@@ -133,11 +133,11 @@
     input {
       background: transparent;
       border: none;
-      border-bottom: 1px dotted color($md-palette, md-grey);
+      border-bottom: 1px dotted rgba($dialog-color, 0.5);
       outline: none;
       margin-right: 1em;
       width: 3em;
-      color: color($md-palette, md-white);
+      color:$dialog-color;
     }
 
     button {
@@ -149,6 +149,9 @@
       height: 0.85em !important;
       line-height: 0.25em;
       background-color: color($md-palette, md-orange);
+      display:flex;
+      align-items: center;
+      justify-content: center;
     }
     button:hover {
       background-color: darken(color($md-palette, md-orange), 10);
@@ -156,10 +159,16 @@
     .plus {
       top: 0;
       right: 0;
+      display:flex;
+      align-items: center;
+      justify-content: center;
     }
     .minus {
       bottom: 0;
       right: 0;
+      display:flex;
+      align-items: center;
+      justify-content: center;
     }
   }
 
@@ -178,10 +187,10 @@ button {
     width: 100%;
     background: transparent;
     border: none;
-    border-bottom: 1px dotted color($md-palette, md-grey);
+    border-bottom: 1px dotted rgba($dialog-color, 0.5);
     outline: none;
     margin-right: 1em;
-    color: color($md-palette, md-white);
+    color: $dialog-color;
   }
 }
 
@@ -234,7 +243,7 @@ button {
 
 ::-webkit-scrollbar-track
 {
-  background: rgba(0, 0, 0, 0);
+  background: $dialog-background-color;
 }
 
 ::-webkit-scrollbar-thumb
@@ -254,6 +263,8 @@ button {
 // .mat-dialog-container
 // .md-dialog-container
 
+
+
 .md-dialog-content {
   max-width:75%;
 }
@@ -263,3 +274,13 @@ button {
     min-width: 1% !important;
     font-size: 1px !important;
   }
+
+.footer {
+  button {
+    color: color($md-palette, md-white);
+  }
+
+  .secondary {
+    background-color: color($md-palette, md-light-green);
+  }
+}
