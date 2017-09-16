@@ -51,6 +51,7 @@ export class TaskComponent implements OnInit {
   private trialRunning: boolean;
 
   private barColor: number;
+  private savedBarColor: number;
   private backgroundColor: number;
   private barOrientation: string = 'vertical';
   private barDirection: Array<string> = ['top', 'bottom']
@@ -79,7 +80,7 @@ export class TaskComponent implements OnInit {
     this.abort = false;
 
     this.updateBars(0, 0, true, true);
-
+    this.savedBarColor = -1;
 
   }
 
@@ -199,10 +200,11 @@ export class TaskComponent implements OnInit {
       setTimeout(() => self.endTask(), 2000);
     } else {
       if (self.trial % self.settings.blockSize === 0) {
+        let savedBarColor = self.barColor;
         self.updateBars(0, null, true, true);
-        self.break();
+        self.savedBarColor = savedBarColor;
+        setTimeout(() => self.break(), 1500);
       } else {
-        self.updateBars(null, null, true, true);
         self.runTrial();
       }
     }
@@ -210,10 +212,15 @@ export class TaskComponent implements OnInit {
 
   private updateBars(barColor, backgroundColor, flipOrientation, flipDirection) {
     this.backgroundColor = Number.isInteger(backgroundColor) ? backgroundColor : this.barColor;
-    this.barColor = Number.isInteger(barColor) ? barColor : (this.barColor % colorCount) + 1;
+    if (this.savedBarColor !== -1) {
+      this.barColor = (this.savedBarColor % colorCount) + 1;
+      this.savedBarColor = -1;
+    } else {
+      this.barColor = Number.isInteger(barColor) ? barColor : (this.barColor % colorCount) + 1;
+    }
     if (flipOrientation) this.barOrientation = this.barOrientation === 'vertical' ? 'horizontal' : 'vertical';
     this.barDirection = this.barOrientation === 'vertical' ? ['top', 'bottom'] : ['left', 'right'];
-    flipDirection && this.barDirection.reverse();
+    console.log(this.backgroundColor, this.barColor)
   }
 
   private endTask() {

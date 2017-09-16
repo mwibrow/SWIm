@@ -55,7 +55,6 @@ $color-list:(
     $c: nth($color-list, $i);
     .color-#{$i} {
         background-color: color($md-palette, md-#{$c});
-        box-shadow: 0 0 1rem 1rem rgba(color($md-palette, md-#{$c}), 0.125);
     }
 }
 
