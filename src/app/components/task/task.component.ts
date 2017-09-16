@@ -12,6 +12,7 @@ const path = require('path');
 
 import { ErrorComponent } from '../error/error.component';
 import { FinishComponent } from '../finish/finish.component';
+import { ReadyComponent } from '../ready/ready.component';
 import { BreakComponent } from '../break/break.component';
 import { SettingsService, Settings } from '../../providers/settings.service';
 
@@ -77,7 +78,8 @@ export class TaskComponent implements OnInit {
     this.dialogRefs = {};
     this.abort = false;
 
-    this.barColor = this.backgroundColor = 1;
+    this.updateBars(0, 0, true, true);
+
 
   }
 
@@ -129,10 +131,7 @@ export class TaskComponent implements OnInit {
 
   private startTrial(self?: TaskComponent) {
     self = self || this
-    self.backgroundColor = self.barColor;
-    self.barColor = (self.barColor % colorCount) + 1;
-    self.barOrientation = self.barOrientation === 'vertical' ? 'horizontal' : 'vertical';
-    self.barDirection = self.barOrientation === 'vertical' ? ['top', 'bottom'] : ['left', 'right'];
+    this.updateBars(null, null, true, true);
     self.trialRunning = true;
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(self), 2000)
@@ -192,19 +191,29 @@ export class TaskComponent implements OnInit {
   private endTrial(self?: TaskComponent) {
     self = self || this;
     self.trial ++;
-    self.trial = 100000
     if (self.abort) {
       return;
     }
     if (self.trial >= self.stimuli.length) {
-      self.endTask()
+      self.updateBars(0, null, true, true);
+      setTimeout(() => self.endTask(), 2000);
     } else {
       if (self.trial % self.settings.blockSize === 0) {
+        self.updateBars(0, null, true, true);
         self.break();
       } else {
+        self.updateBars(null, null, true, true);
         self.runTrial();
       }
     }
+  }
+
+  private updateBars(barColor, backgroundColor, flipOrientation, flipDirection) {
+    this.backgroundColor = Number.isInteger(backgroundColor) ? backgroundColor : this.barColor;
+    this.barColor = Number.isInteger(barColor) ? barColor : (this.barColor % colorCount) + 1;
+    if (flipOrientation) this.barOrientation = this.barOrientation === 'vertical' ? 'horizontal' : 'vertical';
+    this.barDirection = this.barOrientation === 'vertical' ? ['top', 'bottom'] : ['left', 'right'];
+    flipDirection && this.barDirection.reverse();
   }
 
   private endTask() {
@@ -248,13 +257,10 @@ export class TaskComponent implements OnInit {
     this.settingsService.loadSettings().then(() => {
       this.settings = this.settingsService.settings;
       this.loadStimuli().then(() => {
+        this.updateBars(0, 0, true, true);
         setTimeout(() => {
-          this.openDialog('start', ErrorComponent,  {
+          this.openDialog('start', ReadyComponent,  {
             disableClose: true,
-            data: {
-              title: 'Ready?',
-              content: 'Click Ok to start.'
-            }
           },
           () => {
             this.runTask();

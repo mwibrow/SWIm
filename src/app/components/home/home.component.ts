@@ -18,10 +18,11 @@ export class HomeComponent implements OnInit {
   title = `App works !`;
   @ViewChild('background') backgroundAnimation: BackgroundAnimationComponent;
   settingsRejectionMessage: string = '';
-  constructor(private router: Router, 
+  fade = 'fade-in';
+  constructor(private router: Router,
     public dialog: MdDialog,
     public settingsService: SettingsService) { }
-  
+
   ngOnInit() { }
 
   go(url: string) {
@@ -32,7 +33,8 @@ export class HomeComponent implements OnInit {
   startTask() {
     this.settingsService.validateSettings()
       .then( () => {
-        this.go('/task')
+        this.fade = 'fade-out';
+        setTimeout(() => this.go('/task'), 2000);
       })
       .catch(message => {
         this.dialog.open(ErrorComponent,  {

@@ -34,6 +34,7 @@ import { ErrorComponent } from './components/error/error.component';
 import { BreakComponent } from './components/break/break.component';
 import { FinishComponent } from './components/finish/finish.component';
 import { BackgroundAnimationComponent } from './components/background-animation/background-animation.component';
+import { ReadyComponent } from './components/ready/ready.component';
 
 @NgModule({
   declarations: [
@@ -45,11 +46,13 @@ import { BackgroundAnimationComponent } from './components/background-animation/
     ErrorComponent,
     BreakComponent,
     FinishComponent,
-    BackgroundAnimationComponent
+    BackgroundAnimationComponent,
+    ReadyComponent
   ],
   entryComponents: [
     ErrorComponent,
     BreakComponent,
+    ReadyComponent,
     FinishComponent,
     ExitAppComponent
   ],

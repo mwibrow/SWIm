@@ -22,11 +22,11 @@
 }
 
 .fade-in {
-  animation: fadeIn 1s;
+  animation: fadeIn 2s forwards;
 }
 
 .fade-out {
-  animation: fadeOut 1s;
+  animation: fadeOut 2s forwards;
 }
 
 .page {
@@ -38,7 +38,16 @@
   align-items: center;
   justify-content: center;
   background-color: black;
+}
 
+.page-wrapper {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  margin: auto;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
 }
 
 .container {
