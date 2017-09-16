@@ -16,6 +16,8 @@ import { SettingsService, Settings } from '../../providers/settings.service';
 
 const filterWav = item => path.extname(item.path) === '.wav';
 
+const colorCount: number = 16;
+
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
@@ -48,6 +50,7 @@ export class TaskComponent implements OnInit {
   private finish: boolean;
 
   private taskRunning: boolean;
+  private trialRunning: boolean;
   private exit: boolean;
   private barColor: number = 1;
   private backgroundColor: number = 3;
@@ -73,6 +76,7 @@ export class TaskComponent implements OnInit {
 
     this.trial = 0;
     this.taskRunning = false;
+    this.trialRunning = false;
     this.dialogRefs = {};
     this.exit = false;
 
@@ -106,7 +110,8 @@ export class TaskComponent implements OnInit {
 
   private runTrial() {
     this.recorder.record();
-    this.loadStimulus()
+    this.startTrial()
+      .then(this.loadStimulus)
       .then(this.playStimulus)
       .then(this.playTone)
       .then(this.recordResponse)
@@ -114,6 +119,17 @@ export class TaskComponent implements OnInit {
       .then(this.endTrial);
   }
 
+  private startTrial(self?: TaskComponent) {
+    self = self || this
+    self.backgroundColor = self.barColor;
+    self.barColor = (self.barColor % colorCount) + 1;
+    self.barOrientation = self.barOrientation === 'vertical' ? 'horizontal' : 'vertical';
+    self.barDirection = self.barOrientation === 'vertical' ? ['top', 'bottom'] : ['left', 'right'];
+    self.trialRunning = true;
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(self), 2000)
+    });
+  }
   private loadStimulus(self?: TaskComponent)  {
     let i: number;
     self = self || this;
@@ -204,23 +220,23 @@ export class TaskComponent implements OnInit {
   }
 
   ngOnInit() {
-    // this.settingsService.loadSettings().then(() => {
-    //   this.settings = this.settingsService.settings;
-    //   this.loadStimuli().then(() => {
-    //     setTimeout(() => {
-    //       this.openDialog('start', ErrorComponent,  {
-    //         disableClose: true,
-    //         data: {
-    //           title: 'Ready?',
-    //           content: 'Click Ok to start.'
-    //         }
-    //       },
-    //       () => {
-    //         this.runTask();
-    //       });
-    //     }, 1000);
-    //   })
-    // });
+    this.settingsService.loadSettings().then(() => {
+      this.settings = this.settingsService.settings;
+      this.loadStimuli().then(() => {
+        setTimeout(() => {
+          this.openDialog('start', ErrorComponent,  {
+            disableClose: true,
+            data: {
+              title: 'Ready?',
+              content: 'Click Ok to start.'
+            }
+          },
+          () => {
+            this.runTask();
+          });
+        }, 1000);
+      })
+    });
   }
 
   openDialog(id: string, target: any, options: any, afterClose: any) {
