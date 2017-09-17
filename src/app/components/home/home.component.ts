@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 
 import { ErrorComponent } from '../error/error.component';
 import { SettingsComponent } from '../settings/settings.component';
-import { BackgroundAnimationComponent } from '../background-animation/background-animation.component';
 import { SettingsService, Settings } from '../../providers/settings.service';
 
 const remote = require('electron').remote;
@@ -16,7 +15,6 @@ const remote = require('electron').remote;
 })
 export class HomeComponent implements OnInit {
   title = `App works !`;
-  @ViewChild('background') backgroundAnimation: BackgroundAnimationComponent;
   settingsRejectionMessage: string = '';
   fade = 'fade-in';
   constructor(private router: Router,
@@ -26,7 +24,6 @@ export class HomeComponent implements OnInit {
   ngOnInit() { }
 
   go(url: string) {
-    this.backgroundAnimation.stopAnimations();
     this.router.navigateByUrl(url);
   }
 

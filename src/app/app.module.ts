@@ -33,9 +33,7 @@ import { TaskComponent } from './components/task/task.component';
 import { ErrorComponent } from './components/error/error.component';
 import { BreakComponent } from './components/break/break.component';
 import { FinishComponent } from './components/finish/finish.component';
-import { BackgroundAnimationComponent } from './components/background-animation/background-animation.component';
 import { ReadyComponent } from './components/ready/ready.component';
-import { VisualizerComponent } from './components/visualizer/visualizer.component';
 
 @NgModule({
   declarations: [
@@ -47,9 +45,7 @@ import { VisualizerComponent } from './components/visualizer/visualizer.componen
     ErrorComponent,
     BreakComponent,
     FinishComponent,
-    BackgroundAnimationComponent,
-    ReadyComponent,
-    VisualizerComponent
+    ReadyComponent
   ],
   entryComponents: [
     ErrorComponent,
