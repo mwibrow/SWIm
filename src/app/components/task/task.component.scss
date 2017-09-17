@@ -42,10 +42,10 @@ $color-list:(
         background-color: color($md-palette, md-#{$c});
     }
     .color-light-#{$i} {
-        background-color: lighten(color($md-palette, md-#{$c}), 10);
+        background-color: lighten(color($md-palette, md-#{$c}), 5);
     }
     .color-dark-#{$i} {
-        background-color: darken(color($md-palette, md-#{$c}), 10);
+        background-color: darken(color($md-palette, md-#{$c}), 5);
     }
 }
 
