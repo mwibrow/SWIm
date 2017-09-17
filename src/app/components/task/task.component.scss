@@ -67,78 +67,56 @@ $color-list:(
 }
 
 
-@keyframes outRight {
+@keyframes out-right {
    from { }
    to { transform: translateX(100%) rotateY(90deg) scale(0.1); opacity: 0;}
 }
 
-@keyframes outLeft {
+@keyframes out-left {
     from { }
     to { transform: translateX(-100%) rotateY(90deg) scale(0.1); opacity: 0;}
 }
 
-@keyframes inRight {
+@keyframes in-right {
     from { transform: translateX(100%) rotateY(90deg)  scale(0.1); opacity: 0;}
     to { }
 }
-@keyframes inLeft {
+@keyframes in-left {
     from { transform: translateX(-100%) rotateY(90deg) scale(0.1); opacity: 0;}
     to { }
 }
 
 
-@keyframes outBottom {
+@keyframes out-bottom {
     from { }
     to { transform: translateY(100%) rotateX(90deg) scale(0.1); opacity: 0;}
  }
 
- @keyframes outTop {
+ @keyframes out-top {
      from { }
      to { transform: translateY(-100%) rotateX(90deg) scale(0.1); opacity: 0;}
  }
 
- @keyframes inBottom {
+ @keyframes in-bottom {
      from { transform: translateY(100%) rotateX(90deg)  scale(0.1); opacity: 0;}
      to { }
  }
- @keyframes inTop {
+ @keyframes in-top {
      from { transform: translateY(-100%) rotateX(90deg) scale(0.1); opacity: 0;}
      to { }
  }
 
 $animation-duration: 2s;
 
-.in-left {
-    animation: inLeft $animation-duration forwards;
+@each $d in (left, right, top, bottom) {
+    .in-#{$d} {
+        animation: in-#{$d} $animation-duration forwards;
+    }
+    .out-#{$d} {
+        animation: out-#{$d} $animation-duration forwards;
+    }
 }
 
-.in-right {
-    animation: inRight $animation-duration forwards;
-}
-
-.out-left {
-    animation: outLeft $animation-duration forwards;
-}
-
-.out-right {
-    animation: outRight $animation-duration forwards;
-}
-
-.in-top {
-    animation: inTop $animation-duration forwards;
-}
-
-.in-bottom {
-    animation: inBottom $animation-duration forwards;
-}
-
-.out-top {
-    animation: outTop $animation-duration forwards;
-}
-
-.out-bottom {
-    animation: outBottom $animation-duration forwards;
-}
 
 .tile-front {
     z-index: 10;
