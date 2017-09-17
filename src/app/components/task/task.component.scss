@@ -15,21 +15,6 @@
   overflow: hidden;
 }
 
-.background {
-    display: flex;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
-
-.trial-background {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
-}
 
 
 $color-list:(
@@ -65,76 +50,101 @@ $color-list:(
 }
 
 
+.tiles {
+    position: relative;
+    height: 100%;
+    width: 100%;
+    overflow: hidden;
+    transform-style: preserve-3d;
+    background: color($md-palette, md-black);
+    perspective: 1000px;
+}
+
 .tile {
     position: absolute;
-}
-
-.tile-background {
-    left: 0;
-    right: 0;
     width: 100%;
     height: 100%;
 }
-.tile-horizontal {
-    width: 100%;
-    height: 12.5%;
+
+
+@keyframes outRight {
+   from { }
+   to { transform: translateX(100%) rotateY(90deg) scale(0.1); opacity: 0;}
 }
 
-.tile-vertical {
-    height: 100%;
-    width: 12.5%;
+@keyframes outLeft {
+    from { }
+    to { transform: translateX(-100%) rotateY(90deg) scale(0.1); opacity: 0;}
 }
 
-@for $i from 1 through 8 {
-    .tile-horizontal-#{$i} {
-        top: 12.5% * $i - 12.5%;
-    }
-    .tile-vertical-#{$i} {
-        left: 12.5% * $i - 12.5%;
-    }
+@keyframes inRight {
+    from { transform: translateX(100%) rotateY(90deg)  scale(0.1); opacity: 0;}
+    to { }
 }
-
-@keyframes slide-in-left {
-    0% { transform: translateX(-100%); }
-  100% { transform: translateX(0%); }
-}
-@keyframes slide-in-right {
-    0% { transform: translateX(100%); }
-   100% { transform: translateX(0%); }
-}
-
-@keyframes slide-in-top {
-    0% { transform: translateY(-100%); }
-    100% { transform: translateY(0%); }
-}
-
-@keyframes slide-in-bottom {
-    0% { transform: translateY(100%); }
-    100% { transform: translateY(-0%); }
+@keyframes inLeft {
+    from { transform: translateX(-100%) rotateY(90deg) scale(0.1); opacity: 0;}
+    to { }
 }
 
 
-@each $side in left right top bottom {
-    .slide-in-#{$side} {
-        animation: slide-in-#{$side} 1.5s ease-in-out forwards;
-    }
-    .slide-out-#{$side} {
-        animation: slide-out-#{$side} 1.5 s ease-in-out forwards;
-    }
+@keyframes outBottom {
+    from { }
+    to { transform: translateY(100%) rotateX(90deg) scale(0.1); opacity: 0;}
+ }
+
+ @keyframes outTop {
+     from { }
+     to { transform: translateY(-100%) rotateX(90deg) scale(0.1); opacity: 0;}
+ }
+
+ @keyframes inBottom {
+     from { transform: translateY(100%) rotateX(90deg)  scale(0.1); opacity: 0;}
+     to { }
+ }
+ @keyframes inTop {
+     from { transform: translateY(-100%) rotateX(90deg) scale(0.1); opacity: 0;}
+     to { }
+ }
+
+$animation-duration: 2s;
+
+.in-left {
+    animation: inLeft $animation-duration forwards;
 }
 
-.slide-in-left {
-    transform: translateX(-100%);
+.in-right {
+    animation: inRight $animation-duration forwards;
 }
 
-.slide-in-right {
-    transform: translateX(100%);
+.out-left {
+    animation: outLeft $animation-duration forwards;
 }
 
-.slide-in-top {
-    transform: translateY(-100%);
+.out-right {
+    animation: outRight $animation-duration forwards;
 }
 
-.slide-in-bottom {
-    transform: translateY(100%);
+.in-top {
+    animation: inTop $animation-duration forwards;
 }
+
+.in-bottom {
+    animation: inBottom $animation-duration forwards;
+}
+
+.out-top {
+    animation: outTop $animation-duration forwards;
+}
+
+.out-bottom {
+    animation: outBottom $animation-duration forwards;
+}
+
+.tile-front {
+    z-index: 10;
+}
+
+.tile-back {
+   z-index: 5
+}
+

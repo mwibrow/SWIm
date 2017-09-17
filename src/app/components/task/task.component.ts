@@ -18,7 +18,18 @@ import { SettingsService, Settings } from '../../providers/settings.service';
 
 const filterWav = item => path.extname(item.path) === '.wav';
 
-const colorCount: number = 16;
+const COLOR_COUNT: number = 16;
+const DIRECTIONS: Array<string> =  ['top', 'down', 'left', 'right'];
+const STYLE_OUT: string = 'out';
+const STYLE_IN: string = 'in';
+
+class Tile {
+  constructor(
+    public color: number,
+    public stack: string,
+    public direction: string,
+    public style: string) {};
+}
 
 @Component({
   selector: 'app-task',
@@ -50,11 +61,9 @@ export class TaskComponent implements OnInit {
   private taskRunning: boolean;
   private trialRunning: boolean;
 
-  private barColor: number;
-  private savedBarColor: number;
-  private backgroundColor: number;
-  private barOrientation: string = 'vertical';
-  private barDirection: Array<string> = ['top', 'bottom']
+  private tiles: Array<Tile>;
+  private incomingTileIndex: number;
+  private savedTileColor: number;
   constructor(
       private router: Router,
       private audio: AudioService,
@@ -79,8 +88,11 @@ export class TaskComponent implements OnInit {
     this.dialogRefs = {};
     this.abort = false;
 
-    this.updateBars(0, 0, true, true);
-    this.savedBarColor = -1;
+    this.tiles = new Array<Tile>();
+    this.tiles.push(new Tile(0, 'back', 'top', 'out'));
+    this.tiles.push(new Tile(0, 'front', 'left', 'in'));
+    this.incomingTileIndex = 0;
+    this.savedTileColor = null;
 
   }
 
@@ -132,7 +144,7 @@ export class TaskComponent implements OnInit {
 
   private startTrial(self?: TaskComponent) {
     self = self || this
-    this.updateBars(null, null, true, true);
+    this.updateTiles();
     self.trialRunning = true;
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(self), 2000)
@@ -196,13 +208,11 @@ export class TaskComponent implements OnInit {
       return;
     }
     if (self.trial >= self.stimuli.length) {
-      self.updateBars(0, null, true, true);
+      self.updateTiles(0);
       setTimeout(() => self.endTask(), 2000);
     } else {
       if (self.trial % self.settings.blockSize === 0) {
-        let savedBarColor = self.barColor;
-        self.updateBars(0, null, true, true);
-        self.savedBarColor = savedBarColor;
+        self.updateTiles(0);
         setTimeout(() => self.break(), 1500);
       } else {
         self.runTrial();
@@ -210,17 +220,27 @@ export class TaskComponent implements OnInit {
     }
   }
 
-  private updateBars(barColor, backgroundColor, flipOrientation, flipDirection) {
-    this.backgroundColor = Number.isInteger(backgroundColor) ? backgroundColor : this.barColor;
-    if (this.savedBarColor !== -1) {
-      this.barColor = (this.savedBarColor % colorCount) + 1;
-      this.savedBarColor = -1;
+  private updateTiles(color?: number) {
+    let newColor: number;
+    let outgoingTileIndex: number = this.incomingTileIndex;
+    this.incomingTileIndex = 1 - this.incomingTileIndex;
+
+    if (Number.isInteger(color)) {
+      this.savedTileColor = this.tiles[outgoingTileIndex].color;
+      this.tiles[this.incomingTileIndex].color = color;
     } else {
-      this.barColor = Number.isInteger(barColor) ? barColor : (this.barColor % colorCount) + 1;
+      if (Number.isInteger(this.savedTileColor)) {
+        newColor = this.savedTileColor;
+        this.savedTileColor = null;
+      } else {
+        newColor = this.tiles[outgoingTileIndex].color;
+      }
+      this.tiles[this.incomingTileIndex].color = (newColor % COLOR_COUNT) + 1;
     }
-    if (flipOrientation) this.barOrientation = this.barOrientation === 'vertical' ? 'horizontal' : 'vertical';
-    this.barDirection = this.barOrientation === 'vertical' ? ['top', 'bottom'] : ['left', 'right'];
-    console.log(this.backgroundColor, this.barColor)
+
+    this.tiles[this.incomingTileIndex].style = STYLE_IN;
+    this.tiles[outgoingTileIndex].style = STYLE_OUT;
+
   }
 
   private endTask() {
@@ -264,8 +284,8 @@ export class TaskComponent implements OnInit {
     this.settingsService.loadSettings().then(() => {
       this.settings = this.settingsService.settings;
       this.loadStimuli().then(() => {
-        this.updateBars(0, 0, true, true);
         setTimeout(() => {
+          this.updateTiles(0);
           this.openDialog('start', ReadyComponent,  {
             disableClose: true,
           },

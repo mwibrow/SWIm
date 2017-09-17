@@ -19,6 +19,7 @@ html, body {
   height: 100%;
 }
 
+
 * {
   font-family: $font-main;
   font-weight: 900;
@@ -74,7 +75,7 @@ $spinner-border: 10px;
   align-items: center;
   justify-content: center;
   display: flex;
-
+  background-color: $app-background !important;
 
   .spinner {
     border-radius: 50%;
