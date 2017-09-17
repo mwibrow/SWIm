@@ -9,6 +9,7 @@ const storage = require('electron-json-storage');
 const fs = require('fs-extra');
 const klawSync = require('klaw-sync')
 const path = require('path');
+var _ = require('lodash');
 
 import { ErrorComponent } from '../error/error.component';
 import { FinishComponent } from '../finish/finish.component';
@@ -19,7 +20,7 @@ import { SettingsService, Settings } from '../../providers/settings.service';
 const filterWav = item => path.extname(item.path) === '.wav';
 
 const COLOR_COUNT: number = 16;
-const DIRECTIONS: Array<string> =  ['top', 'down', 'left', 'right'];
+const DIRECTIONS: Array<string> =  ['top', 'bottom', 'left', 'right'];
 const STYLE_OUT: string = 'out';
 const STYLE_IN: string = 'in';
 
@@ -240,6 +241,9 @@ export class TaskComponent implements OnInit {
 
     this.tiles[this.incomingTileIndex].style = STYLE_IN;
     this.tiles[outgoingTileIndex].style = STYLE_OUT;
+    let directions = _.sampleSize(DIRECTIONS, 2);
+    this.tiles[this.incomingTileIndex].direction = directions[0];
+    this.tiles[outgoingTileIndex].direction = directions[1];
 
   }
 
