@@ -1,0 +1,25 @@
+
+
+.visualizer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.shapes {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+}
+.circle {
+    width: 2rem;
+    height: 2rem;
+    margin: 0.5rem;
+    border-radius: 50%;
+}

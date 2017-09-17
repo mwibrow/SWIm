@@ -24,6 +24,7 @@ const DIRECTIONS: Array<string> =  ['top', 'bottom', 'left', 'right'];
 const STYLE_OUT: string = 'out';
 const STYLE_IN: string = 'in';
 
+
 class Tile {
   constructor(
     public color: number,
@@ -31,6 +32,8 @@ class Tile {
     public direction: string,
     public style: string) {};
 }
+
+
 
 @Component({
   selector: 'app-task',
@@ -65,6 +68,8 @@ export class TaskComponent implements OnInit {
   private tiles: Array<Tile>;
   private incomingTileIndex: number;
   private savedTileColor: number;
+
+
   constructor(
       private router: Router,
       private audio: AudioService,
@@ -94,7 +99,6 @@ export class TaskComponent implements OnInit {
     this.tiles.push(new Tile(0, 'front', 'left', 'in'));
     this.incomingTileIndex = 0;
     this.savedTileColor = null;
-
   }
 
 
