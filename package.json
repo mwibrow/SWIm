@@ -55,7 +55,6 @@
     "klaw-sync": "^2.1.0",
     "node-sass": "^4.5.3",
     "rxjs": "^5.4.2",
-    "snapsvg-cjs": "0.0.4",
     "sprintf-js": "^1.1.1",
     "wav-decoder": "^1.1.1",
     "wav-encoder": "^1.1.0",
