@@ -126,6 +126,7 @@ export class TaskComponent implements OnInit {
       (err) => {
         console.error(`Could not create folder '${participantPath}'`)
       });
+    this.stimuli = _.shuffle(this.stimuli);
     this.finish = false;
     this.abort = false;
     this.taskRunning = true;
@@ -266,21 +267,21 @@ export class TaskComponent implements OnInit {
   }
 
   handleKeyboardEvents(event: KeyboardEvent) {
-      let key = event.which || event.keyCode;
-      switch (event.type) {
-        case 'keydown':
-          this.keyboardBuffer.push(event.key);
+    let key = event.which || event.keyCode;
+    switch (event.type) {
+      case 'keydown':
+        this.keyboardBuffer.push(event.key);
 
-          if (this.keyboardBuffer.join('|') === 'Control|Shift|Escape') {
-              this.abort = true;
-              this.closeDialog();
-              this.router.navigateByUrl('');
-          }
-          break;
-        case 'keyup':
-            this.keyboardBuffer = [];
-        default:
-      }
+        if (this.keyboardBuffer.join('|') === 'Control|Shift|Escape') {
+            this.abort = true;
+            this.closeDialog();
+            this.router.navigateByUrl('');
+        }
+        break;
+      case 'keyup':
+          this.keyboardBuffer = [];
+      default:
+    }
     return false;
   }
 
