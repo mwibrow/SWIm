@@ -16,6 +16,7 @@ import { FinishComponent } from '../finish/finish.component';
 import { ReadyComponent } from '../ready/ready.component';
 import { BreakComponent } from '../break/break.component';
 import { SettingsService, Settings } from '../../providers/settings.service';
+import { Visualiser } from '../../visualiser';
 
 const filterWav = item => path.extname(item.path) === '.wav';
 
@@ -30,7 +31,8 @@ class Tile {
     public color: number,
     public stack: string,
     public direction: string,
-    public style: string) {};
+    public style: string,
+    public active: boolean=false) {};
 }
 
 
@@ -54,6 +56,7 @@ export class TaskComponent implements OnInit {
 
   private player: AudioPlayer;
   private recorder: AudioRecorder;
+  private visualiser: Visualiser;
 
   private keyboardBuffer: Array<string>;
 

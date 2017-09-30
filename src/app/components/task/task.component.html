@@ -1,7 +1,12 @@
 
 <div class="page">
     <div class="tiles">
-        <div class="tile tile-{{tiles[0].stack}} color-light-{{tiles[0].color}} {{tiles[0].style}}-{{tiles[0].direction}}"></div>
-        <div class="tile tile-{{tiles[1].stack}} color-light-{{tiles[1].color}} {{tiles[1].style}}-{{tiles[1].direction}}"></div>
+        <div *ngFor="let tile of tiles">
+            <div *ngIf="tile.active" class="tile tile-{{tile.stack}} color-{{tile.color}} {{tile.style}}-{{tile.direction}}">
+                <div class="visualiser">
+                    <div [ngStyle]="visualiserStyle"></div>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
