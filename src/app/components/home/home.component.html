@@ -7,26 +7,45 @@
     <div class="content">
 
 
-  <h1 class="title">
+  <div class="title">
     <span class="logo">
-      <span>S</span><span>W</span><span>Im</span><span>!</span>
+      <span>S</span><span>W</span><span>I</span><span>m</span>
     </span>
-  </h1>
-  <h2>
+  </div>
+  <img [src]="logoPath"/>
+  <div class="subtitle">
     Spoken Word Imitation
-  </h2>
+  </div>
 
   <md-list>
-    <md-list-item>
-      <button md-button (click)="openSettings()">
-        Settings
-      </button>
+
+    <md-list-item *ngIf="!this.audioAvailable">
+      <span class="error">
+        Cannot access audio for recording.
+        <br>
+        Please check computer audio settings and restart
+        <br>
+        &nbsp;
+      </span>
     </md-list-item>
-    <md-list-item>
-      <button md-button (click)="startTask()">
+    <md-list-item *ngIf="this.audioAvailable">
+      <button md-button class="button-primary" (click)="startTask()">
         Start
       </button>
     </md-list-item>
+
+    <md-list-item *ngIf="this.audioAvailable">
+      <button md-button class="button-secondary" (click)="openSettings()">
+        Settings
+      </button>
+    </md-list-item>
+
+    <md-list-item *ngIf="this.audioAvailable">
+      <button md-button class="button-tertiary" (click)="openAudio()">
+        Audio
+      </button>
+    </md-list-item>
+
     <md-list-item>
       <button md-button class="danger" (click)="exitApplication()">
         Exit

@@ -2,9 +2,11 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MdDialog, MdDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
+import { AudioComponent } from '../audio/audio.component';
 import { ErrorComponent } from '../error/error.component';
 import { SettingsComponent } from '../settings/settings.component';
 import { SettingsService, Settings } from '../../providers/settings.service';
+import { AudioService } from '../../providers/audio.service';
 
 const remote = require('electron').remote;
 
@@ -17,11 +19,19 @@ export class HomeComponent implements OnInit {
   title = `App works !`;
   settingsRejectionMessage: string = '';
   fade = 'fade-in';
+  logoPath = 'assets/images/swim-logo.svg';
+  audioAvailable: boolean;
   constructor(private router: Router,
+    private audio: AudioService,
     public dialog: MdDialog,
-    public settingsService: SettingsService) { }
+    public settingsService: SettingsService) {
+      this.audioAvailable = true;
+    }
 
-  ngOnInit() { }
+  ngOnInit() {
+    this.audioAvailable = true;
+    this.checkAudio();
+  }
 
   go(url: string) {
     this.router.navigateByUrl(url);
@@ -43,6 +53,19 @@ export class HomeComponent implements OnInit {
         })
       })
   }
+
+  openAudio() {
+    this.dialog.open(AudioComponent);
+  }
+
+  checkAudio() {
+    this.audio.recorder.initialise()
+      .then((stream) => {})
+      .catch((err) => {
+        this.audioAvailable = false;
+      });
+  }
+
   openSettings() {
     this.dialog.open(SettingsComponent);
   }
@@ -66,7 +89,7 @@ export class HomeComponent implements OnInit {
     </h2>
     <div md-dialog-content>
       Are you sure you want to quit
-      <span class="logo"><span>S</span><span>W</span><span>Im</span><span>!</span>
+      <span class="logo"><span>S</span><span>W</span><span>I</span><span>m</span>
     </span>?
     </div>
     <div md-dialog-actions>

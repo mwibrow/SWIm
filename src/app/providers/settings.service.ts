@@ -20,6 +20,7 @@ export class Settings {
     maskDuration: number = 1000;
 
     responseLength: number = 5;
+    repetitions: number = 3;
 
 }
 
@@ -67,7 +68,7 @@ export class SettingsService {
 
 
   validateSettings() {
-    
+
       return new Promise((resolve, reject) => {
         if (!this.settings.stimuliPath || this.settings.responsesPath === notSet) {
           reject('Stimuli folder not set');

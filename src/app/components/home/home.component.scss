@@ -66,13 +66,28 @@
   border-radius: 5px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   padding: 1ex;
 
-  h1 {
-    margin: auto;
-    font-size: 800%;
+  .title {
+    margin: 0 !important;
+    padding: 0 !important;
+    span {
+    font-size: 300%;
+    line-height: 1;
+    }
   }
 
+  .subtitle {
+    font-size: 150%;
+    color: $app-color;
+    margin: 1rem 0;
+  }
+
+  img {
+    width: 192px;
+    height: 192px;
+  }
   h1 span {
      font-size: 100%;
   }
