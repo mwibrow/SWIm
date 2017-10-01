@@ -22,6 +22,8 @@ export class Settings {
     responseLength: number = 5;
     repetitions: number = 3;
 
+    escapeCombo: string = 'Escape|Escape|Escape';
+
 }
 
 @Injectable()
@@ -30,7 +32,6 @@ export class SettingsService {
   settings: Settings;
 
   constructor() {
-
     this.loadSettings();
   }
 

@@ -132,7 +132,10 @@
    background-color: $button-secondary-background !important;
 }
 
-
+.error {
+  color: color($md-palette, md-red);
+  font-weight: bold;
+}
 
 
   .logo span:nth-of-type(1) {

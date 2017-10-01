@@ -4,7 +4,7 @@
         <div *ngFor="let tile of tiles">
             <div *ngIf="tile.active" class="tile tile-{{tile.stack}} color-{{tile.color}} {{tile.style}}-{{tile.direction}}">
                 <div class="visualiser">
-                    <div [ngStyle]="visualiserStyle"></div>
+                    <div class="visualiser-bar" [ngStyle]="tile.visualiserStyle"></div>
                 </div>
             </div>
         </div>

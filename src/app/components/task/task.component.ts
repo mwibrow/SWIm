@@ -32,6 +32,7 @@ class Tile {
     public stack: string,
     public direction: string,
     public style: string,
+    public visualiserStyle: any={},
     public active: boolean=false) {};
 }
 
@@ -49,7 +50,8 @@ class Tile {
 export class TaskComponent implements OnInit {
 
   private settings: Settings;
-  private stimuli: Array<any>;
+  private stimuli: Array<string>;
+  private audioStimuli: any;
   private trial: number;
   private participantFolder: string;
   private now: Date;
@@ -72,7 +74,7 @@ export class TaskComponent implements OnInit {
   private incomingTileIndex: number;
   private savedTileColor: number;
 
-
+  private escapeCombo: string;
   constructor(
       private router: Router,
       private audio: AudioService,
@@ -85,10 +87,16 @@ export class TaskComponent implements OnInit {
     this.recorder = audio.recorder;
     this.recorder.initialise();
 
+    this.visualiser = new Visualiser(this.audio.getContext());
+    this.recorder.clearNodes();
+    this.recorder.addNode(this.visualiser.analyser);
+    this.recorder.monitor = false;
+
     this.keyboardBuffer = [];
 
 
-    this.stimuli = new Array<any>();
+    this.stimuli = new Array<string>();
+    this.audioStimuli = {};
     this.settings = settingsService.settings;
 
     this.trial = 0;
@@ -102,14 +110,16 @@ export class TaskComponent implements OnInit {
     this.tiles.push(new Tile(0, 'front', 'left', 'in'));
     this.incomingTileIndex = 0;
     this.savedTileColor = null;
+
+    this.escapeCombo = 'Escape|Escape|Escape';
   }
 
 
   private loadStimuli() {
     return new Promise((resolve, reject) => {
       console.log(`Loading wav files from ${this.settings.stimuliPath}`);
-      this.stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
-      if (this.stimuli.length === 0) {
+      let stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
+      if (stimuli.length === 0) {
         this.openDialog('error', ErrorComponent, {
           data: {
             title: 'Ooops!',
@@ -120,8 +130,18 @@ export class TaskComponent implements OnInit {
             this.router.navigateByUrl('');
           });
       }
+      console.log(`Loaded ${stimuli.length} audio paths.`);
+      this.audioStimuli = stimuli.reduce((obj, stimulus) => Object.assign(obj, {[this.getBase(stimulus.path)]: stimulus.path}), {});
+      this.stimuli = _.flatten(_.times(this.settings.repetitions, () => Object.keys(this.audioStimuli)));
+      console.log(`Total audio stimuli (including repetitions): ${this.stimuli.length}`)
       resolve();
     });
+  }
+
+  private getBase(filePath): string {
+    let isWindows: boolean = path.sep === '//';
+    let pathApi = isWindows ? path.win32 : path;
+    return pathApi.basename(filePath, path.extname(filePath))
   }
 
   private runTask() {
@@ -141,117 +161,122 @@ export class TaskComponent implements OnInit {
   }
 
   private runTrial() {
-    this.recorder.record();
     this.startTrial()
-      .then(this.loadStimulus)
-      .then(this.playStimulus)
-      .then(this.playTone)
-      .then(this.recordResponse)
-      .then(this.saveResponse)
-      .then(this.endTrial);
+      .then(() => this.loadStimulus())
+      .then(() => this.startRecording())
+      .then(() => this.playStimulus())
+      .then(() => this.playTone())
+      .then(() => this.recordResponse())
+      .then(() => this.saveResponse())
+      .then(() => this.endTrial());
   }
 
-  private startTrial(self?: TaskComponent) {
-    self = self || this
-    this.updateTiles();
-    self.trialRunning = true;
+  private startTrial() {
+
+    this.updateTiles(true);
+    this.trialRunning = true;
     return new Promise((resolve, reject) => {
       setTimeout(() => resolve(self), 2000)
     });
   }
-  private loadStimulus(self?: TaskComponent)  {
+
+  private loadStimulus()  {
     let i: number;
-    self = self || this;
     return new Promise((resolve, reject) => {
-      i = self.trial % self.stimuli.length;
-      self.player.loadWav(self.stimuli[i].path).then(() => resolve(self))
-    });
-  }
-
-  private playStimulus(self?: TaskComponent)  {
-    self = self || this;
-    return new Promise((resolve, reject) => {
-      return self.player.play().then(() => resolve(self));
-    });
-  }
-
-  private playTone(self?: TaskComponent)  {
-    self = self || this;
-    return new Promise((resolve, reject) => {
-      self.player.playTone(440, 1).then(() => resolve(self));
-    });
-  }
-
-  private recordResponse(self?: TaskComponent)  {
-    self = self || this;
-    return new Promise((resolve, reject) => {
-      setTimeout(() => resolve(self), self.settings.responseLength * 1000);
-    })
-  }
-
-  private saveResponse(self?: TaskComponent) {
-    self = self || this;
-    return new Promise((resolve, reject) => {
-      self.recorder.stop().then(() => {
-        let wavPath: string = self.getResponseFile();
-        console.log(`Saving wav to ${wavPath}`);
-        self.recorder.saveWav(wavPath).then(() => resolve(self));
+      i = this.trial % this.stimuli.length;
+      this.player.loadWav(this.audioStimuli[this.stimuli[i]]).then(() => {
+        resolve();
       });
     });
   }
 
-  private getResponseFile(self?: TaskComponent) {
+  private startRecording() {
+    return new Promise((resolve, reject) => {
+      this.recorder.record();
+      this.visualiser.onvisualise = (data) => {
+        let value = (Math.floor((data[0] / 255) * 15) + 1) * 16;
+        this.tiles[this.incomingTileIndex].visualiserStyle = {
+          width: `${value}px`,
+          height: `${value}px`
+        }
+      }
+      this.visualiser.start();
+      resolve();
+    });
+  }
+
+  private playStimulus()  {
+    return new Promise((resolve, reject) => {
+      return this.player.play().then(() => resolve(self));
+    });
+  }
+
+  private playTone()  {
+    return new Promise((resolve, reject) => {
+      this.player.playTone(440, 1).then(() => resolve(self));
+    });
+  }
+
+  private recordResponse()  {
+    return new Promise((resolve, reject) => {
+      setTimeout(() => resolve(self), this.settings.responseLength * 1000);
+    })
+  }
+
+  private saveResponse() {
+    return new Promise((resolve, reject) => {
+      this.recorder.stop().then(() => {
+        let wavPath: string = this.getResponseFile();
+        console.log(`Saving wav to ${wavPath}`);
+        this.recorder.saveWav(wavPath).then(() => resolve(self));
+      });
+    });
+  }
+
+  private getResponseFile() {
     let i: number;
-    self = self || this;
-    i = self.trial % self.stimuli.length;
+    i = this.trial % this.stimuli.length;
     return path.normalize(path.join(
-      self.settings.responsesPath, self.participantFolder,
-      `${sprintf.sprintf('%03d', self.trial + 1)}-${path.posix.basename(self.stimuli[i].path)}`
+      this.settings.responsesPath, this.participantFolder,
+      `${sprintf.sprintf('%03d', this.trial + 1)}-${this.stimuli[i]}.wav`
     ));
   }
 
-  private endTrial(self?: TaskComponent) {
-    self = self || this;
-    self.trial ++;
-    if (self.abort) {
+  private endTrial() {
+    this.trial ++;
+    if (this.abort) {
       return;
     }
-    if (self.trial >= self.stimuli.length) {
-      self.updateTiles(0);
-      setTimeout(() => self.endTask(), 2000);
+    if (this.trial >= this.stimuli.length) {
+      this.updateTiles();
+      setTimeout(() => this.endTask(), 2000);
     } else {
-      if (self.trial % self.settings.blockSize === 0) {
-        self.updateTiles(0);
-        setTimeout(() => self.break(), 1500);
+      if (this.trial % this.settings.blockSize === 0) {
+        this.updateTiles();
+        setTimeout(() => this.break(), 1500);
       } else {
-        self.runTrial();
+        this.runTrial();
       }
     }
   }
 
-  private updateTiles(color?: number) {
+  private updateTiles(active: boolean=false) {
     let newColor: number;
     let outgoingTileIndex: number = this.incomingTileIndex;
     this.incomingTileIndex = 1 - this.incomingTileIndex;
 
-    if (Number.isInteger(color)) {
-      this.savedTileColor = this.tiles[outgoingTileIndex].color;
-      this.tiles[this.incomingTileIndex].color = color;
-    } else {
-      if (Number.isInteger(this.savedTileColor)) {
-        newColor = this.savedTileColor;
-        this.savedTileColor = null;
-      } else {
-        newColor = this.tiles[outgoingTileIndex].color;
-      }
-      this.tiles[this.incomingTileIndex].color = (newColor % COLOR_COUNT) + 1;
-    }
+    let inTile = this.tiles[this.incomingTileIndex];
+    let outTile = this.tiles[1 - this.incomingTileIndex];
 
-    this.tiles[this.incomingTileIndex].style = STYLE_IN;
-    this.tiles[outgoingTileIndex].style = STYLE_OUT;
     let directions = _.sampleSize(DIRECTIONS, 2);
-    this.tiles[this.incomingTileIndex].direction = directions[0];
-    this.tiles[outgoingTileIndex].direction = directions[1];
+
+    inTile.color = _.sample(_.range(1, COLOR_COUNT).filter(color => color != outTile.color));
+    inTile.style = STYLE_IN;
+    inTile.direction = directions[0];
+    inTile.active = active;
+
+    outTile.style = STYLE_OUT;
+    outTile.direction = directions[1];
 
   }
 
@@ -278,15 +303,14 @@ export class TaskComponent implements OnInit {
     switch (event.type) {
       case 'keydown':
         this.keyboardBuffer.push(event.key);
-
-        if (this.keyboardBuffer.join('|') === 'Control|Shift|Escape') {
+        setTimeout(() => this.keyboardBuffer = [], 1000);
+        console.log(this.keyboardBuffer.join('|').toLowerCase(), this.settings.escapeCombo.toLowerCase())
+        if (this.keyboardBuffer.join('|').toLowerCase() === this.settings.escapeCombo.toLowerCase()) {
             this.abort = true;
             this.closeDialog();
             this.router.navigateByUrl('');
         }
         break;
-      case 'keyup':
-          this.keyboardBuffer = [];
       default:
     }
     return false;
@@ -297,7 +321,7 @@ export class TaskComponent implements OnInit {
       this.settings = this.settingsService.settings;
       this.loadStimuli().then(() => {
         setTimeout(() => {
-          this.updateTiles(0);
+          this.updateTiles();
           this.openDialog('start', ReadyComponent,  {
             disableClose: true,
           },
