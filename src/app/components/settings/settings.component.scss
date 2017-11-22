@@ -141,34 +141,33 @@
     }
 
     button {
-      position: absolute;
-      margin: 0px !important;
+      //position: absolute;
+      margin: 0 0 1px !important;
       padding: 0px !important;
-      font-size: $font-size-normal;
-      width: 0.875em !important;
-      height: 0.85em !important;
-      line-height: 0.25em;
-      background-color: color($md-palette, md-orange);
+      width: 0.7rem !important;
+      height: 0.7rem !important;
+
       display:flex;
       align-items: center;
       justify-content: center;
+      background-color: color($md-palette, md-orange);
+
+      .small {
+        font-weight: bold;
+        font-size: 0.75rem;
+      }
+    }
+    .number-input-buttons {
+      width: .7rem;
+      height: calc(1.4rem + 2px);
+      display: flex;
+      flex-direction: column;
+      position: absolute;
+      top:0;
+      right: 0;
     }
     button:hover {
       background-color: darken(color($md-palette, md-orange), 10);
-    }
-    .plus {
-      top: 0;
-      right: 0;
-      display:flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .minus {
-      bottom: 0;
-      right: 0;
-      display:flex;
-      align-items: center;
-      justify-content: center;
     }
   }
 
