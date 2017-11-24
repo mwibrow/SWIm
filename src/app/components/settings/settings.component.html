@@ -1,10 +1,10 @@
 
 
-<div md-dialog-title class="header">
+<div mat-dialog-title class="header">
   <span class="header-title">Settings</span>
 </div>
-<div md-dialog-content>
-  <div class="main">
+<div mat-dialog-content>
+  <!-- <div class="main"> -->
     <!-- <div class="setting text">
       <div class="setting-header">
         <span class="title">Participant id
@@ -27,9 +27,9 @@
         <span class="title">Stimuli</span>
         <span class="horizontal-filler"></span>
         <div class="buttons">
-          <button md-button class="secondary md-small" (click)="changeStimuliPath()">
+          <button mat-button class="secondary small" (click)="changeStimuliPath()">
             <!-- <span class="tiny">Change</span> -->
-            <md-icon>folder</md-icon>
+            <mat-icon>folder</mat-icon>
           </button>
         </div>
       </div>
@@ -49,9 +49,9 @@
         </span>
         <span class="horizontal-filler"></span>
         <div class="buttons">
-          <button md-button class="secondary small"  (click)="changeResponsesPath()">
+          <button mat-button class="secondary small"  (click)="changeResponsesPath()">
               <!-- <span class="tiny">Change</span> -->
-              <md-icon>folder</md-icon>
+              <mat-icon>folder</mat-icon>
           </button>
         </div>
       </div>
@@ -72,8 +72,8 @@
         <div class="number-input-with-buttons">
           <input type="number" min="1" max="100" [(ngModel)]="settings.blockSize" (change)="changeBlockSize()">
           <div class="number-input-buttons">
-            <button (click)="changeBlockSize(1)"><i class="md-icon small">add</i></button>
-            <button (click)="changeBlockSize(-1)"><i class="md-icon small">remove</i></button>
+            <button (click)="changeBlockSize(1)"><i class="mat-icon small">add</i></button>
+            <button (click)="changeBlockSize(-1)"><i class="mat-icon small">remove</i></button>
           </div>
         </div>
       </div>
@@ -88,8 +88,8 @@
         <div class="number-input-with-buttons">
           <input type="number" min="1" max="100" [(ngModel)]="settings.maskFrequency" (change)="changeMaskFrequency()">
           <div class="number-input-buttons">
-            <button class="plus" (click)="changeMaskFrequency(5)"><i class="md-icon small">add</i></button>
-            <button class="minus" (click)="changeMaskFrequency(-5)"><i class="md-icon small">remove</i></button>
+            <button class="plus" (click)="changeMaskFrequency(5)"><i class="mat-icon small">add</i></button>
+            <button class="minus" (click)="changeMaskFrequency(-5)"><i class="mat-icon small">remove</i></button>
           </div>
         </div>
       </div>
@@ -104,8 +104,8 @@
         <div class="number-input-with-buttons">
           <input type="number" min="10" max="2000" [(ngModel)]="settings.maskDuration" (change)="changeMaskDuration()">
           <div class="number-input-buttons">
-            <button class="plus" (click)="changeMaskDuration(10)"><i class="md-icon small">add</i></button>
-            <button class="minus" (click)="changeMaskDuration(-10)"><i class="md-icon small">remove</i></button>
+            <button class="plus" (click)="changeMaskDuration(10)"><i class="mat-icon small">add</i></button>
+            <button class="minus" (click)="changeMaskDuration(-10)"><i class="mat-icon small">remove</i></button>
           </div>
         </div>
       </div>
@@ -121,8 +121,8 @@
         <div class="number-input-with-buttons">
           <input type="number" min="1" max="10" [(ngModel)]="settings.responseLength" (change)="changeResponseLength()">
           <div class="number-input-buttons">
-            <button class="plus" (click)="changeResponseLength(1)"><i class="md-icon small">add</i></button>
-            <button class="minus" (click)="changeResponseLength(-1)"><i class="md-icon small">remove</i></button>
+            <button class="plus" (click)="changeResponseLength(1)"><i class="mat-icon small">add</i></button>
+            <button class="minus" (click)="changeResponseLength(-1)"><i class="mat-icon small">remove</i></button>
           </div>
         </div>
       </div>
@@ -130,16 +130,16 @@
         <span class="description">Time allowed for response in seconds</span>
       </div>
     </div>
-  </div>
+  <!-- </div> -->
 </div>
 
-<div md-dialog-actions class="footer">
+<div mat-dialog-actions class="footer">
   <span class="horizontal-filler"></span>
   <div class="buttons">
-    <button md-button class="secondary" (click)="cancelSettings()">
+    <button mat-button class="secondary" (click)="cancelSettings()">
       Cancel
     </button>
-    <button md-button class="primary" (click)="saveSettings()">
+    <button mat-button class="primary" (click)="saveSettings()">
       Save
     </button>
   </div>

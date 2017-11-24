@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router';
 
 import { AudioComponent } from '../audio/audio.component';
@@ -23,7 +23,7 @@ export class HomeComponent implements OnInit {
   audioAvailable: boolean;
   constructor(private router: Router,
     private audio: AudioService,
-    public dialog: MdDialog,
+    public dialog: MatDialog,
     public settingsService: SettingsService) {
       this.audioAvailable = true;
     }
@@ -84,18 +84,18 @@ export class HomeComponent implements OnInit {
 @Component({
   selector: 'app-exit-dialog',
   template: `
-    <h2 md-dialog-title>
+    <h2 mat-dialog-title>
       Quit?
     </h2>
-    <div md-dialog-content>
+    <div mat-dialog-content>
       Are you sure you want to quit
       <span class="logo"><span>S</span><span>W</span><span>I</span><span>m</span>
     </span>?
     </div>
-    <div md-dialog-actions>
+    <div mat-dialog-actions>
       <div class="hfill"></div>
-      <button md-button md-dialog-close class="button-secondary">Cancel</button>
-      <button md-button [md-dialog-close]="true" class="button-primary">Ok</button>
+      <button mat-button mat-dialog-close class="button-secondary">Cancel</button>
+      <button mat-button [mat-dialog-close]="true" class="button-primary">Ok</button>
     </div>`,
   styleUrls: ['./home.component.scss']
 })

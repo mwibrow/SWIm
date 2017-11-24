@@ -6,9 +6,9 @@
 }
 
 $colors: (
-    primary: color($md-palette, md-light-blue),
-    secondary: color($md-palette, md-light-green),
-    danger: color($md-palette, md-red)
+    primary: color($mat-palette, mat-light-blue),
+    secondary: color($mat-palette, mat-light-green),
+    danger: color($mat-palette, mat-red)
 );
 
 
@@ -27,13 +27,13 @@ $button-primary-background: color($colors, primary);
 $button-secondary-background: color($colors, secondary);
 $button-danger-background: color($colors, danger);
 
-$button-color: color($md-palette, md-white);
-$button-primary-color: color($md-palette, md-white);
-$button-secondary-color: color($md-palette, md-white);
-$button-danger-color: color($md-palette, md-white);
+$button-color: color($mat-palette, mat-white);
+$button-primary-color: color($mat-palette, mat-white);
+$button-secondary-color: color($mat-palette, mat-white);
+$button-danger-color: color($mat-palette, mat-white);
 
-$dialog-background-color: rgba(color($md-palette, md-white), 0.9);
-$dialog-color: color($md-palette, md-black);
+$dialog-background-color: rgba(color($mat-palette, mat-white), 0.9);
+$dialog-color: color($mat-palette, mat-black);
 
-$app-background: color($md-palette, md-black);
-$app-color: color($md-palette, md-white);
+$app-background: color($mat-palette, mat-black);
+$app-color: color($mat-palette, mat-white);

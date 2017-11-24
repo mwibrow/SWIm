@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 import { AudioService, AudioPlayer, AudioRecorder } from '../../providers/audio.service';
 import { Visualiser } from '../../visualiser';
@@ -16,7 +16,7 @@ export class AudioComponent implements OnInit {
   outputVisualiser: Visualiser;
   inputLevel: any = {};
   inputErrorMessage: string;
-  constructor(private audio: AudioService, private dialogRef: MdDialogRef<AudioComponent>) {
+  constructor(private audio: AudioService, private dialogRef: MatDialogRef<AudioComponent>) {
     this.inputErrorMessage = '';
     this.audio.initialise();
   }

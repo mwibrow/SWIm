@@ -4,7 +4,7 @@
 
 
 
-@import '../src/assets/fonts/md-icon-font/material-icons.css';
+@import '../src/assets/fonts/mat-icon-font/material-icons.css';
 
 @import './stylesheets/partials/_variables.scss';
 @import './stylesheets/partials/_typography.scss';
@@ -28,13 +28,13 @@ html, body {
 
 .button-primary {
   background-color: color($colors, primary);
-  color: color($md-palette, md-white)
+  color: color($mat-palette, mat-white)
 }
 
 
 .button-secondary {
   background-color: color($colors, secondary);
-  color: color($md-palette, md-white);
+  color: color($mat-palette, mat-white);
 }
 
 button:focus {
@@ -52,8 +52,8 @@ button:focus {
 
 
 .button-tertiary {
-  background-color: color($md-palette, md-orange) !important;
-  color: color($md-palette, md-white);
+  background-color: color($mat-palette, mat-orange) !important;
+  color: color($mat-palette, mat-white);
 }
 
 
@@ -86,10 +86,10 @@ $spinner-border: 10px;
 
   .spinner {
     border-radius: 50%;
-    border-top: $spinner-border solid color($md-palette, md-red);
-    border-left: $spinner-border solid color($md-palette, md-orange);
-    border-right: $spinner-border solid color($md-palette, md-light-green);
-    border-bottom: $spinner-border solid color($md-palette, md-light-blue);
+    border-top: $spinner-border solid color($mat-palette, mat-red);
+    border-left: $spinner-border solid color($mat-palette, mat-orange);
+    border-right: $spinner-border solid color($mat-palette, mat-light-green);
+    border-bottom: $spinner-border solid color($mat-palette, mat-light-blue);
     width: $spinner-size !important;
     height: $spinner-size !important;
     margin: $spinner-size / 4;
@@ -98,22 +98,22 @@ $spinner-border: 10px;
 }
 
 
-.mat-dialog-container, .md-dialog-container {
+.mat-dialog-container {
     background: $dialog-background-color;
     color: $dialog-color;
-    box-shadow: 0 0 1rem 1rem rgba(color($md-palette, md-black), 0.125) !important;
+    box-shadow: 0 0 1rem 1rem rgba(color($mat-palette, mat-black), 0.125) !important;
     h2 {
       font-family: $font-main;
       font-size: $font-size-large;
       font-weight: bold;
     }
-    div[md-dialog-actions] {
+    div[mat-dialog-actions] {
       .hfill {
           flex: 1 1;
       }
       button {
         background-color: color($colors, primary);
-        color: color($md-palette, md-white);
+        color: color($mat-palette, mat-white);
       }
       .ok {
         background-color: color($colors, danger);
@@ -123,10 +123,10 @@ $spinner-border: 10px;
       }
     }
     border-radius: 2rem !important;
-    border-top: $spinner-border solid color($md-palette, md-red);
-    border-left: $spinner-border solid color($md-palette, md-orange);
-    border-right: $spinner-border solid color($md-palette, md-light-green);
-    border-bottom: $spinner-border solid color($md-palette, md-light-blue);
+    border-top: $spinner-border solid color($mat-palette, mat-red);
+    border-left: $spinner-border solid color($mat-palette, mat-orange);
+    border-right: $spinner-border solid color($mat-palette, mat-light-green);
+    border-bottom: $spinner-border solid color($mat-palette, mat-light-blue);
 }
 
 // .cdk-overlay-dark-backdrop {
@@ -136,20 +136,20 @@ $spinner-border: 10px;
 .multi-color {
 
   i:nth-child(1) {
-    color: color($md-palette, md-red);
+    color: color($mat-palette, mat-red);
   }
   i:nth-child(2) {
-    color: color($md-palette, md-light-green);
+    color: color($mat-palette, mat-light-green);
   }
   i:nth-child(3) {
-    color: color($md-palette, md-light-blue);
+    color: color($mat-palette, mat-light-blue);
   }
   i:nth-child(4) {
-    color: color($md-palette, md-light-blue);
+    color: color($mat-palette, mat-light-blue);
   }
 }
 
-.md-icon {
+.mat-icon {
   font-family: 'Material Icons';
   font-weight: normal;
   font-style: normal;
@@ -174,7 +174,7 @@ $spinner-border: 10px;
   font-feature-settings: 'liga';
 }
 
-.md-icon.small {
+.mat-icon.small {
   font-size: 0.875rem;
 }
 

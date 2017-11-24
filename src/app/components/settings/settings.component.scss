@@ -29,27 +29,23 @@
   animation: fadeOut 1s;
 }
 
+.mat-dialog-container {
 
-.main {
-  width: 50vw !important;
-  min-width: 20em;
-  max-width: 30em;
-  // height: 100%;
-  // width: 75vh !important;
-  // margin: 0ex;
-  // // flex: 1 1;
-  //  overflow-y: scroll;
-  //  overflow-x: hidden;
+  display: none !important;
 
-  // div {
-  //   overflow: hidden
-  // }
+}
+
+
+
+.mat-dialog-content {
+  width: 50vw!important;
+  margin-left: 5vw;
 }
 
 .header {
   width: 100%;
-  //background-color: color($md-palette, md-light-blue);
-  //color: color($md-palette, md-white);
+  //background-color: color($mat-palette, mat-light-blue);
+  //color: color($mat-palette, mat-white);
   text-align: left;
   margin-bottom: 1ex;
   .header-title {
@@ -94,7 +90,7 @@
 
 .folder {
 
-  .md-button, .mat-button {
+  .mat-button, .mat-button {
     min-width: 1% !important;
 
   }
@@ -150,7 +146,7 @@
       display:flex;
       align-items: center;
       justify-content: center;
-      background-color: color($md-palette, md-orange);
+      background-color: color($mat-palette, mat-orange);
 
       .small {
         font-weight: bold;
@@ -167,7 +163,7 @@
       right: 0;
     }
     button:hover {
-      background-color: darken(color($md-palette, md-orange), 10);
+      background-color: darken(color($mat-palette, mat-orange), 10);
     }
   }
 
@@ -261,15 +257,15 @@ button {
 }
 
 // .mat-dialog-container
-// .md-dialog-container
+// .mat-dialog-container
 
 
 
-.md-dialog-content {
+.mat-dialog-content {
   max-width:75%;
 }
 
-.md-button.md-small {
+.mat-button.mat-small {
     width: 1px !important;
     min-width: 1% !important;
     font-size: 1px !important;
@@ -277,10 +273,10 @@ button {
 
 .footer {
   button {
-    color: color($md-palette, md-white);
+    color: color($mat-palette, mat-white);
   }
 
   .secondary {
-    background-color: color($md-palette, md-light-green);
+    background-color: color($mat-palette, mat-light-green);
   }
 }

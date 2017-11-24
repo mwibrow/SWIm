@@ -1,5 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
+import * as md from '@angular/material';
+
 
 @Component({
   selector: 'app-ready',
@@ -8,12 +10,12 @@ import { MdDialogRef } from '@angular/material';
 })
 export class ReadyComponent implements OnInit {
 
-  constructor(private dialogRef: MdDialogRef<ReadyComponent>) { }
+  constructor(private dialogRef: MatDialogRef<ReadyComponent>) { }
 
   ngOnInit() {
   }
 
-  @HostListener('document:event', ['$event'])
+  @HostListener('document:keydown', ['$event'])
   keydown(event: KeyboardEvent) {
     this.handleKeyboardEvents(event);
   }

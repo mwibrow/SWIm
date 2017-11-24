@@ -11,23 +11,20 @@ import { HttpModule } from '@angular/http';
 import { AppComponent } from './app.component';
 import { HomeComponent, ExitAppComponent } from './components/home/home.component';
 import { SettingsComponent } from './components/settings/settings.component';
-
 import { AppRoutingModule } from './app-routing.module';
 
 import { ElectronService } from './providers/electron.service';
-
 import { AudioService } from './providers/audio.service';
-
 import { SettingsService } from './providers/settings.service';
 
 import {
-  MdButtonModule,
-  MdGridListModule,
-  MdIconModule,
-  MdInputModule,
-  MdListModule,
-  MdToolbarModule,
-  MdDialogModule
+  MatButtonModule,
+  MatGridListModule,
+  MatIconModule,
+  MatInputModule,
+  MatListModule,
+  MatToolbarModule,
+  MatDialogModule
 } from '@angular/material';
 import { TaskComponent } from './components/task/task.component';
 import { ErrorComponent } from './components/error/error.component';
@@ -35,6 +32,7 @@ import { BreakComponent } from './components/break/break.component';
 import { FinishComponent } from './components/finish/finish.component';
 import { ReadyComponent } from './components/ready/ready.component';
 import { AudioComponent } from './components/audio/audio.component';
+import { InstructionsComponent } from './components/instructions/instructions.component';
 
 @NgModule({
   declarations: [
@@ -47,7 +45,8 @@ import { AudioComponent } from './components/audio/audio.component';
     BreakComponent,
     FinishComponent,
     ReadyComponent,
-    AudioComponent
+    AudioComponent,
+    InstructionsComponent
   ],
   entryComponents: [
     AudioComponent,
@@ -55,7 +54,8 @@ import { AudioComponent } from './components/audio/audio.component';
     BreakComponent,
     ReadyComponent,
     FinishComponent,
-    ExitAppComponent
+    ExitAppComponent,
+    InstructionsComponent
   ],
   imports: [
     BrowserModule,
@@ -63,13 +63,13 @@ import { AudioComponent } from './components/audio/audio.component';
     FormsModule,
     HttpModule,
     AppRoutingModule,
-    MdButtonModule,
-    MdGridListModule,
-    MdIconModule,
-    MdInputModule,
-    MdListModule,
-    MdToolbarModule,
-    MdDialogModule,
+    MatButtonModule,
+    MatGridListModule,
+    MatIconModule,
+    MatInputModule,
+    MatListModule,
+    MatToolbarModule,
+    MatDialogModule,
   ],
   providers: [
     ElectronService,

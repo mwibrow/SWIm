@@ -1,5 +1,5 @@
 import { Component, OnInit, HostListener } from '@angular/core';
-import { MdDialogRef } from '@angular/material';
+import { MatDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-break',
@@ -8,7 +8,7 @@ import { MdDialogRef } from '@angular/material';
 })
 export class BreakComponent implements OnInit {
 
-  constructor(private dialogRef: MdDialogRef<BreakComponent>) { }
+  constructor(private dialogRef: MatDialogRef<BreakComponent>) { }
 
   ngOnInit() {
   }

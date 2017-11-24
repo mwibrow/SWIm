@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import { Router } from '@angular/router'
 import { ErrorComponent } from '../error/error.component';
 
@@ -20,14 +20,14 @@ const filterWav = item => path.extname(item.path) === '.wav';
 })
 export class SettingsComponent implements OnInit {
 
-  private settings: Settings;
-  private stimuliPathValidationMessage = '';
-  private responsesPathValidationMessage = '';
+  settings: Settings;
+  stimuliPathValidationMessage = '';
+  responsesPathValidationMessage = '';
 
   constructor(
       private router: Router,
-      private dialog: MdDialog,
-      private dialogRef: MdDialogRef<SettingsComponent>,
+      private dialog: MatDialog,
+      private dialogRef: MatDialogRef<SettingsComponent>,
       private settingsService: SettingsService) {
 
       this.settings = settingsService.settings;
@@ -84,7 +84,7 @@ export class SettingsComponent implements OnInit {
     return this.responsesPathValidationMessage === '' && this.stimuliPathValidationMessage === '';
   }
 
-  changeBlockSize(by: number) {
+  changeBlockSize(by?: number) {
     if (by) {
       this.settings.blockSize += by;
     }
@@ -96,7 +96,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  changeResponseLength(by: number) {
+  changeResponseLength(by?: number) {
     if (by) {
       this.settings.responseLength += by;
     }
@@ -108,7 +108,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  changeMaskFrequency(by: number) {
+  changeMaskFrequency(by?: number) {
     if (by) {
       this.settings.maskFrequency += by;
     }
@@ -120,7 +120,7 @@ export class SettingsComponent implements OnInit {
     }
   }
 
-  changeMaskDuration(by: number) {
+  changeMaskDuration(by?: number) {
     if (by) {
       this.settings.maskDuration += by;
     }

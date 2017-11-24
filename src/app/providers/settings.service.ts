@@ -3,7 +3,7 @@ import * as fs from 'fs-extra';
 const storage = require('electron-json-storage');
 const path = require('path');
 
-const filterWav = item => path.extname(item.path) === '.wav';
+const filterWav = item => path.extname(item) === '.wav';
 
 export const notSet = 'Not set!';
 
@@ -13,14 +13,14 @@ export class Settings {
     stimuliPath: string = notSet;
     responsesPath: string = notSet;
 
-    blockSize: 10;
-    maskFrequency: 440;
-    maskDuration: 1000;
+    blockSize = 10;
+    maskFrequency = 440;
+    maskDuration = 1000;
 
-    responseLength: 5;
-    repetitions: 3;
+    responseLength = 5;
+    repetitions = 3;
 
-    escapeCombo: 'Escape|Escape|Escape';
+    escapeCombo = 'Escape|Escape|Escape';
 
 }
 
@@ -68,6 +68,9 @@ export class SettingsService {
 
   validateSettings() {
 
+    console.log('Validating settings');
+    console.log(this.settings)
+
       return new Promise((resolve, reject) => {
         if (!this.settings.stimuliPath || this.settings.responsesPath === notSet) {
           reject('Stimuli folder not set');
@@ -75,7 +78,7 @@ export class SettingsService {
         if (!fs.pathExistsSync(this.settings.stimuliPath)) {
           reject('Stimuli folder does not exist')
         }
-        const stimuli = fs.readdirSync(this.settings.stimuliPath).filter(filterWav);
+        const stimuli: string[] = fs.readdirSync(this.settings.stimuliPath).filter(filterWav);
         if (stimuli.length === 0) {
           reject('No WAV files in stimuli folder');
         }
@@ -87,6 +90,7 @@ export class SettingsService {
         } catch (err) {
           reject('Cannot write to Responses folder');
         }
+
         resolve();
       });
     }

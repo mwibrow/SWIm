@@ -1,7 +1,7 @@
 import { Component, OnInit, HostListener } from '@angular/core';
 import { AudioService, AudioPlayer, AudioRecorder } from '../../providers/audio.service';
 import { Router } from '@angular/router';
-import { MdDialog, MdDialogRef } from '@angular/material';
+import { MatDialog, MatDialogRef } from '@angular/material';
 import * as fs from 'fs-extra';
 
 const sprintf = require ('sprintf-js');
@@ -65,7 +65,7 @@ export class TaskComponent implements OnInit {
   private taskRunning: boolean;
   private trialRunning: boolean;
 
-  private tiles: Array<Tile>;
+  tiles: Array<Tile>;
   private incomingTileIndex: number;
   private savedTileColor: number;
 
@@ -73,7 +73,7 @@ export class TaskComponent implements OnInit {
   constructor(
       private router: Router,
       private audio: AudioService,
-      public dialog: MdDialog,
+      public dialog: MatDialog,
       public settingsService: SettingsService) {
 
     this.audio.initialise();
