@@ -1,13 +1,11 @@
 import { Injectable } from '@angular/core';
-
-const fs = require('fs-extra');
+import * as fs from 'fs-extra';
 const storage = require('electron-json-storage');
-const klawSync = require('klaw-sync')
 const path = require('path');
 
 const filterWav = item => path.extname(item.path) === '.wav';
 
-export const notSet: string = 'Not set!';
+export const notSet = 'Not set!';
 
 export class Settings {
 
@@ -15,14 +13,14 @@ export class Settings {
     stimuliPath: string = notSet;
     responsesPath: string = notSet;
 
-    blockSize: number = 10;
-    maskFrequency: number = 440;
-    maskDuration: number = 1000;
+    blockSize: 10;
+    maskFrequency: 440;
+    maskDuration: 1000;
 
-    responseLength: number = 5;
-    repetitions: number = 3;
+    responseLength: 5;
+    repetitions: 3;
 
-    escapeCombo: string = 'Escape|Escape|Escape';
+    escapeCombo: 'Escape|Escape|Escape';
 
 }
 
@@ -43,8 +41,8 @@ export class SettingsService {
           if (error) {
             reject(error);
           } else {
-            let settings: any = data || {}, setting: any;
-            for (setting in settings) {
+            const settings: any = data || {};
+            for (const setting in settings) {
               if (settings.hasOwnProperty(setting)) {
                 this.settings[setting] = settings[setting];
               }
@@ -77,7 +75,7 @@ export class SettingsService {
         if (!fs.pathExistsSync(this.settings.stimuliPath)) {
           reject('Stimuli folder does not exist')
         }
-        let stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
+        const stimuli = fs.readdirSync(this.settings.stimuliPath).filter(filterWav);
         if (stimuli.length === 0) {
           reject('No WAV files in stimuli folder');
         }
@@ -85,7 +83,7 @@ export class SettingsService {
           reject('Responses folder not set');
         }
         try {
-          fs.accessSync(this.settings.responsesPath, fs.W_OK);
+          fs.accessSync(this.settings.responsesPath, fs.constants.W_OK);
         } catch (err) {
           reject('Cannot write to Responses folder');
         }
@@ -112,7 +110,8 @@ class FolderSetting implements Setting<string> {
 
   value: string;
   defaultValue: string;
-  permissions: any = fs.W_OK | fs.R_OK;
+  // tslint:disable-next-line
+  permissions: any = fs.constants.W_OK | fs.constants.R_OK;
 
   validate(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -145,9 +144,10 @@ class NumberSetting implements Setting<number> {
   min: number;
   max: number;
 
-  permissions: any = fs.W_OK | fs.R_OK;
+  // tslint:disable-next-line
+  permissions: any = fs.constants.W_OK | fs.constants.R_OK;
 
-  constructor(defaultValue: number, min: number, max:number) {
+  constructor(defaultValue: number, min: number, max: number) {
     this.value = this.defaultValue = defaultValue;
     this.min = min;
     this.max = max;

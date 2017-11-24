@@ -53,7 +53,6 @@
     "fs-extra": "^4.0.0",
     "handlebars": "^4.0.0",
     "inline-worker": "^1.1.0",
-    "klaw-sync": "^2.1.0",
     "node-sass": "^4.5.3",
     "rxjs": "^5.4.2",
     "sprintf-js": "^1.1.1",
