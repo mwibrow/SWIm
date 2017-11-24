@@ -17,7 +17,7 @@ const remote = require('electron').remote;
 })
 export class HomeComponent implements OnInit {
   title = `App works !`;
-  settingsRejectionMessage: string = '';
+  settingsRejectionMessage: '';
   fade = 'fade-in';
   logoPath = 'assets/images/swim-logo.svg';
   audioAvailable: boolean;

@@ -8,8 +8,8 @@ import { MD_DIALOG_DATA } from '@angular/material';
 })
 export class ErrorComponent implements OnInit {
 
-  title: string = 'Ooops!';
-  content: string = 'An error occured.';
+  title: 'Ooops!';
+  content: 'An error occured.';
   constructor(@Inject(MD_DIALOG_DATA) data: any,
     public dialogRef: MdDialogRef<ErrorComponent>) {
       if (data) {

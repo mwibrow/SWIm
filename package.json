@@ -2,7 +2,7 @@
   "name": "swim",
   "version": "0.0.1",
   "description": "Spoken Word Imitation",
-  "homepage": "",
+  "homepage": "https://github.com/mwibrow/SWIm",
   "author": {
     "name": "Mark WIBROW",
     "email": "m.wibrow@gmail.com"
@@ -51,6 +51,7 @@
     "enhanced-resolve": "3.3.0",
     "eve": "^0.5.4",
     "fs-extra": "^4.0.0",
+    "handlebars": "^4.0.0",
     "inline-worker": "^1.1.0",
     "klaw-sync": "^2.1.0",
     "node-sass": "^4.5.3",
@@ -69,7 +70,6 @@
     "@types/fs-extra": "^4.0.0",
     "@types/jasmine": "2.5.53",
     "@types/node": "7.0.7",
-    "@types/snapsvg": "^0.4.29",
     "@types/sprintf-js": "0.0.27",
     "autoprefixer": "7.1.1",
     "codelyzer": "3.1.1",

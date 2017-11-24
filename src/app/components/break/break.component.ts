@@ -1,14 +1,10 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { MdDialogRef } from '@angular/material';
 
 @Component({
   selector: 'app-break',
   templateUrl: './break.component.html',
-  styleUrls: ['./break.component.scss'],
-  host: {
-    '(document:keydown)': 'handleKeyboardEvents($event)',
-    '(document:keyup)': 'handleKeyboardEvents($event)'
-  }
+  styleUrls: ['./break.component.scss']
 })
 export class BreakComponent implements OnInit {
 
@@ -17,13 +13,25 @@ export class BreakComponent implements OnInit {
   ngOnInit() {
   }
 
+
+  @HostListener('document:keydown', ['$event'])
+  keydown(event: KeyboardEvent) {
+    this.handleKeyboardEvents(event);
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  keyup(event: KeyboardEvent) {
+    this.handleKeyboardEvents(event);
+  }
   handleKeyboardEvents(event: KeyboardEvent) {
     switch (event.type) {
       case 'keydown':
           if (event.keyCode === 32) {
             this.dialogRef.close();
           }
+      break;
       default:
     }
   }
+
 }

@@ -1,15 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, HostListener } from '@angular/core';
 import { AudioService, AudioPlayer, AudioRecorder } from '../../providers/audio.service';
 import { Router } from '@angular/router';
 import { MdDialog, MdDialogRef } from '@angular/material';
+import * as fs from 'fs-extra';
 
 const sprintf = require ('sprintf-js');
 
 const storage = require('electron-json-storage');
-const fs = require('fs-extra');
-const klawSync = require('klaw-sync')
 const path = require('path');
-var _ = require('lodash');
+const _ = require('lodash');
 
 import { ErrorComponent } from '../error/error.component';
 import { FinishComponent } from '../finish/finish.component';
@@ -18,12 +17,12 @@ import { BreakComponent } from '../break/break.component';
 import { SettingsService, Settings } from '../../providers/settings.service';
 import { Visualiser } from '../../visualiser';
 
-const filterWav = item => path.extname(item.path) === '.wav';
+const filterWav = item => path.extname(item) === '.wav';
 
-const COLOR_COUNT: number = 16;
+const COLOR_COUNT = 16;
 const DIRECTIONS: Array<string> =  ['top', 'bottom', 'left', 'right'];
-const STYLE_OUT: string = 'out';
-const STYLE_IN: string = 'in';
+const STYLE_OUT = 'out';
+const STYLE_IN = 'in';
 
 
 class Tile {
@@ -32,8 +31,8 @@ class Tile {
     public stack: string,
     public direction: string,
     public style: string,
-    public visualiserStyle: any={},
-    public active: boolean=false) {};
+    public visualiserStyle: any = {},
+    public active: boolean = false) {};
 }
 
 
@@ -41,11 +40,7 @@ class Tile {
 @Component({
   selector: 'app-task',
   templateUrl: './task.component.html',
-  styleUrls: ['./task.component.scss'],
-  host: {
-    '(document:keydown)': 'handleKeyboardEvents($event)',
-    '(document:keyup)': 'handleKeyboardEvents($event)'
-  }
+  styleUrls: ['./task.component.scss']
 })
 export class TaskComponent implements OnInit {
 
@@ -114,11 +109,12 @@ export class TaskComponent implements OnInit {
     this.escapeCombo = 'Escape|Escape|Escape';
   }
 
-
   private loadStimuli() {
     return new Promise((resolve, reject) => {
       console.log(`Loading wav files from ${this.settings.stimuliPath}`);
-      let stimuli = klawSync(this.settings.stimuliPath, { filter: filterWav });
+      const stimuli: string[] = fs.readdirSync(this.settings.stimuliPath)
+        .filter(filterWav)
+        .map(wav => path.join(this.settings.stimuliPath, wav));
       if (stimuli.length === 0) {
         this.openDialog('error', ErrorComponent, {
           data: {
@@ -131,7 +127,7 @@ export class TaskComponent implements OnInit {
           });
       }
       console.log(`Loaded ${stimuli.length} audio paths.`);
-      this.audioStimuli = stimuli.reduce((obj, stimulus) => Object.assign(obj, {[this.getBase(stimulus.path)]: stimulus.path}), {});
+      this.audioStimuli = stimuli.reduce((obj, stimulus) => Object.assign(obj, {[this.getBase(stimulus)]: stimulus}), {});
       this.stimuli = _.flatten(_.times(this.settings.repetitions, () => Object.keys(this.audioStimuli)));
       console.log(`Total audio stimuli (including repetitions): ${this.stimuli.length}`)
       resolve();
@@ -139,25 +135,27 @@ export class TaskComponent implements OnInit {
   }
 
   private getBase(filePath): string {
-    let isWindows: boolean = path.sep === '//';
-    let pathApi = isWindows ? path.win32 : path;
+    const isWindows: boolean = path.sep === '//';
+    const pathApi = isWindows ? path.win32 : path;
     return pathApi.basename(filePath, path.extname(filePath))
   }
 
   private runTask() {
-    let now = new Date();
+    const now = new Date();
     this.participantFolder = sprintf.sprintf('%04d%02d%02d-%02d%02d%02d',
       now.getFullYear(), now.getMonth() + 1, now.getDate(), now.getHours(), now.getMinutes(), now.getSeconds());
-    let participantPath = path.normalize(path.join(this.settings.responsesPath, this.participantFolder));
-    fs.mkdirpSync(participantPath,
-      (err) => {
+    const participantPath = path.normalize(path.join(this.settings.responsesPath, this.participantFolder));
+    fs.mkdirp(participantPath)
+    .then(() => {
+      this.stimuli = _.shuffle(this.stimuli);
+      this.finish = false;
+      this.abort = false;
+      this.taskRunning = true;
+      this.runTrial();
+    })
+    .catch((err) => {
         console.error(`Could not create folder '${participantPath}'`)
-      });
-    this.stimuli = _.shuffle(this.stimuli);
-    this.finish = false;
-    this.abort = false;
-    this.taskRunning = true;
-    this.runTrial();
+    });
   }
 
   private runTrial() {
@@ -194,7 +192,7 @@ export class TaskComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.recorder.record();
       this.visualiser.onvisualise = (data) => {
-        let value = (Math.floor((data[0] / 255) * 15) + 1) * 16;
+        const value = (Math.floor((data[0] / 255) * 15) + 1) * 16;
         this.tiles[this.incomingTileIndex].visualiserStyle = {
           width: `${value}px`,
           height: `${value}px`
@@ -226,7 +224,7 @@ export class TaskComponent implements OnInit {
   private saveResponse() {
     return new Promise((resolve, reject) => {
       this.recorder.stop().then(() => {
-        let wavPath: string = this.getResponseFile();
+        const wavPath: string = this.getResponseFile();
         console.log(`Saving wav to ${wavPath}`);
         this.recorder.saveWav(wavPath).then(() => resolve(self));
       });
@@ -260,17 +258,16 @@ export class TaskComponent implements OnInit {
     }
   }
 
-  private updateTiles(active: boolean=false) {
-    let newColor: number;
-    let outgoingTileIndex: number = this.incomingTileIndex;
+  private updateTiles(active: boolean = false) {
+    const outgoingTileIndex: number = this.incomingTileIndex;
     this.incomingTileIndex = 1 - this.incomingTileIndex;
 
-    let inTile = this.tiles[this.incomingTileIndex];
-    let outTile = this.tiles[1 - this.incomingTileIndex];
+    const inTile = this.tiles[this.incomingTileIndex];
+    const outTile = this.tiles[1 - this.incomingTileIndex];
 
-    let directions = _.sampleSize(DIRECTIONS, 2);
+    const directions = _.sampleSize(DIRECTIONS, 2);
 
-    inTile.color = _.sample(_.range(1, COLOR_COUNT).filter(color => color != outTile.color));
+    inTile.color = _.sample(_.range(1, COLOR_COUNT).filter(color => color !== outTile.color));
     inTile.style = STYLE_IN;
     inTile.direction = directions[0];
     inTile.active = active;
@@ -298,8 +295,18 @@ export class TaskComponent implements OnInit {
     });
   }
 
+  @HostListener('document:keydown', ['$event'])
+  keydown(event: KeyboardEvent) {
+    this.handleKeyboardEvents(event);
+  }
+
+  @HostListener('document:keyup', ['$event'])
+  keyup(event: KeyboardEvent) {
+    this.handleKeyboardEvents(event);
+  }
+
   handleKeyboardEvents(event: KeyboardEvent) {
-    let key = event.which || event.keyCode;
+    const key = event.which || event.keyCode;
     switch (event.type) {
       case 'keydown':
         this.keyboardBuffer.push(event.key);
@@ -334,7 +341,9 @@ export class TaskComponent implements OnInit {
   }
 
   openDialog(id: string, target: any, options: any, afterClose: any) {
-    if (this.abort || this.finish) return;
+    if (this.abort || this.finish) {
+      return;
+    }
     if (this.dialogRefs.hasOwnProperty(id)) {
       this.dialogRefs[id].close();
     }
@@ -356,10 +365,10 @@ export class TaskComponent implements OnInit {
         delete this.dialogRefs[id];
       }
     } else {
-      for (let id in this.dialogRefs) {
-          if (this.dialogRefs.hasOwnProperty(id)) {
-          this.dialogRefs[id].close();
-          delete this.dialogRefs[id];
+      for (const property in this.dialogRefs) {
+          if (this.dialogRefs.hasOwnProperty(property)) {
+          this.dialogRefs[property].close();
+          delete this.dialogRefs[property];
         }
       }
     }
