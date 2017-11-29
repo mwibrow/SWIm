@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   title = `App works !`;
   settingsRejectionMessage: '';
   fade = 'fade-in';
-  logoPath = 'assets/images/swim-logo.svg';
+  logoPath = 'assets/images/swim-logo.png';
   audioAvailable: boolean;
   constructor(private router: Router,
     private audio: AudioService,

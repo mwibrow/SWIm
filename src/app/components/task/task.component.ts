@@ -211,7 +211,7 @@ export class TaskComponent implements OnInit {
 
   private playTone()  {
     return new Promise((resolve, reject) => {
-      this.player.playTone(440, 1).then(() => resolve(self));
+      this.player.playTone(440, 1, Math.SQRT1_2 / 2).then(() => resolve(self));
     });
   }
 
