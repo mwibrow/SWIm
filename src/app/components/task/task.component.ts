@@ -70,6 +70,8 @@ export class TaskComponent implements OnInit {
   private savedTileColor: number;
 
   private escapeCombo: string;
+
+  transition: Boolean;
   constructor(
       private router: Router,
       private audio: AudioService,
@@ -107,6 +109,7 @@ export class TaskComponent implements OnInit {
     this.savedTileColor = null;
 
     this.escapeCombo = 'Escape|Escape|Escape';
+    this.transition = false;
   }
 
   private loadStimuli() {
@@ -170,7 +173,8 @@ export class TaskComponent implements OnInit {
   }
 
   private startTrial() {
-
+    console.log(`Trial ${this.trial + 1}`);
+    this.transition = true;
     this.updateTiles(true);
     this.trialRunning = true;
     return new Promise((resolve, reject) => {
@@ -189,6 +193,7 @@ export class TaskComponent implements OnInit {
   }
 
   private startRecording() {
+    this.transition = false;
     return new Promise((resolve, reject) => {
       this.recorder.record();
       this.visualiser.onvisualise = (data) => {
@@ -211,7 +216,11 @@ export class TaskComponent implements OnInit {
 
   private playTone()  {
     return new Promise((resolve, reject) => {
-      this.player.playTone(440, 1, Math.SQRT1_2 / 2).then(() => resolve(self));
+      this.player.playTone(
+        this.settings.maskFrequency,
+        this.settings.maskDuration / 1000,
+        Math.SQRT1_2 * this.settings.maskVolume / 10)
+      .then(() => resolve(self));
     });
   }
 
@@ -311,7 +320,6 @@ export class TaskComponent implements OnInit {
       case 'keydown':
         this.keyboardBuffer.push(event.key);
         setTimeout(() => this.keyboardBuffer = [], 1000);
-        console.log(this.keyboardBuffer.join('|').toLowerCase(), this.settings.escapeCombo.toLowerCase())
         if (this.keyboardBuffer.join('|').toLowerCase() === this.settings.escapeCombo.toLowerCase()) {
             this.abort = true;
             this.closeDialog();

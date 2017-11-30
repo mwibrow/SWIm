@@ -97,6 +97,7 @@
         <span class="description">Frequency of auditory mask in Hz</span>
       </div>
     </div>
+
     <div class="setting number">
       <div class="setting-header">
         <span class="title">Mask duration</span>
@@ -111,6 +112,44 @@
       </div>
       <div class="setting-description">
         <span class="description">Duration of auditory mask in ms</span>
+      </div>
+    </div>
+
+    <div class="setting number">
+      <div class="setting-header">
+        <span class="title">Mask volume</span>
+        <span class="horizontal-filler"></span>
+        <button mat-button class="secondary small preview-button"  (click)="previewMask()">
+          <!-- <span class="tiny">Change</span> -->
+          <mat-icon>play_arrow</mat-icon>
+        </button>
+        <div class="number-input-with-buttons">
+          <input type="number" min="0" max="10" [(ngModel)]="settings.maskVolume" (change)="changeMaskVolume()">
+          <div class="number-input-buttons">
+            <button class="plus" (click)="changeMaskVolume(1)"><i class="mat-icon small">add</i></button>
+            <button class="minus" (click)="changeMaskVolume(-1)"><i class="mat-icon small">remove</i></button>
+          </div>
+        </div>
+      </div>
+      <div class="setting-description">
+        <span class="description">Mask volume. Amplitude will be √(1/2)×v÷10</span>
+      </div>
+    </div>
+
+    <div class="setting number">
+      <div class="setting-header">
+        <span class="title">Repetitions</span>
+        <span class="horizontal-filler"></span>
+        <div class="number-input-with-buttons">
+          <input type="number" min="1" max="10" [(ngModel)]="settings.repetitions" (change)="changeRepetitions()">
+          <div class="number-input-buttons">
+            <button class="plus" (click)="changeRepetitions(1)"><i class="mat-icon small">add</i></button>
+            <button class="minus" (click)="changeRepetitions(-1)"><i class="mat-icon small">remove</i></button>
+          </div>
+        </div>
+      </div>
+      <div class="setting-description">
+        <span class="description">Number of times to repeat stimuli</span>
       </div>
     </div>
 

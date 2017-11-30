@@ -16,7 +16,7 @@ export class Settings {
     blockSize = 10;
     maskFrequency = 440;
     maskDuration = 1000;
-
+    maskVolume = 10;
     responseLength = 5;
     repetitions = 3;
 

@@ -4,7 +4,7 @@ import { Router } from '@angular/router'
 import { ErrorComponent } from '../error/error.component';
 
 import { SettingsService, Settings, notSet } from '../../providers/settings.service';
-
+import { AudioService, AudioPlayer } from '../../providers/audio.service';
 import * as fs from 'fs-extra';
 const electronDialog = require('electron').remote.dialog;
 const path = require('path');
@@ -23,17 +23,22 @@ export class SettingsComponent implements OnInit {
   settings: Settings;
   stimuliPathValidationMessage = '';
   responsesPathValidationMessage = '';
+  player: AudioPlayer;
 
   constructor(
       private router: Router,
       private dialog: MatDialog,
       private dialogRef: MatDialogRef<SettingsComponent>,
+      private audio: AudioService,
       private settingsService: SettingsService) {
 
       this.settings = settingsService.settings;
+      this.player = new AudioPlayer(this.audio.getContext());
+      this.player.initialise();
   }
 
   ngOnInit() {
+
   }
 
   changeStimuliPath() {
@@ -84,6 +89,9 @@ export class SettingsComponent implements OnInit {
     return this.responsesPathValidationMessage === '' && this.stimuliPathValidationMessage === '';
   }
 
+  previewMask() {
+    this.player.playTone(this.settings.maskFrequency, this.settings.maskDuration / 1000, Math.SQRT1_2 * this.settings.maskVolume / 10);
+  }
   changeBlockSize(by?: number) {
     if (by) {
       this.settings.blockSize += by;
@@ -93,6 +101,30 @@ export class SettingsComponent implements OnInit {
     }
     if (this.settings.blockSize > 100) {
       this.settings.blockSize = 100;
+    }
+  }
+
+  changeRepetitions(by?: number) {
+    if (by) {
+      this.settings.repetitions += by;
+    }
+    if (this.settings.repetitions < 1) {
+      this.settings.repetitions = 1;
+    }
+    if (this.settings.repetitions > 10) {
+      this.settings.repetitions = 10;
+    }
+  }
+
+  changeMaskVolume(by?: number) {
+    if (by) {
+      this.settings.maskVolume += by;
+    }
+    if (this.settings.maskVolume < 1) {
+      this.settings.maskVolume = 1;
+    }
+    if (this.settings.maskVolume > 10) {
+      this.settings.maskVolume = 10;
     }
   }
 
